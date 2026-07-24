@@ -1,0 +1,360 @@
+/* ==========================================
+   Cyber Prosperity
+   Sprint 1 - Landing Page
+   Base Styles
+========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+/* ==========================
+   Navigation
+========================== */
+
+.navbar {
+    background: #0f172a;
+    color: white;
+    padding: 18px 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #FFD700;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    color: #FFD700;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #FFD700;
+    color: #0f172a;
+    padding: 16px 34px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all .3s ease;
+    box-shadow: 0 10px 25px rgba(255,215,0,.25);
+}
+
+.btn-primary:hover{
+    transform: translateY(-4px);
+    box-shadow:0 18px 35px rgba(255,215,0,.45);
+}
+
+.btn-secondary{
+    display:inline-block;
+    color:#0f172a;
+    font-weight:700;
+    text-decoration:none;
+    padding:16px 22px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.btn-secondary:hover{
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+/* =========================
+   Why Cyber Prosperity
+========================= */
+
+.about {
+    padding: 100px 20px;
+    background: #f8f9fc;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2.5rem;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.section-description {
+    max-width: 750px;
+    margin: 0 auto 60px;
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: #0f172a;
+}
+
+.card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   Features
+========================= */
+
+.features {
+    padding: 100px 20px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 2.5rem;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.feature-card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    transition: all .3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 18px 40px rgba(0,0,0,.12);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    margin-bottom: 15px;
+    color: #0f172a;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* =========================
+   Community Statistics
+========================= */
+
+.statistics {
+    padding: 100px 20px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.statistics h2 {
+    font-size: 2.5rem;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.statistics .section-description {
+    max-width: 700px;
+    margin: 0 auto 50px;
+    color: #64748b;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.stat-card {
+    background: #ffffff;
+    padding: 40px 25px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    transition: all .3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 18px 40px rgba(0,0,0,.12);
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    color: #FFD700;
+    margin-bottom: 15px;
+}
+
+.stat-card p {
+    color: #64748b;
+    font-size: 1rem;
+}
+
+/* =========================
+   Call To Action
+========================= */
+
+.cta {
+    padding: 100px 20px;
+    background: #0f172a;
+    text-align: center;
+    color: #ffffff;
+}
+
+.cta h2 {
+    font-size: 2.7rem;
+    margin-bottom: 20px;
+}
+
+.cta p {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    color: #cbd5e1;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.cta .btn-primary {
+    display: inline-block;
+    background: #FFD700;
+    color: #0f172a;
+    padding: 16px 36px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all .3s ease;
+}
+
+.cta .btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(255,215,0,.35);
+}
+
+/* =========================================
+   Hero Section
+========================================= */
+
+.hero{
+    padding:100px 0;
+    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+}
+
+.hero-container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+}
+
+.hero-content{
+    flex:1;
+    max-width:620px;
+}
+
+.hero-content h1{
+    font-size:60px;
+    line-height:1.1;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:24px;
+}
+
+.hero-content p{
+    font-size:20px;
+    color:#475569;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.hero-buttons{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.hero-image{
+    flex:1;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+}
+
+.hero-image img{
+    width:100%;
+    max-width:620px;
+    border-radius:22px;
+    display:block;
+    box-shadow:0 25px 60px rgba(0,0,0,.18);
+    transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.hero-image img:hover{
+    transform:translateY(-8px);
+    box-shadow:0 35px 80px rgba(0,0,0,.25);
+}
