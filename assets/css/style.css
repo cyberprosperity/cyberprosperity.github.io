@@ -683,3 +683,251 @@ body {
     font-size:16px;
 
 }
+
+/* ==========================================
+   COMMUNITY
+========================================== */
+
+.community{
+
+    padding:60px 0;
+
+    background:#f8fafc;
+
+}
+
+.community h1{
+
+    color:#0f172a;
+
+    font-size:2.2rem;
+
+    font-weight:700;
+
+    margin-top:20px;
+
+    margin-bottom:15px;
+
+}
+
+.community p{
+
+    color:#64748b;
+
+    margin-bottom:35px;
+
+    line-height:1.7;
+
+}
+
+/* ==========================================
+   CREATE POST
+========================================== */
+
+.create-post{
+
+    background:#ffffff;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    margin-bottom:30px;
+
+}
+
+.create-post h3{
+
+    color:#0f172a;
+
+    margin-bottom:20px;
+
+}
+
+.create-post textarea{
+
+    width:100%;
+
+    min-height:140px;
+
+    padding:18px;
+
+    border:1px solid #dbe4f0;
+
+    border-radius:12px;
+
+    resize:vertical;
+
+    margin-bottom:20px;
+
+    font-size:16px;
+
+    font-family:inherit;
+
+    box-sizing:border-box;
+
+}
+
+.create-post textarea:focus{
+
+    outline:none;
+
+    border-color:#FFD700;
+
+}
+
+.create-post button{
+
+    border:none;
+
+    cursor:pointer;
+
+    min-width:120px;
+
+    padding:14px 30px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+/* ==========================================
+   FEED CARD
+========================================== */
+
+.feed-card{
+
+    background:#ffffff;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:all .3s ease;
+
+}
+
+.feed-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+}
+
+.feed-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.feed-avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#FFD700;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    flex-shrink:0;
+
+}
+
+.feed-user-info h3{
+
+    margin:0;
+
+    color:#0f172a;
+
+    font-size:18px;
+
+}
+
+.feed-user-info span{
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+.feed-content{
+
+    color:#334155;
+
+    line-height:1.8;
+
+    margin-bottom:25px;
+
+}
+
+.feed-content p{
+
+    margin-bottom:12px;
+
+}
+
+.feed-content p:last-child{
+
+    margin-bottom:0;
+
+}
+
+.feed-actions{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.feed-actions button{
+
+    background:#f1f5f9;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:10px 20px;
+
+    cursor:pointer;
+
+    transition:all .3s ease;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.feed-actions button:hover{
+
+    background:#FFD700;
+
+    color:#0f172a;
+
+    transform:translateY(-2px);
+
+}
