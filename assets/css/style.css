@@ -296,68 +296,110 @@ body {
     box-shadow: 0 12px 25px rgba(255,215,0,.35);
 }
 
-/* =========================================
-   Hero Section
-========================================= */
+/* ==========================================
+   HERO SECTION
+========================================== */
 
 .hero{
+
     padding:100px 0;
+
     background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+
 }
 
 .hero-container{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
-    gap:40px;
+
+    gap:50px;
+
 }
 
 .hero-content{
+
     flex:1;
+
     max-width:620px;
+
 }
 
 .hero-content h1{
+
     font-size:60px;
-    line-height:1.1;
+
     font-weight:800;
+
+    line-height:1.1;
+
     color:#0f172a;
+
     margin-bottom:24px;
+
 }
 
 .hero-content p{
+
     font-size:20px;
-    color:#475569;
+
     line-height:1.8;
+
+    color:#475569;
+
     margin-bottom:35px;
+
 }
 
 .hero-buttons{
+
     display:flex;
-    align-items:center;
+
     gap:20px;
+
+    flex-wrap:wrap;
+
 }
 
 .hero-image{
+
     flex:1;
+
     display:flex;
+
     justify-content:flex-end;
+
     align-items:center;
+
 }
 
 .hero-image img{
+
     width:100%;
+
     max-width:620px;
-    border-radius:22px;
+
     display:block;
+
+    border-radius:22px;
+
     box-shadow:0 25px 60px rgba(0,0,0,.18);
-    transition:transform .35s ease, box-shadow .35s ease;
+
+    transition:all .35s ease;
+
 }
 
 .hero-image img:hover{
+
     transform:translateY(-8px);
+
     box-shadow:0 35px 80px rgba(0,0,0,.25);
+
 }
+
 /* ==========================================
    LOGIN PAGE
 ========================================== */
@@ -370,6 +412,7 @@ body {
     background:linear-gradient(135deg,#0f172a,#1e3a8a);
     padding:30px;
 }
+
 .login{
     width:100%;
 }
@@ -929,5 +972,297 @@ body {
     color:#0f172a;
 
     transform:translateY(-2px);
+
+}
+/* ==========================================
+   BROKER DIRECTORY
+========================================== */
+
+.broker-directory{
+
+    padding:60px 0;
+
+    background:#f8fafc;
+
+}
+
+.broker-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+
+    margin-top:40px;
+
+}
+
+.broker-card{
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.broker-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+}
+
+.broker-logo{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:15px;
+
+    background:#FFD700;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:30px;
+
+    margin-bottom:20px;
+
+}
+
+.broker-card h2{
+
+    color:#0f172a;
+
+    margin-bottom:10px;
+
+}
+
+.broker-rating{
+
+    color:#f59e0b;
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+}
+
+.broker-info{
+
+    margin-bottom:20px;
+
+    line-height:1.8;
+
+    color:#475569;
+
+}
+
+.broker-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.broker-buttons a{
+
+    text-decoration:none;
+
+}
+
+.btn-outline{
+
+    padding:12px 20px;
+
+    border:2px solid #FFD700;
+
+    border-radius:10px;
+
+    color:#0f172a;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.btn-outline:hover{
+
+    background:#FFD700;
+
+}
+
+/* ==========================================
+   FEATURED BROKER
+========================================== */
+
+.featured-badge{
+
+    display:inline-block;
+
+    margin:8px 0 15px;
+
+    padding:6px 14px;
+
+    background:#FFD700;
+
+    color:#0f172a;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+/* ==========================================
+   RESPONSIVE MOBILE
+========================================== */
+
+@media screen and (max-width:768px){
+
+    .container{
+        width:92%;
+        margin:auto;
+    }
+
+    /* NAVBAR */
+
+    .navbar .container,
+    .dashboard-header .container{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:22px;
+    }
+
+    .nav-menu{
+        display:none;
+    }
+
+    .nav-buttons{
+        display:flex;
+        gap:10px;
+        align-items:center;
+    }
+
+    .nav-buttons .btn-login{
+        display:none;
+    }
+
+    .nav-buttons .btn-primary{
+        padding:10px 18px;
+        font-size:14px;
+    }
+
+    /* HERO */
+
+    .hero{
+        padding:60px 0;
+    }
+
+    .hero-container{
+        flex-direction:column;
+        text-align:center;
+        gap:35px;
+    }
+
+    .hero-content{
+        max-width:100%;
+    }
+
+    .hero-content h1{
+        font-size:34px;
+        line-height:1.25;
+    }
+
+    .hero-content p{
+        font-size:16px;
+    }
+
+    .hero-buttons{
+        display:flex;
+        flex-direction:column;
+        gap:15px;
+        width:100%;
+    }
+
+    .hero-buttons a{
+        width:100%;
+        text-align:center;
+    }
+
+    .hero-image{
+        justify-content:center;
+    }
+
+    .hero-image img{
+        width:100%;
+        max-width:420px;
+        height:auto;
+    }
+
+    /* SECTION */
+
+    .about h2,
+    .features h2,
+    .statistics h2,
+    .cta h2{
+        font-size:30px;
+    }
+
+    .about-grid,
+    .features-grid,
+    .stats-grid,
+    .broker-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .card,
+    .feature-card,
+    .stat-card,
+    .broker-card{
+        padding:22px;
+    }
+
+    .profile-stats{
+        flex-direction:column;
+        gap:20px;
+    }
+
+    .feed-actions{
+        flex-wrap:wrap;
+    }
+
+    .feed-actions button{
+        flex:1;
+    }
+
+    .broker-buttons{
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .cta{
+        padding:60px 20px;
+    }
 
 }
