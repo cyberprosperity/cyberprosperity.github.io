@@ -665,3 +665,21 @@ body {
     color:#64748b;
     font-size:15px;
 }
+
+/* ==========================================
+   PROFILE BIO
+========================================== */
+
+.profile-bio{
+
+    max-width:520px;
+
+    margin:25px auto;
+
+    color:#64748b;
+
+    line-height:1.8;
+
+    font-size:16px;
+
+}
