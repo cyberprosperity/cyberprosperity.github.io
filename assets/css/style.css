@@ -582,3 +582,86 @@ body {
     padding:40px;
     box-shadow:0 15px 35px rgba(0,0,0,.08);
 }
+/* ==========================================
+   PROFILE PAGE
+========================================== */
+
+.profile-page{
+    padding:60px 0;
+    background:#f8fafc;
+    min-height:100vh;
+}
+
+.profile-cover{
+    width:100%;
+    height:220px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#0f172a,#1e40af);
+}
+
+.profile-card{
+    width:90%;
+    max-width:700px;
+    margin:-80px auto 0;
+    background:#ffffff;
+    border-radius:20px;
+    text-align:center;
+    padding:35px;
+    box-shadow:0 20px 45px rgba(0,0,0,.08);
+}
+
+.profile-avatar{
+    width:140px;
+    height:140px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:#FFD700;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:60px;
+    border:6px solid #ffffff;
+}
+
+.profile-card h2{
+    font-size:34px;
+    color:#0f172a;
+}
+
+.username{
+    color:#64748b;
+    margin:10px 0;
+}
+
+.member-role{
+    color:#475569;
+    margin-bottom:30px;
+}
+/* ==========================================
+   PROFILE STATISTICS
+========================================== */
+
+.profile-stats{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    margin:35px 0;
+    padding:20px 0;
+    border-top:1px solid #e2e8f0;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.stat-item{
+    text-align:center;
+}
+
+.stat-item h3{
+    font-size:28px;
+    color:#0f172a;
+    margin-bottom:8px;
+}
+
+.stat-item p{
+    color:#64748b;
+    font-size:15px;
+}
