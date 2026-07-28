@@ -1020,28 +1020,6 @@ body {
 
 }
 
-.broker-logo{
-
-    width:70px;
-
-    height:70px;
-
-    border-radius:15px;
-
-    background:#FFD700;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:30px;
-
-    margin-bottom:20px;
-
-}
-
 .broker-card h2{
 
     color:#0f172a;
@@ -1051,13 +1029,11 @@ body {
 }
 
 .broker-rating{
-
-    color:#f59e0b;
-
-    margin-bottom:15px;
-
-    font-size:18px;
-
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:8px;
 }
 
 .broker-info{
@@ -1106,29 +1082,65 @@ body {
 
 }
 
+/* ==========================
+   BROKER CARD
+========================== */
+
+.broker-card{
+    position: relative;
+}
+
+.broker-logo{
+    display: block;
+    width: 210px;
+    height: 60px;
+    object-fit: contain;
+    margin: 4px auto;
+}
+
+.broker-card h2{
+    font-size:28px;
+    font-weight:700;
+}
+
+.broker-badge{
+    display:inline-block;
+    background:#FFD700;
+    color:#111827;
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.broker-buttons{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    margin-top:25px;
+}
+
+.broker-buttons a{
+    text-decoration:none;
+    font-weight:600;
+}
+
 /* ==========================================
    FEATURED BROKER
 ========================================== */
 
 .featured-badge{
-
-    display:inline-block;
-
-    margin:8px 0 15px;
-
-    padding:6px 14px;
-
-    background:#FFD700;
-
-    color:#0f172a;
-
-    border-radius:30px;
-
-    font-size:13px;
-
-    font-weight:700;
-
+    display:block;
+    text-align:center;
+    margin:0;
+    color:#666;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
 }
+
 /* ==========================================
    RESPONSIVE MOBILE
 ========================================== */
