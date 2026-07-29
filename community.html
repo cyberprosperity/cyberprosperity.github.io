@@ -4,189 +4,239 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Community | Cyber Prosperity</title>
+    <title>Cyber Prosperity | Trading Forum</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
 <body>
 
-    <header class="dashboard-header">
+<!-- =========================
+     HEADER
+========================= -->
 
-        <div class="container">
+<header class="dashboard-header">
 
-            <h2>Cyber Prosperity</h2>
+    <div class="container">
 
-            <a href="dashboard.html" class="btn-primary">
-                Dashboard
+        <a href="index.html" class="logo">
+            Home
+        </a>
+
+        <div class="nav-buttons">
+
+            <a href="login.html" class="btn-primary">
+                Login
             </a>
 
         </div>
 
-    </header>
+    </div>
 
-    <section class="community">
+</header>
 
-        <div class="container">
+<!-- =========================
+     FORUM
+========================= -->
 
-            <h1>Community Feed</h1>
+<section class="community">
 
-            <p>
-                Share your ideas, analysis, trading journal and connect with other traders.
-            </p>
+    <div class="container">
 
-            <!-- CREATE POST -->
-            <div class="create-post">
+        <h1>Trading Forum</h1>
 
-                <h3>What's on your mind?</h3>
+        <p class="section-description">
+            Bergabunglah dengan trader dari seluruh dunia untuk berdiskusi,
+            berbagi analisa, strategi, jurnal trading,
+            dan mendapatkan wawasan pasar secara profesional.
+        </p>
 
-                <textarea placeholder="Share your trading ideas..."></textarea>
+        <!-- =========================
+             FORUM CATEGORY
+        ========================== -->
 
-                <button class="btn-primary">
-                    Post
-                </button>
+        <div class="forum-category">
 
-            </div>
+            <button>📈 Forex</button>
 
-            <!-- POST 1 -->
-            <div class="feed-card">
+            <button>🥇 Gold</button>
 
-                <div class="feed-header">
+            <button>📊 Stocks</button>
 
-                    <div class="feed-avatar">
-                        👤
-                    </div>
+            <button>🌍 Global News</button>
 
-                    <div class="feed-user-info">
+        </div>
 
-                        <h3>John Trader</h3>
+        <!-- =========================
+             CREATE POST
+        ========================== -->
 
-                        <span>2 minutes ago</span>
+        <div class="create-post">
 
-                    </div>
+            <h3>Create New Discussion</h3>
 
+            <textarea placeholder="Bagikan analisa atau ide trading Anda..."></textarea>
+
+            <button class="btn-primary">
+                Publish Post
+            </button>
+
+        </div>
+
+        <!-- =========================
+             POST 1
+        ========================== -->
+
+        <div class="feed-card">
+
+            <div class="feed-header">
+
+                <div class="feed-avatar">
+                    👤
                 </div>
 
-                <div class="feed-content">
+                <div class="feed-user-info">
 
-                    <p>
-                        Gold masih menunjukkan tren bullish hari ini.
-                    </p>
+                    <h3>John Trader</h3>
 
-                    <p>
-                        Target berikutnya berada di area 4.250 dengan support kuat di sekitar 4.180.
-                    </p>
-
-                </div>
-
-                <div class="feed-actions">
-
-                    <button>❤️ Like</button>
-
-                    <button>💬 Comment</button>
-
-                    <button>↗ Share</button>
-
-                </div>
-
-            </div>
-
-            <!-- POST 2 -->
-            <div class="feed-card">
-
-                <div class="feed-header">
-
-                    <div class="feed-avatar">
-                        📊
-                    </div>
-
-                    <div class="feed-user-info">
-
-                        <h3>Sarah FX</h3>
-
-                        <span>15 minutes ago</span>
-
-                    </div>
-
-                </div>
-
-                <div class="feed-content">
-
-                    <p>
-                        EUR/USD masih bergerak dalam fase konsolidasi.
-                    </p>
-
-                    <p>
-                        Saya menunggu breakout sebelum membuka posisi baru.
-                        Disiplin jauh lebih penting daripada terburu-buru entry.
-                    </p>
-
-                </div>
-
-                <div class="feed-actions">
-
-                    <button>❤️ Like</button>
-
-                    <button>💬 Comment</button>
-
-                    <button>↗ Share</button>
+                    <span>2 minutes ago</span>
 
                 </div>
 
             </div>
 
-            <!-- POST 3 -->
-            <div class="feed-card">
+            <div class="feed-content">
 
-                <div class="feed-header">
+                <p>
+                    Gold masih menunjukkan tren bullish hari ini.
+                </p>
 
-                    <div class="feed-avatar">
-                        📈
-                    </div>
+                <p>
+                    Target berikutnya berada di area 4.250
+                    dengan support kuat di sekitar 4.180.
+                </p>
 
-                    <div class="feed-user-info">
+            </div>
 
-                        <h3>Michael Investor</h3>
+            <div class="feed-actions">
 
-                        <span>1 hour ago</span>
+                <button>❤️ Like</button>
 
-                    </div>
+                <a href="login.html" class="feed-action-btn">
+    💬 Comment
+</a>
 
-                </div>
-
-                <div class="feed-content">
-
-                    <p>
-                        Risk Management selalu menjadi prioritas utama.
-                    </p>
-
-                    <p>
-                        Saya hanya menggunakan maksimal 1% risiko per transaksi
-                        agar akun tetap aman dalam jangka panjang.
-                    </p>
-
-                </div>
-
-                <div class="feed-actions">
-
-                    <button>❤️ Like</button>
-
-                    <button>💬 Comment</button>
-
-                    <button>↗ Share</button>
-
-                </div>
+                <button>↗ Share</button>
 
             </div>
 
         </div>
 
-    </section>
+        <!-- =========================
+             POST 2
+        ========================== -->
+
+        <div class="feed-card">
+
+            <div class="feed-header">
+
+                <div class="feed-avatar">
+                    📊
+                </div>
+
+                <div class="feed-user-info">
+
+                    <h3>Sarah FX</h3>
+
+                    <span>15 minutes ago</span>
+
+                </div>
+
+            </div>
+
+            <div class="feed-content">
+
+                <p>
+                    EUR/USD masih bergerak dalam fase konsolidasi.
+                </p>
+
+                <p>
+                    Saya menunggu breakout sebelum membuka posisi baru.
+                    Disiplin jauh lebih penting daripada terburu-buru entry.
+                </p>
+
+            </div>
+
+            <div class="feed-actions">
+
+                <button>❤️ Like</button>
+
+                <a href="login.html" class="feed-action-btn">
+    💬 Comment
+</a>
+
+                <button>↗ Share</button>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             POST 3
+        ========================== -->
+
+        <div class="feed-card">
+
+            <div class="feed-header">
+
+                <div class="feed-avatar">
+                    📈
+                </div>
+
+                <div class="feed-user-info">
+
+                    <h3>Michael Investor</h3>
+
+                    <span>1 hour ago</span>
+
+                </div>
+
+            </div>
+
+            <div class="feed-content">
+
+                <p>
+                    Risk Management selalu menjadi prioritas utama.
+                </p>
+
+                <p>
+                    Saya hanya menggunakan maksimal 1% risiko
+                    pada setiap transaksi agar akun tetap aman
+                    dalam jangka panjang.
+                </p>
+
+            </div>
+
+            <div class="feed-actions">
+
+                <button>❤️ Like</button>
+
+                <button>💬 Comment</button>
+
+                <button>↗ Share</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 </body>
 

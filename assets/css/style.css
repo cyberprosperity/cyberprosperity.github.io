@@ -12,7 +12,8 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #ffffff;
+    background: url("../images/backgrounds/main-bg.jpg") no-repeat center center fixed;
+    background-size: cover;
     color: #1e293b;
     line-height: 1.6;
 }
@@ -22,82 +23,143 @@ body {
     max-width: 1320px;
     margin: 0 auto;
 }
-
 /* ==========================
    Navigation
 ========================== */
 
-.navbar {
-    background: #0f172a;
-    color: white;
-    padding: 18px 0;
+.navbar{
+    position:sticky;
+    top:0;
+    width:100%;
+    background:#0f172a;
+    padding:12px 0;
+    z-index:999;
+    box-shadow:0 5px 18px rgba(0,0,0,.10);
 }
 
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.navbar .container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.logo {
-    color: #FFD700;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.nav-menu {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-}
-
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.nav-menu a:hover {
-    color: #FFD700;
-}
-
-.nav-buttons {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-primary {
-    display: inline-block;
-    background: #FFD700;
-    color: #0f172a;
-    padding: 16px 34px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
-    transition: all .3s ease;
-    box-shadow: 0 10px 25px rgba(255,215,0,.25);
-}
-
-.btn-primary:hover{
-    transform: translateY(-4px);
-    box-shadow:0 18px 35px rgba(255,215,0,.45);
-}
-
-.btn-secondary{
-    display:inline-block;
-    color:#0f172a;
-    font-weight:700;
+.logo{
+    color:#FFD700;
+    font-size:20px;
+    font-weight:800;
     text-decoration:none;
-    padding:16px 22px;
-    border-radius:10px;
     transition:.3s;
 }
 
-.btn-secondary:hover{
-    background:#f1f5f9;
-    color:#0f172a;
+.logo:hover{
+    color:#ffffff;
+}
+
+.nav-menu{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:35px;
+    margin:0;
+    padding:0;
+}
+
+.nav-menu li{
+    list-style:none;
+}
+
+.nav-menu a{
+    color:#ffffff;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-menu a:hover{
+    color:#FFD700;
+}
+
+/* ==========================
+   Sign In | Join
+========================== */
+
+.nav-auth{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.signin-link,
+.join-link{
+    display:inline-block;
+    color:#ffffff;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    line-height:1;
+    transition:.3s;
+}
+
+.signin-link:link,
+.signin-link:visited,
+.join-link:link,
+.join-link:visited{
+    color:#ffffff;
+    text-decoration:none;
+}
+
+.signin-link:hover,
+.join-link:hover{
+    color:#FFD700;
+}
+
+.divider{
+    color:#ffffff;
+    font-size:16px;
+    font-weight:600;
+    line-height:1;
+}
+
+/* ==========================
+   Responsive Mobile
+========================== */
+
+@media screen and (max-width:768px){
+
+    .navbar{
+        padding:10px 0;
+    }
+
+    .navbar .container{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .nav-menu{
+        display:none;
+    }
+
+    .nav-buttons{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .btn-login,
+    .btn-join{
+        font-size:15px;
+    }
+
+    .nav-divider{
+        font-size:15px;
+    }
+
 }
 
 /* =========================
@@ -150,58 +212,6 @@ body {
 .card p {
     color: #666;
     line-height: 1.6;
-}
-
-
-/* =========================
-   Features
-========================= */
-
-.features {
-    padding: 100px 20px;
-    background: #ffffff;
-    text-align: center;
-}
-
-.features h2 {
-    font-size: 2.5rem;
-    color: #0f172a;
-    margin-bottom: 20px;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-}
-
-.feature-card {
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 12px 30px rgba(0,0,0,.08);
-    transition: all .3s ease;
-}
-
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 18px 40px rgba(0,0,0,.12);
-}
-
-.feature-icon {
-    font-size: 48px;
-    margin-bottom: 20px;
-}
-
-.feature-card h3 {
-    margin-bottom: 15px;
-    color: #0f172a;
-}
-
-.feature-card p {
-    color: #666;
-    line-height: 1.7;
 }
 
 /* =========================
@@ -304,7 +314,7 @@ body {
 
     padding:100px 0;
 
-    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+    background:transparent;
 
 }
 
@@ -398,6 +408,42 @@ body {
 
     box-shadow:0 35px 80px rgba(0,0,0,.25);
 
+}
+
+/* ==========================================
+   HERO BUTTONS
+========================================== */
+
+.hero .btn-primary{
+    display:inline-block;
+    background:#FFD700;
+    color:#0f172a;
+    padding:16px 36px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(255,215,0,.25);
+}
+
+.hero .btn-primary:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 35px rgba(255,215,0,.45);
+}
+
+.hero .btn-secondary{
+    display:inline-block;
+    color:#0f172a;
+    text-decoration:none;
+    font-weight:700;
+    padding:16px 24px;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.hero .btn-secondary:hover{
+    color:#FFD700;
 }
 
 /* ==========================================
@@ -1140,7 +1186,6 @@ body {
     letter-spacing:1px;
     text-transform:uppercase;
 }
-
 /* ==========================================
    RESPONSIVE MOBILE
 ========================================== */
@@ -1152,7 +1197,13 @@ body {
         margin:auto;
     }
 
-    /* NAVBAR */
+    /* ==========================
+       NAVBAR
+    ========================== */
+
+    .navbar{
+        padding:10px 0;
+    }
 
     .navbar .container,
     .dashboard-header .container{
@@ -1162,7 +1213,7 @@ body {
     }
 
     .logo{
-        font-size:22px;
+        font-size:18px;
     }
 
     .nav-menu{
@@ -1171,20 +1222,28 @@ body {
 
     .nav-buttons{
         display:flex;
-        gap:10px;
         align-items:center;
+        gap:8px;
     }
 
-    .nav-buttons .btn-login{
-        display:none;
+    .btn-login,
+    .btn-join{
+        display:block;
+        font-size:15px;
+        font-weight:700;
+        color:#ffffff;
+        text-decoration:none;
     }
 
-    .nav-buttons .btn-primary{
-        padding:10px 18px;
-        font-size:14px;
+    .nav-divider{
+        color:#ffffff;
+        font-size:15px;
+        font-weight:700;
     }
 
-    /* HERO */
+    /* ==========================
+       HERO
+    ========================== */
 
     .hero{
         padding:60px 0;
@@ -1231,17 +1290,21 @@ body {
         height:auto;
     }
 
-    /* SECTION */
+    /* ==========================
+       SECTION
+    ========================== */
 
     .about h2,
-    .features h2,
+    .forum h2,
+    .contact h2,
     .statistics h2,
     .cta h2{
         font-size:30px;
     }
 
     .about-grid,
-    .features-grid,
+    .forum-grid,
+    .contact-grid,
     .stats-grid,
     .broker-grid{
         grid-template-columns:1fr;
@@ -1249,7 +1312,8 @@ body {
     }
 
     .card,
-    .feature-card,
+    .forum-card,
+    .contact-card,
     .stat-card,
     .broker-card{
         padding:22px;
@@ -1264,8 +1328,10 @@ body {
         flex-wrap:wrap;
     }
 
-    .feed-actions button{
+    .feed-actions button,
+    .feed-actions a{
         flex:1;
+        text-align:center;
     }
 
     .broker-buttons{
@@ -1277,4 +1343,230 @@ body {
         padding:60px 20px;
     }
 
+}
+
+/* ==========================================
+   FORUM SECTION
+========================================== */
+
+.forum{
+    padding:100px 20px;
+    background:#ffffff;
+    text-align:center;
+}
+
+.forum h2{
+    font-size:2.5rem;
+    color:#0f172a;
+    margin-bottom:20px;
+}
+
+.forum-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+    margin-top:60px;
+}
+
+.forum-card{
+    background:#ffffff;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    transition:all .3s ease;
+}
+
+.forum-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+
+.forum-icon{
+    font-size:52px;
+    margin-bottom:20px;
+}
+
+.forum-card h3{
+    margin-bottom:15px;
+    color:#0f172a;
+}
+
+.forum-card p{
+    color:#64748b;
+    line-height:1.8;
+}
+
+/* ==========================================
+   TRADING FORUM
+========================================== */
+
+.community{
+    padding:80px 20px;
+    background:#f8fafc;
+    min-height:100vh;
+}
+
+.community h1{
+    font-size:42px;
+    color:#0f172a;
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.community .section-description{
+    max-width:760px;
+    margin:0 auto 40px;
+    text-align:center;
+    color:#64748b;
+    line-height:1.8;
+}
+
+/* ===== Forum Category ===== */
+
+.forum-category{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:40px;
+}
+
+.forum-category button{
+    border:none;
+    background:#ffffff;
+    padding:12px 24px;
+    border-radius:30px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.forum-category button:hover{
+    background:#FFD700;
+    transform:translateY(-3px);
+}
+
+/* ==========================================
+   FEED ACTION BUTTON
+========================================== */
+
+.feed-actions{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+}
+
+.feed-actions button,
+.feed-action-btn{
+
+    border:none;
+    background:#ffffff;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    text-decoration:none;
+    color:#0f172a;
+    font-weight:600;
+    font-size:14px;
+    box-shadow:0 6px 15px rgba(0,0,0,.08);
+    transition:all .3s ease;
+
+}
+
+.feed-actions button:hover,
+.feed-action-btn:hover{
+
+    background:#FFD700;
+    color:#0f172a;
+    transform:translateY(-2px);
+
+}
+
+/* =========================
+   Contact
+========================= */
+
+.contact{
+    padding:100px 20px;
+    background:#ffffff;
+    text-align:center;
+}
+
+.contact h2{
+    font-size:2.7rem;
+    color:#0f172a;
+    margin-bottom:20px;
+    font-weight:800;
+}
+
+.contact .section-description{
+    max-width:760px;
+    margin:0 auto 60px;
+    color:#64748b;
+    font-size:1.1rem;
+    line-height:1.8;
+}
+
+.contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+    margin-top:60px;
+}
+
+.contact-card{
+    background:#ffffff;
+    padding:40px 30px;
+    border-radius:20px;
+    border:1px solid #edf2f7;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    transition:all .35s ease;
+    text-align:center;
+}
+
+.contact-card:hover{
+    transform:translateY(-8px);
+    border-color:#FFD700;
+    box-shadow:0 18px 45px rgba(0,0,0,.12);
+}
+
+.contact-card i{
+    font-size:50px;
+    color:#FFD700;
+    margin-bottom:20px;
+}
+
+.contact-card h3{
+    margin-bottom:15px;
+    color:#0f172a;
+    font-size:1.35rem;
+}
+
+.contact-card p{
+    color:#64748b;
+    line-height:1.8;
+    text-align:center;
+}
+
+.contact-card a{
+    display:block;
+    color:#64748b;
+    text-decoration:none;
+    line-height:1.8;
+    text-align:center;
+    transition:.3s;
+}
+
+.contact-card a:hover{
+    color:#FFD700;
+}
+
+/* Khusus alamat */
+
+.contact-address{
+    color:#64748b;
+    line-height:1.8;
+    text-align:justify;
 }
