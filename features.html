@@ -4,12 +4,13 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Main Feed | Cyber Prosperity</title>
+    <title>Features | Cyber Prosperity</title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="assets/css/style.css">
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -18,98 +19,292 @@
 
 <body>
 
-<header class="dashboard-header">
+<div class="app-layout">
 
-    <div class="container">
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
 
-        <h2>Cyber Prosperity</h2>
+    <aside class="sidebar">
 
-        <a href="login.html" class="btn-primary">
-            Logout
-        </a>
+        <div class="sidebar-logo">
 
-    </div>
+            <div class="logo-circle">
+                CP
+            </div>
 
-</header>
+            <div>
 
-<section class="dashboard">
+                <h2>Cyber Prosperity</h2>
 
-    <div class="dashboard-layout">
+                <span>Social Trading Community</span>
 
-        <aside class="sidebar">
+            </div>
 
-            <h3>Menu</h3>
-
-            <ul>
-
-                <li><a href="index.html">🏠 Home</a></li>
-
-                <li><a href="community.html">👥 Community</a></li>
-
-                <li><a href="markets.html">📈 Markets</a></li>
-
-                <li><a href="journal.html">📒 Journal</a></li>
-
-                <li><a href="broker.html">🏦 Broker</a></li>
-
-                <li><a href="education.html">🎓 Education</a></li>
-
-                <li><a href="profile.html">👤 Profile</a></li>
-
-                <li><a href="settings.html">⚙ Settings</a></li>
-
-            </ul>
-
-        </aside>
-
-        <section class="dashboard-content">
-
-    <h1>Welcome Back 👋</h1>
-
-    <p>
-        Selamat datang di main feed Cyber Prosperity.
-    </p>
-
-    <div class="dashboard-cards">
-
-        <div class="dashboard-card">
-            <h3>📈 Gold Market</h3>
-            <p>Analisa harga emas terbaru.</p>
         </div>
 
-        <div class="dashboard-card">
-            <h3>💱 Forex Market</h3>
-            <p>Pantau pergerakan mata uang.</p>
+        <nav class="sidebar-menu">
+
+            <a href="features.html" class="active">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Home</span>
+
+            </a>
+
+            <a href="broker.html">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                <span>Broker</span>
+
+            </a>
+                        <a href="community.html">
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>Community</span>
+
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <a href="profile.html">
+
+                <i class="fa-regular fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+            <a href="settings.html">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>Settings</span>
+
+            </a>
+
+            <a href="login.html">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
         </div>
 
-        <div class="dashboard-card">
-            <h3>📰 Market News</h3>
-            <p>Berita ekonomi global terbaru.</p>
-        </div>
+    </aside>
 
-        <div class="dashboard-card">
-            <h3>👥 Community</h3>
-            <p>Diskusi bersama trader lain.</p>
-        </div>
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
 
-        <div class="dashboard-card">
-            <h3>📒 Trading Journal</h3>
-            <p>Catat seluruh aktivitas trading.</p>
-        </div>
+    <main class="main-content">
 
-        <div class="dashboard-card">
-    <h3>🏦 Broker Center</h3>
-    <p>Temukan broker terpercaya dan promo terbaru.</p>
-    <P> Lihat aktivitas terbaru dari komunitas trader.</P>
+        <!-- ======================================
+             HEADER
+        ======================================= -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <h1>Welcome to Cyber Prosperity</h1>
+
+                <p>
+                    Everything a trader needs in one professional platform.
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+                            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search markets...">
+
+            </div>
+
+            <button class="notification-btn">
+
+                <i class="fa-regular fa-bell"></i>
+
+            </button>
+
+            <div class="user-box">
+
+                <img
+                    src="assets/images/avatar/avatar.png"
+                    alt="Profile">
+
+                <div>
+
+                    <h4>Cyber FX</h4>
+
+                    <span>Premium Member</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ===================================
+             FEATURE CARDS
+        ==================================== -->
+
+        <section class="feature-grid">
+
+            <!-- GOLD -->
+
+            <article class="feature-card gold-card">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-coins"></i>
+
+                </div>
+
+                <div class="feature-info">
+
+                    <h2>Gold Market</h2>
+
+                    <p>
+
+                        Gold Analysis,
+                        Trading Signal,
+                        Price Action,
+                        Support Resistance.
+
+                    </p>
+
+                    <a href="markets.html">
+
+                        Open Feature
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </article>
+                        <!-- FOREX -->
+
+            <article class="feature-card forex-card">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div class="feature-info">
+
+                    <h2>Forex Market</h2>
+
+                    <p>
+
+                        Currency Market,
+                        Economic Calendar,
+                        Technical Analysis,
+                        Trading Signal.
+
+                    </p>
+
+                    <a href="markets.html">
+
+                        Open Feature
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+            <!-- JOURNAL -->
+
+            <article class="feature-card journal-card">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-book"></i>
+
+                </div>
+
+                <div class="feature-info">
+
+                    <h2>Trading Journal</h2>
+
+                    <p>
+
+                        Record every trade,
+                        evaluate performance,
+                        improve consistency.
+
+                    </p>
+
+                    <a href="journal.html">
+
+                        Open Feature
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </article>
+                        <!-- NEWS -->
+
+            <article class="feature-card news-card">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-newspaper"></i>
+
+                </div>
+
+                <div class="feature-info">
+
+                    <h2>Market News & Education</h2>
+
+                    <p>
+
+                        Daily market news,
+                        economic calendar,
+                        trading education,
+                        and professional insights.
+
+                    </p>
+
+                    <a href="education.html">
+
+                        Open Feature
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
 </div>
-
-    </div>
-
-</section>
-
-    </div>
-
-</section>
 
 </body>
 

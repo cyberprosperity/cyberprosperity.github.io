@@ -44,7 +44,7 @@ body {
 }
 
 .logo{
-    color:#FFD700;
+    color:#D4A64A;
     font-size:20px;
     font-weight:800;
     text-decoration:none;
@@ -77,7 +77,7 @@ body {
 }
 
 .nav-menu a:hover{
-    color:#FFD700;
+    color:#D4A64A;
 }
 
 /* ==========================
@@ -111,7 +111,7 @@ body {
 
 .signin-link:hover,
 .join-link:hover{
-    color:#FFD700;
+    color:#D4A64A;
 }
 
 .divider{
@@ -257,7 +257,7 @@ body {
 
 .stat-card h3 {
     font-size: 2.5rem;
-    color: #FFD700;
+    color: #D4A64A;
     margin-bottom: 15px;
 }
 
@@ -292,7 +292,7 @@ body {
 
 .cta .btn-primary {
     display: inline-block;
-    background: #FFD700;
+    background: #D4A64A;
     color: #0f172a;
     padding: 16px 36px;
     border-radius: 10px;
@@ -416,7 +416,7 @@ body {
 
 .hero .btn-primary{
     display:inline-block;
-    background:#FFD700;
+    background:#D4A64A;
     color:#0f172a;
     padding:16px 36px;
     border-radius:12px;
@@ -443,7 +443,7 @@ body {
 }
 
 .hero .btn-secondary:hover{
-    color:#FFD700;
+    color:#D4A64A;
 }
 
 /* ==========================================
@@ -506,7 +506,7 @@ body {
 
 .login-box input:focus{
     outline:none;
-    border-color:#FFD700;
+    border-color:#D4A64A;
 }
 
 .login-box button{
@@ -574,103 +574,117 @@ body {
 }
 
 .login-link a:hover{
-    color:#FFD700;
-}
-/* ==========================================
-   DASHBOARD
-========================================== */
-
-.dashboard-header{
-    background:#0f172a;
-    padding:18px 0;
-    color:#ffffff;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.dashboard-header .container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.dashboard-header h2{
-    color:#FFD700;
-    font-size:28px;
-}
-
-.dashboard{
-    padding:80px 20px;
-    background:#f8fafc;
-    min-height:calc(100vh - 80px);
-}
-
-.dashboard h1{
-    font-size:42px;
-    color:#0f172a;
-    margin-bottom:15px;
-}
-
-.dashboard p{
-    color:#64748b;
-    font-size:18px;
+    color:#D4A64A;
 }
 
 /* ==========================================
-   DASHBOARD LAYOUT
+   FEATURES CENTER
 ========================================== */
 
-.dashboard-layout{
+.app-layout{
     display:flex;
-    gap:30px;
-    max-width:1320px;
-    margin:0 auto;
+    min-height:100vh;
+    background:#f4f7fb;
 }
+
+/* ==========================
+   SIDEBAR
+========================== */
 
 .sidebar{
-    width:260px;
-    background:#ffffff;
-    border-radius:18px;
-    padding:30px;
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
-    height:fit-content;
+    width:270px;
+    background:#0f172a;
+    color:#ffffff;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:30px 22px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
 }
 
-.sidebar h3{
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:35px;
+}
+
+.logo-icon{
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    background:#D4A64A;
     color:#0f172a;
-    margin-bottom:25px;
-    font-size:22px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:800;
+    font-size:20px;
 }
 
-.sidebar ul{
-    list-style:none;
+.logo-text{
+    font-size:20px;
+    font-weight:700;
 }
 
-.sidebar li{
-    margin-bottom:12px;
+.sidebar-title{
+    color:#94a3b8;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:18px;
+    text-transform:uppercase;
 }
 
-.sidebar a{
-    display:block;
+.sidebar-menu,
+.sidebar-bottom{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.sidebar-menu a,
+.sidebar-bottom a{
+    display:flex;
+    align-items:center;
+    gap:14px;
     text-decoration:none;
-    color:#475569;
-    padding:14px 16px;
-    border-radius:10px;
+    color:#cbd5e1;
+    padding:14px 18px;
+    border-radius:14px;
     transition:.3s;
     font-weight:600;
 }
 
-.sidebar a:hover{
-    background:#FFD700;
+.sidebar-menu a:hover,
+.sidebar-bottom a:hover,
+.sidebar-menu a.active{
+    background:#D4A64A;
     color:#0f172a;
 }
 
-.dashboard-content{
-    flex:1;
-    background:#ffffff;
-    border-radius:18px;
-    padding:40px;
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
+.sidebar-menu i,
+.sidebar-bottom i{
+    width:20px;
+    text-align:center;
 }
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+
+.main-content{
+    margin-left:270px;
+    width:calc(100% - 270px);
+    min-height:100vh;
+    background:#10151F;
+    color:#ffffff;
+    padding:40px;
+    box-sizing:border-box;
+}
+
 /* ==========================================
    PROFILE PAGE
 ========================================== */
@@ -704,7 +718,7 @@ body {
     height:140px;
     margin:0 auto 20px;
     border-radius:50%;
-    background:#FFD700;
+    background:#D4A64A;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -774,42 +788,6 @@ body {
 }
 
 /* ==========================================
-   COMMUNITY
-========================================== */
-
-.community{
-
-    padding:60px 0;
-
-    background:#f8fafc;
-
-}
-
-.community h1{
-
-    color:#0f172a;
-
-    font-size:2.2rem;
-
-    font-weight:700;
-
-    margin-top:20px;
-
-    margin-bottom:15px;
-
-}
-
-.community p{
-
-    color:#64748b;
-
-    margin-bottom:35px;
-
-    line-height:1.7;
-
-}
-
-/* ==========================================
    CREATE POST
 ========================================== */
 
@@ -863,7 +841,7 @@ body {
 
     outline:none;
 
-    border-color:#FFD700;
+    border-color:#D4A64A;
 
 }
 
@@ -888,188 +866,107 @@ body {
 ========================================== */
 
 .feed-card{
-
     background:#ffffff;
-
     padding:25px;
-
     border-radius:18px;
-
     box-shadow:0 12px 30px rgba(0,0,0,.08);
-
     transition:all .3s ease;
 
 }
 
 .feed-card:hover{
-
     transform:translateY(-4px);
-
     box-shadow:0 18px 40px rgba(0,0,0,.12);
 
 }
 
 .feed-header{
-
     display:flex;
-
     align-items:center;
-
     gap:15px;
-
     margin-bottom:20px;
 
 }
 
 .feed-avatar{
-
     width:55px;
-
     height:55px;
-
     border-radius:50%;
-
-    background:#FFD700;
-
+    background:#D4A64A;
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     font-size:24px;
-
     flex-shrink:0;
 
 }
 
 .feed-user-info h3{
-
     margin:0;
-
     color:#0f172a;
-
     font-size:18px;
 
 }
 
 .feed-user-info span{
-
     color:#64748b;
-
     font-size:14px;
 
 }
 
 .feed-content{
-
     color:#334155;
-
     line-height:1.8;
-
     margin-bottom:25px;
 
 }
 
 .feed-content p{
-
     margin-bottom:12px;
 
 }
 
 .feed-content p:last-child{
-
     margin-bottom:0;
 
 }
 
-.feed-actions{
-
-    display:flex;
-
-    gap:15px;
-
-}
-
-.feed-actions button{
-
-    background:#f1f5f9;
-
-    border:none;
-
-    border-radius:10px;
-
-    padding:10px 20px;
-
-    cursor:pointer;
-
-    transition:all .3s ease;
-
-    font-size:15px;
-
-    font-weight:600;
-
-}
-
-.feed-actions button:hover{
-
-    background:#FFD700;
-
-    color:#0f172a;
-
-    transform:translateY(-2px);
-
-}
 /* ==========================================
    BROKER DIRECTORY
 ========================================== */
 
 .broker-directory{
-
     padding:60px 0;
-
     background:#f8fafc;
 
 }
 
 .broker-grid{
-
     display:grid;
-
     grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
     gap:30px;
-
     margin-top:40px;
 
 }
 
 .broker-card{
-
+    position: relative;
     background:#ffffff;
-
     border-radius:18px;
-
     padding:30px;
-
     box-shadow:0 12px 30px rgba(0,0,0,.08);
-
     transition:.3s;
 
 }
 
 .broker-card:hover{
-
     transform:translateY(-8px);
-
     box-shadow:0 18px 40px rgba(0,0,0,.12);
 
 }
 
 .broker-card h2{
-
     color:#0f172a;
-
     margin-bottom:10px;
 
 }
@@ -1083,58 +980,30 @@ body {
 }
 
 .broker-info{
-
     margin-bottom:20px;
-
     line-height:1.8;
-
     color:#475569;
 
 }
 
-.broker-buttons{
-
-    display:flex;
-
-    gap:15px;
-
-}
-
-.broker-buttons a{
-
-    text-decoration:none;
-
-}
-
 .btn-outline{
-
     padding:12px 20px;
-
-    border:2px solid #FFD700;
-
+    border:2px solid #D4A64A;
     border-radius:10px;
-
     color:#0f172a;
-
     font-weight:bold;
-
     transition:.3s;
 
 }
 
 .btn-outline:hover{
-
-    background:#FFD700;
+    background:#D4A64A;
 
 }
 
 /* ==========================
    BROKER CARD
 ========================== */
-
-.broker-card{
-    position: relative;
-}
 
 .broker-logo{
     display: block;
@@ -1151,7 +1020,7 @@ body {
 
 .broker-badge{
     display:inline-block;
-    background:#FFD700;
+    background:#D4A64A;
     color:#111827;
     padding:8px 16px;
     border-radius:30px;
@@ -1186,6 +1055,7 @@ body {
     letter-spacing:1px;
     text-transform:uppercase;
 }
+
 /* ==========================================
    RESPONSIVE MOBILE
 ========================================== */
@@ -1444,7 +1314,7 @@ body {
 }
 
 .forum-category button:hover{
-    background:#FFD700;
+    background:#D4A64A;
     transform:translateY(-3px);
 }
 
@@ -1478,7 +1348,7 @@ body {
 .feed-actions button:hover,
 .feed-action-btn:hover{
 
-    background:#FFD700;
+    background:#D4A64A;
     color:#0f172a;
     transform:translateY(-2px);
 
@@ -1528,13 +1398,13 @@ body {
 
 .contact-card:hover{
     transform:translateY(-8px);
-    border-color:#FFD700;
+    border-color:#D4A64A;
     box-shadow:0 18px 45px rgba(0,0,0,.12);
 }
 
 .contact-card i{
     font-size:50px;
-    color:#FFD700;
+    color:#D4A64A;
     margin-bottom:20px;
 }
 
@@ -1560,7 +1430,7 @@ body {
 }
 
 .contact-card a:hover{
-    color:#FFD700;
+    color:#D4A64A;
 }
 
 /* Khusus alamat */
