@@ -42,68 +42,86 @@
 
         </div>
 
-        <nav class="sidebar-menu">
+       <nav class="sidebar-menu">
 
-            <a href="features.html" class="active">
+    <a href="index.html" class="active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
 
-                <i class="fa-solid fa-house"></i>
+    <a href="broker.html">
+        <i class="fa-solid fa-building-columns"></i>
+        <span>Broker</span>
+    </a>
 
-                <span>Home</span>
+    <a href="community.html">
+        <i class="fa-solid fa-users"></i>
+        <span>Community</span>
+    </a>
 
-            </a>
+</nav>
 
-            <a href="broker.html">
+<div class="sidebar-divider"></div>
 
-                <i class="fa-solid fa-building-columns"></i>
+<div class="sidebar-bottom">
 
-                <span>Broker</span>
+    <a href="profile.html">
+        <i class="fa-regular fa-user"></i>
+        <span>Profile</span>
+    </a>
 
-            </a>
-                        <a href="community.html">
+    <a href="settings.html">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+    </a>
 
-                <i class="fa-solid fa-users"></i>
+    <a href="login.html">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
 
-                <span>Community</span>
-
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-
-            <a href="profile.html">
-
-                <i class="fa-regular fa-user"></i>
-
-                <span>Profile</span>
-
-            </a>
-
-            <a href="settings.html">
-
-                <i class="fa-solid fa-gear"></i>
-
-                <span>Settings</span>
-
-            </a>
-
-            <a href="login.html">
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-                <span>Logout</span>
-
-            </a>
-
-        </div>
+</div>
 
     </aside>
-
     <!-- ==========================================
          MAIN CONTENT
     =========================================== -->
 
     <main class="main-content">
+
+        <!-- ==========================================
+             MARKET TICKER
+        =========================================== -->
+
+        <div class="market-ticker">
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script
+                    type="text/javascript"
+                    src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+                    async>
+{
+  "symbols": [
+    { "description": "Gold", "proName": "OANDA:XAUUSD" },
+    { "description": "EUR/USD", "proName": "FX:EURUSD" },
+    { "description": "GBP/USD", "proName": "FX:GBPUSD" },
+    { "description": "USD/IDR", "proName": "FX_IDC:USDIDR" }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": true,
+  "displayMode": "regular",
+  "colorTheme": "dark",
+  "locale": "id"
+}
+
+                </script>
+
+            </div>
+
+            <!-- TradingView Widget END -->
+
+        </div>
 
         <!-- ======================================
              HEADER
@@ -138,26 +156,10 @@
 
             </button>
 
-            <div class="user-box">
-
-                <img
-                    src="assets/images/avatar/avatar.png"
-                    alt="Profile">
-
-                <div>
-
-                    <h4>Cyber FX</h4>
-
-                    <span>Premium Member</span>
-
-                </div>
-
-            </div>
-
         </header>
 
         <!-- ===================================
-             FEATURE CARDS
+             FEATURES CARDS
         ==================================== -->
 
         <section class="feature-grid">
