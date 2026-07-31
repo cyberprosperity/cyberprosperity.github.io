@@ -1315,130 +1315,128 @@ body {
     color:#94A3B8;
 
 }
-
 /* ==========================================
-   BROKER DIRECTORY
+   BROKER PAGE
 ========================================== */
 
-.broker-directory{
-    padding:60px 0;
-    background:#f8fafc;
+.broker-header{
+
+    margin-bottom:40px;
 
 }
 
+.broker-subtitle{
+
+    display:inline-block;
+    color:#D4A64A;
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    margin-bottom:12px;
+
+}
+
+.broker-header h1{
+
+    color:#FFFFFF;
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:15px;
+
+}
+
+.broker-header p{
+
+    color:#94A3B8;
+    font-size:17px;
+    line-height:1.8;
+    max-width:700px;
+
+}
+
+/* ==========================================
+   BROKER GRID
+========================================== */
 .broker-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:30px;
-    margin-top:40px;
+    grid-template-columns:repeat(3,360px);
+    gap:28px;
+    justify-content:flex-start;
+    align-items:stretch;
 
 }
 
+/* ==========================================
+   PARTNER RIBBON
+========================================== */
+
+.partner-ribbon{
+
+    position:absolute;
+
+    top:-12px;
+
+    left:24px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:linear-gradient(135deg,#E7C15B,#C89B35);
+
+    color:#111827;
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    box-shadow:0 10px 25px rgba(212,166,74,.35);
+
+}
+
+.partner-ribbon i{
+
+    font-size:13px;
+
+}
+
+/* ==========================================
+   BROKER CARD
+========================================== */
+
 .broker-card{
-    position: relative;
-    background:#ffffff;
-    border-radius:18px;
-    padding:30px;
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-    transition:.3s;
+
+    position:relative;
+
+    background:#1B2434;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:24px;
+
+    padding:45px 30px 30px;
+
+    transition:.35s;
 
 }
 
 .broker-card:hover{
+
     transform:translateY(-8px);
-    box-shadow:0 18px 40px rgba(0,0,0,.12);
 
-}
+    border-color:#D4A64A;
 
-.broker-card h2{
-    color:#0f172a;
-    margin-bottom:10px;
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
 
-}
-
-.broker-rating{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:8px;
-}
-
-.broker-info{
-    margin-bottom:20px;
-    line-height:1.8;
-    color:#475569;
-
-}
-
-.btn-outline{
-    padding:12px 20px;
-    border:2px solid #D4A64A;
-    border-radius:10px;
-    color:#0f172a;
-    font-weight:bold;
-    transition:.3s;
-
-}
-
-.btn-outline:hover{
-    background:#D4A64A;
-
-}
-
-/* ==========================
-   BROKER CARD
-========================== */
-
-.broker-logo{
-    display: block;
-    width: 210px;
-    height: 60px;
-    object-fit: contain;
-    margin: 4px auto;
-}
-
-.broker-card h2{
-    font-size:28px;
-    font-weight:700;
-}
-
-.broker-badge{
-    display:inline-block;
-    background:#D4A64A;
-    color:#111827;
-    padding:8px 16px;
-    border-radius:30px;
-    font-size:13px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-
-.broker-buttons{
-    display:flex;
-    gap:15px;
-    align-items:center;
-    margin-top:25px;
-}
-
-.broker-buttons a{
-    text-decoration:none;
-    font-weight:600;
-}
-
-/* ==========================================
-   FEATURED BROKER
-========================================== */
-
-.featured-badge{
-    display:block;
-    text-align:center;
-    margin:0;
-    color:#666;
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:1px;
-    text-transform:uppercase;
 }
 
 /* ==========================================

@@ -13,169 +13,242 @@
     <link rel="stylesheet"
           href="assets/css/style.css">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body>
 
-<header class="dashboard-header">
+<div class="app-layout">
 
-    <div class="container">
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
 
-        <h2>Cyber Prosperity</h2>
+    <aside class="sidebar">
 
-        <a href="features.html"
-           class="btn-primary">
+        <div class="sidebar-logo">
 
-            Features
+            <img
+                src="assets/images/logo/logo.png"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
 
-        </a>
+            <div>
+
+                <h2>Cyber Prosperity</h2>
+
+                <span>Social Trading Community</span>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="index.html">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Home</span>
+
+            </a>
+
+            <a href="features.html">
+
+                <i class="fa-solid fa-star"></i>
+
+                <span>Features</span>
+
+            </a>
+
+            <a href="forum.html">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <span>Forum</span>
+
+            </a>
+
+            <a href="broker.html" class="active">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                <span>Broker</span>
+
+            </a>
+
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-bottom">
+
+            <a href="profile.html">
+
+                <i class="fa-regular fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+            <a href="settings.html">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>Settings</span>
+
+            </a>
+
+            <a href="login.html">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <!-- ==========================================
+     BROKER HEADER
+========================================== -->
+
+<section class="broker-header">
+
+    <div class="broker-header-top">
+
+        <span class="broker-subtitle">
+
+            Broker Center
+
+        </span>
+
+        <h1>
+
+            Broker Directory
+
+        </h1>
+
+        <p>
+
+            Discover trusted brokers recommended by the Cyber Prosperity community.
+
+        </p>
 
     </div>
 
-</header>
+</section>
 
-<section class="broker-directory">
 
-    <div class="container">
+<!-- ==========================================
+     BROKER LIST
+========================================== -->
 
-    <h1>Broker Directory</h1>
-
-    <p>
-        Discover trusted brokers recommended by the Cyber Prosperity Community.
-    </p>
+<section class="broker-list">
 
     <div class="broker-grid">
 
-        <!-- BROKER 1 -->
-        <div class="dashboard-card broker-card">
+    <!-- ==========================
+         BROKER 1
+    =========================== -->
 
-           <div class="broker-rating">
+    <article class="broker-card featured">
 
-    <span class="rating-stars">
-        ⭐⭐⭐⭐⭐
-    </span>
+        <div class="partner-ribbon">
 
-    <span class="featured-badge">
-        Official Partner
-    </span>
+            OFFICIAL PARTNER
 
-</div>
+        </div>
 
-            <img src="assets/images/brokers/cfforex.png"
-                 alt="CFForex"
-                 class="broker-logo">
+        <div class="broker-rating">
 
-            <h2>CFForex</h2>
+            ★★★★★
 
-<p class="broker-license">
-    BAPPEBTI Regulated • Indonesia
-</p>
+        </div>
 
-            <div class="broker-info">
+        <div class="broker-logo">
 
-                <p><strong>Minimum Deposit</strong><br>$100</p>
+            CFFOREX
 
-                <p><strong>Markets</strong><br>Forex • Gold</p>
+        </div>
+
+        <h2>
+
+            CFForex
+
+        </h2>
+
+        <p class="broker-license">
+
+            BAPPEBTI Regulated • Indonesia
+
+        </p>
+
+        <div class="broker-info">
+
+            <div class="broker-item">
+
+                <small>Minimum Deposit</small>
+
+                <strong>$100</strong>
 
             </div>
 
-            <div class="broker-buttons">
+            <div class="broker-item">
 
-                <a href="#" class="btn-primary">
-                    Visit Broker
-                </a>
+                <small>Markets</small>
 
-                <a href="#" class="btn-secondary">
-                    Read Review
-                </a>
+                <div class="market-tags">
+
+                    <span>Forex</span>
+
+                    <span>Gold</span>
+
+                </div>
 
             </div>
 
         </div>
 
-        <!-- BROKER 2 -->
-        <div class="dashboard-card broker-card">
+        <div class="broker-actions">
 
-            <div class="broker-rating">
-                ⭐⭐⭐⭐⭐
-            </div>
+            <a href="#" class="btn-primary">
 
-            <img src="assets/images/brokers/xm.png"
-                 alt="XM"
-                 class="broker-logo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
 
-            <h2>XM</h2>
+                Visit Broker
 
-            <p class="broker-license">
-                CySEC Regulated
-            </p>
+            </a>
 
-            <div class="broker-info">
+            <a href="#" class="btn-secondary">
 
-                <p><strong>Minimum Deposit</strong><br>$5</p>
+                <i class="fa-regular fa-file-lines"></i>
 
-                <p><strong>Markets</strong><br>Forex • Gold • Stocks</p>
+                Read Review
 
-            </div>
-
-            <div class="broker-buttons">
-
-                <a href="#" class="btn-primary">
-                    Visit Broker
-                </a>
-
-                <a href="#" class="btn-secondary">
-                    Read Review
-                </a>
-
-            </div>
+            </a>
 
         </div>
 
-        <!-- BROKER 3 -->
-        <div class="dashboard-card broker-card">
-
-            <div class="broker-rating">
-                ⭐⭐⭐⭐☆
-            </div>
-
-            <img src="assets/images/brokers/exness.png"
-                 alt="Exness"
-                 class="broker-logo">
-
-            <h2>Exness</h2>
-
-            <p class="broker-license">
-                FSA Regulated
-            </p>
-
-            <div class="broker-info">
-
-                <p><strong>Minimum Deposit</strong><br>$10</p>
-
-                <p><strong>Markets</strong><br>Forex • Gold • Crypto</p>
-
-            </div>
-
-            <div class="broker-buttons">
-
-                <a href="#" class="btn-primary">
-                    Visit Broker
-                </a>
-
-                <a href="#" class="btn-secondary">
-                    Read Review
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
+    </article>
 
 </div>
 
 </section>
+
+    </main>
+
+</div>
 
 </body>
 
