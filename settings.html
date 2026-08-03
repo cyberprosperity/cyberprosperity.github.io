@@ -2,112 +2,236 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Settings | Cyber Prosperity</title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body>
 
-<header class="dashboard-header">
+<div class="app-layout">
 
-    <div class="container">
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
 
-        <h2>Cyber Prosperity</h2>
+    <aside class="sidebar">
 
-        <a href="login.html" class="btn-primary">
-            Logout
-        </a>
+        <div class="sidebar-logo">
 
-    </div>
+            <img
+                src="assets/images/logo/logo.png"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
 
-</header>
+            <div>
 
-<section class="dashboard">
+                <h2>Cyber Prosperity</h2>
 
-    <div class="dashboard-layout">
+                <span>Social Trading Community</span>
 
-        <aside class="sidebar">
+            </div>
 
-            <h3>Menu</h3>
+        </div>
 
-            <ul>
+        <nav class="sidebar-menu">
 
-                <li><a href="dashboard.html">🏠 Dashboard</a></li>
+            <a href="index.html">
 
-                <li><a href="community.html">👥 Community</a></li>
+                <i class="fa-solid fa-house"></i>
 
-                <li><a href="markets.html">📈 Markets</a></li>
+                <span>Home</span>
 
-                <li><a href="journal.html">📒 Journal</a></li>
+            </a>
 
-                <li><a href="broker.html">🏦 Broker</a></li>
+            <a href="features.html">
 
-                <li><a href="education.html">🎓 Education</a></li>
+                <i class="fa-solid fa-star"></i>
 
-                <li><a href="profile.html">👤 Profile</a></li>
+                <span>Features</span>
 
-                <li>
-                    <a href="settings.html" class="active">
-                        ⚙ Settings
-                    </a>
-                </li>
+            </a>
 
-            </ul>
+            <a href="forum.html">
 
-        </aside>
+                <i class="fa-solid fa-comments"></i>
 
-        <section class="dashboard-content">
+                <span>Forum</span>
 
-            <h1>⚙ Account Settings</h1>
+            </a>
 
-            <p>
-                Kelola akun dan preferensi Cyber Prosperity Anda.
-            </p>
+            <a href="broker.html">
 
-            <div class="dashboard-cards">
+                <i class="fa-solid fa-building-columns"></i>
 
-                <div class="dashboard-card">
-                    <h3>👤 Edit Profile</h3>
-                    <p>Perbarui nama, foto, bio, dan informasi akun.</p>
-                </div>
+                <span>Broker</span>
 
-                <div class="dashboard-card">
-                    <h3>🔒 Change Password</h3>
-                    <p>Ubah password akun untuk meningkatkan keamanan.</p>
-                </div>
+            </a>
 
-                <div class="dashboard-card">
-                    <h3>🔔 Notifications</h3>
-                    <p>Atur notifikasi email dan aktivitas komunitas.</p>
-                </div>
+        </nav>
 
-                <div class="dashboard-card">
-                    <h3>🌐 Language</h3>
-                    <p>Pilih bahasa yang digunakan pada platform.</p>
-                </div>
+        <div class="sidebar-divider"></div>
 
-                <div class="dashboard-card">
-                    <h3>🌙 Dark Mode</h3>
-                    <p>Aktifkan atau nonaktifkan tema gelap.</p>
-                </div>
+        <div class="sidebar-bottom">
 
-                <div class="dashboard-card">
-                    <h3>🛡 Privacy & Security</h3>
-                    <p>Kelola privasi dan keamanan akun Anda.</p>
-                </div>
+            <a href="profile.html">
+
+                <i class="fa-regular fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+            <a href="settings.html" class="active">
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>Settings</span>
+
+            </a>
+
+            <a href="login.html">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <!-- ==========================================
+             SETTINGS HEADER
+        =========================================== -->
+
+        <section class="settings-header">
+
+            <div class="settings-header-top">
+
+                <span class="settings-subtitle">
+
+                    Account
+
+                </span>
+
+                <h1>
+
+                    Settings
+
+                </h1>
+
+                <p>
+
+                    Kelola akun, keamanan, preferensi, dan pengaturan Cyber Prosperity Anda.
+
+                </p>
 
             </div>
 
         </section>
 
-    </div>
+        <!-- ==========================================
+             SETTINGS GRID
+        =========================================== -->
 
-</section>
+        <section class="settings-grid">
+
+            <div class="settings-card">
+
+                <i class="fa-regular fa-user"></i>
+
+                <h3>Edit Profile</h3>
+
+                <p>
+                    Perbarui nama, foto profil, bio, dan informasi akun Anda.
+                </p>
+
+            </div>
+
+            <div class="settings-card">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <h3>Change Password</h3>
+
+                <p>
+                    Ganti password untuk meningkatkan keamanan akun.
+                </p>
+
+            </div>
+
+            <div class="settings-card">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <h3>Notifications</h3>
+
+                <p>
+                    Atur notifikasi email dan aktivitas komunitas.
+                </p>
+
+            </div>
+
+            <div class="settings-card">
+
+                <i class="fa-solid fa-language"></i>
+
+                <h3>Language</h3>
+
+                <p>
+                    Pilih bahasa yang digunakan pada platform.
+                </p>
+
+            </div>
+
+            <div class="settings-card">
+
+                <i class="fa-solid fa-moon"></i>
+
+                <h3>Dark Mode</h3>
+
+                <p>
+                    Aktifkan atau nonaktifkan tema gelap.
+                </p>
+
+            </div>
+
+            <div class="settings-card">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <h3>Privacy & Security</h3>
+
+                <p>
+                    Kelola privasi serta keamanan akun Anda.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
 </body>
 
