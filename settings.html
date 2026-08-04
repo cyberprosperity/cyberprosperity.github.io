@@ -148,90 +148,163 @@
             </div>
 
         </section>
-
         <!-- ==========================================
-             SETTINGS GRID
-        =========================================== -->
+     SETTINGS LAYOUT
+========================================== -->
 
-        <section class="settings-grid">
+<section class="settings-layout">
 
-            <div class="settings-card">
+    <!-- MENU KIRI -->
 
-                <i class="fa-regular fa-user"></i>
+    <aside class="settings-menu">
 
-                <h3>Edit Profile</h3>
+        <h3 class="settings-menu-title">
 
-                <p>
-                    Perbarui nama, foto profil, bio, dan informasi akun Anda.
-                </p>
+            SETTINGS
 
-            </div>
+        </h3>
 
-            <div class="settings-card">
+        <button class="settings-menu-item active"
+                data-tab="profile">
 
-                <i class="fa-solid fa-lock"></i>
+            Edit Profile
 
-                <h3>Change Password</h3>
+        </button>
 
-                <p>
-                    Ganti password untuk meningkatkan keamanan akun.
-                </p>
+        <button class="settings-menu-item"
+                data-tab="photo">
 
-            </div>
+            Change Profile Photo
 
-            <div class="settings-card">
+        </button>
 
-                <i class="fa-regular fa-bell"></i>
+        <button class="settings-menu-item"
+                data-tab="cover">
 
-                <h3>Notifications</h3>
+            Change Cover Photo
 
-                <p>
-                    Atur notifikasi email dan aktivitas komunitas.
-                </p>
+        </button>
 
-            </div>
+        <button class="settings-menu-item"
+                data-tab="password">
 
-            <div class="settings-card">
+            Change Password
 
-                <i class="fa-solid fa-language"></i>
+        </button>
 
-                <h3>Language</h3>
+        <button class="settings-menu-item"
+                data-tab="privacy">
 
-                <p>
-                    Pilih bahasa yang digunakan pada platform.
-                </p>
+            Privacy
 
-            </div>
+        </button>
 
-            <div class="settings-card">
+        <button class="settings-menu-item"
+                data-tab="notification">
 
-                <i class="fa-solid fa-moon"></i>
+            Notifications
 
-                <h3>Dark Mode</h3>
+        </button>
 
-                <p>
-                    Aktifkan atau nonaktifkan tema gelap.
-                </p>
+        <button class="settings-menu-item"
+                data-tab="language">
 
-            </div>
+            Language
 
-            <div class="settings-card">
+        </button>
 
-                <i class="fa-solid fa-shield-halved"></i>
+        <hr>
 
-                <h3>Privacy & Security</h3>
+        <button class="settings-menu-delete">
 
-                <p>
-                    Kelola privasi serta keamanan akun Anda.
-                </p>
+            Delete Account
 
-            </div>
+        </button>
 
-        </section>
+    </aside>
 
-    </main>
+    <!-- PANEL KANAN -->
+
+    <section class="settings-panel"
+         id="settings-panel">
+
+    <h2>Edit Profile</h2>
+
+    <p>
+        Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
+    </p>
+
+    <form class="settings-form">
+
+        <div class="settings-form-group">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                placeholder="Michael Tan">
+
+        </div>
+
+        <div class="settings-form-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                placeholder="@michael.tan">
+
+        </div>
+
+        <div class="settings-form-group">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                placeholder="Michael@email.com">
+
+        </div>
+
+        <div class="settings-form-group">
+
+            <label>Location</label>
+
+            <input
+                type="text"
+                placeholder="Indonesia">
+
+        </div>
+
+        <div class="settings-form-group">
+
+            <label>Bio</label>
+
+            <textarea
+                rows="5"
+                placeholder="Ceritakan sedikit tentang Anda..."></textarea>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn-primary">
+
+            Save Changes
+
+        </button>
+
+    </form>
+
+</section>
+
+</section>
+
+</main>
 
 </div>
+
+<script src="assets/js/settings.js"></script>
 
 </body>
 
