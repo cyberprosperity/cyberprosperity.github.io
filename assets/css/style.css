@@ -455,10 +455,8 @@ body {
     display:flex;
     justify-content:center;
     align-items:center;
-    background:var(--void);
-    padding:40px;
-    position:relative;
-    overflow:hidden;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    padding:30px;
 }
 
 .login{
@@ -1068,11 +1066,40 @@ body {
     font-weight:700;
     cursor:pointer;
     transition:.3s;
-
 }
 
 .btn-setting-profile:hover{
     background:#E0B45B;
+
+}
+/* ==========================================
+   PROFILE PHOTO PANEL
+========================================== */
+
+.profile-photo-wrapper{
+
+    display:flex;
+    justify-content:center;
+    margin:35px 0;
+
+}
+
+.profile-photo-preview{
+
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    object-fit:cover;
+    border:6px solid #2D3B57;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+.settings-action{
+
+    display:flex;
+    gap:15px;
+    margin-top:30px;
 
 }
 
@@ -2232,10 +2259,12 @@ body {
 
 .settings-panel{
 
+    width:100%;
     background:#1B2434;
     border:1px solid rgba(255,255,255,.08);
     border-radius:18px;
     padding:35px;
+    box-sizing:border-box;
 
 }
 

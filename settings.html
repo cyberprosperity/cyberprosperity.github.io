@@ -148,13 +148,14 @@
             </div>
 
         </section>
+
         <!-- ==========================================
-     SETTINGS LAYOUT
-========================================== -->
+        SETTINGS LAYOUT
+        ========================================== -->
 
-<section class="settings-layout">
+    <section class="settings-layout">
 
-    <!-- MENU KIRI -->
+        <!-- MENU KIRI -->
 
     <aside class="settings-menu">
 
@@ -297,6 +298,62 @@
     </form>
 
 </section>
+
+<!-- ==========================================
+     CHANGE PROFILE PHOTO
+========================================== -->
+
+<div class="settings-panel"
+     id="photo-panel"
+     style="display:none;">
+
+    <span class="settings-subtitle">
+        SETTINGS / CHANGE PROFILE PHOTO
+
+    </span>
+
+    <h2>
+        Change Profile Photo
+    </h2>
+
+    <p>
+        Upload foto profil baru yang akan ditampilkan kepada seluruh member Cyber Prosperity.
+    </p>
+
+    <div class="profile-photo-wrapper">
+    <img
+        src="assets/images/avatar/michael-tan.jpg"
+        id="profilePreview"
+        class="profile-photo-preview"
+        alt="Profile Photo">
+    </div>
+
+    <div class="settings-form">
+        <div class="settings-form-group">
+            <label>
+                Upload New Profile Photo
+            </label>
+
+            <input
+                type="file"
+                id="photoUpload"
+                accept="image/*">
+
+        <div class="settings-action">
+            <button class="btn-primary">
+                Save Photo
+            </button>
+
+            <button class="btn-secondary">
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 </section>
 

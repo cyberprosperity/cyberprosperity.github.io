@@ -4,7 +4,6 @@ const panel = document.getElementById("settings-panel");
 const templates = {
 
 profile: `
-
 <h2>Edit Profile</h2>
 
 <p>
@@ -17,7 +16,9 @@ Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
 
         <label>Full Name</label>
 
-        <input type="text" placeholder="John Trader">
+        <input 
+        type="text" 
+        placeholder="John Trader">
 
     </div>
 
@@ -25,7 +26,9 @@ Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
 
         <label>Username</label>
 
-        <input type="text" placeholder="@johntrader">
+        <input 
+        type="text" 
+        placeholder="@johntrader">
 
     </div>
 
@@ -33,19 +36,33 @@ Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
 
         <label>Email</label>
 
-        <input type="email" placeholder="john@email.com">
+        <input 
+        type="email" 
+        placeholder="john@email.com">
+
+    </div>
+
+    <div class="settings-form-group">
+
+        <label>Location</label>
+
+        <input 
+        type="text" 
+        placeholder="Indonesia">
 
     </div>
 
     <div class="settings-form-group">
 
         <label>Bio</label>
-
-        <textarea rows="5"></textarea>
+        <textarea rows="5"
+        placeholder="Ceritakan tentang Anda..."></textarea>
 
     </div>
 
-    <button class="btn-primary">
+    <button 
+    class="btn-primary"
+    type="button">
 
         Save Changes
 
@@ -54,8 +71,59 @@ Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
 </form>
 
 `,
+photo: `
+
+<h2>Change Profile Photo</h2>
+
+<p>
+Upload foto profil baru yang akan ditampilkan kepada seluruh member Cyber Prosperity.
+</p>
+
+<div class="profile-photo-wrapper">
+
+    <img
+    src="assets/images/avatar/michael-tan.jpg"
+    id="profilePreview"
+    class="profile-photo-preview"
+    alt="Profile Photo">
+
+</div>
+
+<div class="settings-form-group">
+
+    <label>
+        Upload New Profile Photo
+    </label>
+
+    <input
+    type="file"
+    id="photoUpload"
+    accept="image/*">
+
+</div>
+
+<div class="settings-action">
+
+<button
+class="btn-primary"
+type="button">
+
+    Save Photo
+
+</button>
+
+<button
+class="btn-secondary"
+type="button">
+    Cancel
+</button>
+
+</div>
+
+`,
 
 password: `
+
 
 <h2>Change Password</h2>
 
@@ -65,37 +133,100 @@ Perbarui password akun Anda secara berkala untuk menjaga keamanan akun.
 
 <form class="settings-form">
 
-    <div class="settings-form-group">
+<div class="settings-form-group">
 
-        <label>Current Password</label>
+<label>
+Current Password
+</label>
 
-        <input type="password">
+<input 
+type="password">
 
-    </div>
+</div>
 
-    <div class="settings-form-group">
 
-        <label>New Password</label>
+<div class="settings-form-group">
 
-        <input type="password">
+<label>
+New Password
+</label>
 
-    </div>
+<input 
+type="password">
 
-    <div class="settings-form-group">
+</div>
 
-        <label>Confirm Password</label>
+<div class="settings-form-group">
 
-        <input type="password">
+<label>
+Confirm Password
+</label>
 
-    </div>
+<input 
+type="password">
+</div>
 
-    <button class="btn-primary">
-
-        Update Password
-
-    </button>
+<button
+class="btn-primary"
+type="button">
+Update Password
+</button>
 
 </form>
+
+`,
+
+privacy: `
+
+<h2>Privacy</h2>
+
+<p>
+Atur keamanan dan privasi akun Anda.
+</p>
+
+<button class="btn-primary">
+Save Privacy Settings
+</button>
+
+`,
+
+notification: `
+
+<h2>Notifications</h2>
+
+<p>
+Kelola notifikasi Cyber Prosperity Anda.
+</p>
+
+
+
+<label>
+
+<input type="checkbox" checked>
+ Email Notification
+</label>
+
+`,
+
+language: `
+
+<h2>Language</h2>
+
+<p>
+Pilih bahasa platform Cyber Prosperity.
+</p>
+
+<select>
+
+<option>
+Bahasa Indonesia
+</option>
+
+<option>
+English
+</option>
+
+</select>
 
 `
 
@@ -103,20 +234,62 @@ Perbarui password akun Anda secara berkala untuk menjaga keamanan akun.
 
 menuItems.forEach(item => {
 
-    item.addEventListener("click", () => {
+    item.addEventListener("click", function(){
 
-        menuItems.forEach(btn => btn.classList.remove("active"));
+        menuItems.forEach(btn => {
 
-        item.classList.add("active");
+            btn.classList.remove("active");
 
-        const tab = item.dataset.tab;
+        });
 
-        if (templates[tab]) {
+        this.classList.add("active");
+
+        const tab = this.dataset.tab;
+
+        if(templates[tab]){
 
             panel.innerHTML = templates[tab];
+
+            if(tab === "photo"){
+                activatePhotoUpload();
+
+            }
 
         }
 
     });
 
 });
+
+function activatePhotoUpload(){
+
+
+    const photoUpload = document.getElementById("photoUpload");
+    const profilePreview = document.getElementById("profilePreview");
+    if(!photoUpload || !profilePreview){
+
+        return;
+
+    }
+
+    photoUpload.addEventListener("change", function(){
+
+        const file = this.files[0];
+
+        if(file){
+
+            const reader = new FileReader();
+
+            reader.onload = function(e){
+                profilePreview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+
+    });
+
+
+
+}
