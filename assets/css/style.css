@@ -2347,3 +2347,50 @@ body {
     cursor:pointer;
 
 }
+/* ==========================================
+   SETTINGS PHOTO BUTTON
+========================================== */
+
+.settings-action{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+.settings-save-btn{
+    background:#FFD700;
+    color:#0f172a;
+    border:none;
+    padding:12px 28px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.settings-save-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(255,215,0,.35);
+
+}
+
+.settings-cancel-btn{
+    background:#1e293b;
+    color:#ffffff;
+    border:1px solid #334155;
+    padding:12px 28px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.settings-cancel-btn:hover{
+
+    background:#334155;
+
+}

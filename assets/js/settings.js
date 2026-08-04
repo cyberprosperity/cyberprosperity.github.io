@@ -105,15 +105,13 @@ Upload foto profil baru yang akan ditampilkan kepada seluruh member Cyber Prospe
 <div class="settings-action">
 
 <button
-class="btn-primary"
+class="settings-save-btn"
 type="button">
-
     Save Photo
-
 </button>
 
 <button
-class="btn-secondary"
+class="settings-cancel-btn"
 type="button">
     Cancel
 </button>
@@ -123,7 +121,6 @@ type="button">
 `,
 
 password: `
-
 
 <h2>Change Password</h2>
 
