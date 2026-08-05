@@ -60,34 +60,37 @@ Informasi ini akan ditampilkan kepada seluruh member Cyber Prosperity.
 
     </div>
 
-    <button 
-    class="btn-primary"
-    type="button">
+    <div class="settings-action">
 
+    <button
+        class="settings-save-btn"
+        type="submit">
         Save Changes
-
     </button>
+
+</div>
 
 </form>
 
 `,
 photo: `
 
-<h2>Change Profile Photo</h2>
+<span class="settings-subtitle">
+
+SETTINGS / PROFILE PHOTO
+
+</span>
+
+<h2>
+
+Change Profile Photo
+
+</h2>
 
 <p>
 Upload foto profil baru yang akan ditampilkan kepada seluruh member Cyber Prosperity.
+
 </p>
-
-<div class="profile-photo-wrapper">
-
-    <img
-    src="assets/images/avatar/michael-tan.jpg"
-    id="profilePreview"
-    class="profile-photo-preview"
-    alt="Profile Photo">
-
-</div>
 
 <div class="settings-form-group">
 
@@ -163,11 +166,14 @@ Confirm Password
 type="password">
 </div>
 
-<button
-class="btn-primary"
-type="button">
-Update Password
-</button>
+<div class="settings-action">
+    <button
+        class="settings-save-btn"
+        type="submit">
+        Update Password
+    </button>
+
+</div>
 
 </form>
 
@@ -175,15 +181,27 @@ Update Password
 
 privacy: `
 
-<h2>Privacy</h2>
+<span class="settings-subtitle">
 
+SETTINGS / PRIVACY
+
+</span>
+
+<h2>
+
+Privacy
+
+</h2>
 <p>
 Atur keamanan dan privasi akun Anda.
 </p>
-
-<button class="btn-primary">
+<div class="settings-action">
+<button
+class="settings-save-btn"
+type="button">
 Save Privacy Settings
 </button>
+</div>
 
 `,
 
@@ -197,35 +215,75 @@ Kelola notifikasi Cyber Prosperity Anda.
 
 
 
+<span class="settings-subtitle">
+
+SETTINGS / NOTIFICATIONS
+
+</span>
+
+<h2>
+
+Notifications
+
+</h2>
+
+<p>
+
+Kelola notifikasi Cyber Prosperity Anda.
+
+</p>
+
+<div class="settings-form-group">
+
 <label>
 
 <input type="checkbox" checked>
- Email Notification
+
+Email Notifications
+
 </label>
+</div>
+<div class="settings-action">
+<button
+class="settings-save-btn"
+type="button">
+Save
+</button>
+
+</div>
 
 `,
 
 language: `
 
-<h2>Language</h2>
+<span class="settings-subtitle">
 
+SETTINGS / LANGUAGE
+</span>
+<h2>
+Language
+</h2>
 <p>
+
 Pilih bahasa platform Cyber Prosperity.
+
 </p>
-
+<div class="settings-form-group">
+<label>
+Language
+</label>
 <select>
-
-<option>
-Bahasa Indonesia
-</option>
-
-<option>
-English
-</option>
-
+<option>Bahasa Indonesia</option>
+<option>English</option>
 </select>
-
-`
+</div>
+<div class="settings-action">
+<button
+class="settings-save-btn"
+type="button">
+Save Language
+</button>
+</div>
 
 };
 
