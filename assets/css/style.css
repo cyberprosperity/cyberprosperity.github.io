@@ -2176,80 +2176,143 @@ body {
 
 .settings-menu{
 
-    background:#1B2434;
-    border:1px solid rgba(255,255,255,.08);
+    width:260px;
+    background:#20293B;
+    border:1px solid rgba(255,255,255,.06);
     border-radius:18px;
-    padding:25px;
+    padding:20px;
+    box-sizing:border-box;
+    flex-shrink:0;
 
 }
+
+/* Title */
 
 .settings-menu-title{
-
     color:#D4A64A;
-    font-size:12px;
-    letter-spacing:2px;
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:3px;
     text-transform:uppercase;
-    margin-bottom:20px;
+    margin:0 0 18px;
 
 }
+
+/* Item */
 
 .settings-menu-item{
-
     width:100%;
-    border:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 14px;
+    margin-bottom:6px;
     background:transparent;
-    color:#CBD5E1;
-    text-align:left;
-    padding:14px 18px;
+    border:1px solid transparent;
     border-radius:10px;
+    color:#94A3B8;
     cursor:pointer;
-    font-size:15px;
-    margin-bottom:8px;
-    transition:.3s;
+    transition:all .25s ease;
+    font-size:13px;
+    font-weight:300;
 
 }
+
+/* Left */
+
+.settings-menu-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+}
+
+.settings-menu-left i{
+    width:18px;
+    font-size:15px;
+    text-align:center;
+    color:#7F8EA3;
+    transition:.25s;
+
+}
+
+.settings-menu-left span{
+    white-space:nowrap;
+
+}
+
+/* Arrow */
+
+.settings-arrow{
+    font-size:11px;
+    color:#6B7280;
+    transition:.25s;
+
+}
+
+/* Hover */
 
 .settings-menu-item:hover{
-
-    background:#25314A;
+    background:#2A3448;
+    border-color:#38445C;
+    color:#FFFFFF;
 
 }
+
+.settings-menu-item:hover .settings-menu-left i,
+.settings-menu-item:hover .settings-arrow{
+    color:#FFFFFF;
+
+}
+
+/* Active */
 
 .settings-menu-item.active{
-
-    background:#2D3B57;
+    background:#34415D;
+    border:1px solid #445372;
     color:#FFFFFF;
-    font-weight:700;
+    font-weight:600;
 
 }
 
-.settings-menu hr{
+.settings-menu-item.active .settings-menu-left i,
+.settings-menu-item.active .settings-arrow{
+    color:#D4A64A;
 
+}
+
+/* Divider */
+
+.settings-divider{
     border:none;
     height:1px;
-    background:rgba(255,255,255,.08);
-    margin:20px 0;
+    background:#2F3A50;
+    margin:18px 0;
 
 }
 
-.settings-menu-delete{
+/* Delete */
 
+.settings-menu-delete{
     width:100%;
-    border:none;
-    background:none;
-    color:#EF4444;
-    text-align:left;
-    padding:14px 18px;
-    cursor:pointer;
-    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 14px;
+    background:transparent;
+    border:1px solid transparent;
     border-radius:10px;
-    transition:.3s;
+    color:#EF4444;
+    cursor:pointer;
+    transition:.25s;
+    font-size:15px;
+    font-weight:500;
 
 }
 
 .settings-menu-delete:hover{
-
-    background:rgba(239,68,68,.12);
+    background:rgba(239,68,68,.08);
+    border-color:#EF4444;
 
 }
 
@@ -2259,50 +2322,123 @@ body {
 
 .settings-panel{
 
-    width:100%;
-    background:#1B2434;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:18px;
-    padding:35px;
+    flex:1;
+    background:#1B2436;
+    border:1px solid #2A3448;
+    border-radius:14px;
+    padding:32px;
+    min-height:520px;
     box-sizing:border-box;
 
 }
 
-.settings-panel h2{
+/* subtitle */
 
-    color:#FFFFFF;
-    font-size:34px;
-    margin-bottom:12px;
+.settings-subtitle{
+
+    display:block;
+    margin-bottom:10px;
+    font-size:15px;
+    font-family:"JetBrains Mono", monospace;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:#D4A24C;
+    font-weight:500;
 
 }
+
+/* title */
+
+.settings-panel h2{
+
+    margin:0 0 10px;
+    font-size:25px;
+    font-weight:700;
+    color:#F2F4F8;
+    font-family:"Sora", sans-serif;
+
+}
+
+/* description */
 
 .settings-panel p{
 
-    color:#94A3B8;
-    line-height:1.8;
+    margin:0 0 28px;
+    font-size:15px;
+    line-height:1.7;
+    color:#9AA3B5;
+    max-width:520px;
 
 }
+
+/* divider */
+
+.settings-panel hr{
+
+    border:none;
+    height:1px;
+    background:#2A3448;
+    margin:28px 0;
+
+}
+
+/* ==========================================
+   SETTINGS PHOTO BUTTON
+========================================== */
+.settings-action{
+    display:flex;
+    gap:14px;
+    margin-top:35px;
+}
+
+.settings-save-btn{
+    padding:14px 28px;
+    background:#D4A64A;
+    color:#111827;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.settings-save-btn:hover{
+    transform:translateY(-2px);
+    background:#E6B75C;
+}
+
+.settings-cancel-btn{
+    padding:14px 28px;
+    background:transparent;
+    border:1px solid #3B465C;
+    border-radius:12px;
+    color:#F8FAFC;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.settings-cancel-btn:hover{
+    border-color:#D4A64A;
+    color:#D4A64A;
+}
+
 /* ==========================================
    SETTINGS FORM
 ========================================== */
 
 .settings-form{
-
-    margin-top:35px;
+    width:100%;
 
 }
 
 .settings-form-group{
-
-    display:flex;
-    flex-direction:column;
     margin-bottom:22px;
 
 }
 
 .settings-form-group label{
-
-    color:#CBD5E1;
+    display:block;
+    color:#F1F5F9;
     font-size:14px;
     font-weight:600;
     margin-bottom:8px;
@@ -2310,87 +2446,31 @@ body {
 }
 
 .settings-form-group input,
-.settings-form-group textarea{
-
+.settings-form-group textarea,
+.settings-form-group select{
     width:100%;
-    padding:14px 16px;
-    background:#111827;
-    border:1px solid rgba(255,255,255,.08);
+    padding:15px 18px;
+    background:#101827;
+    border:1px solid #2A3448;
     border-radius:12px;
     color:#FFFFFF;
     font-size:15px;
-    outline:none;
     transition:.3s;
     box-sizing:border-box;
 
 }
 
 .settings-form-group input:focus,
-.settings-form-group textarea:focus{
-
+.settings-form-group textarea:focus,
+.settings-form-group select:focus{
+    outline:none;
     border-color:#D4A64A;
+    box-shadow:0 0 0 3px rgba(212,166,74,.15);
 
 }
 
 .settings-form-group textarea{
-
-    resize:vertical;
-    min-height:140px;
-
-}
-
-.settings-form .btn-primary{
-
-    margin-top:10px;
-    padding:14px 30px;
-    border:none;
-    cursor:pointer;
-
-}
-/* ==========================================
-   SETTINGS PHOTO BUTTON
-========================================== */
-
-.settings-action{
-    display:flex;
-    gap:15px;
-    margin-top:25px;
-}
-
-.settings-save-btn{
-    background:#FFD700;
-    color:#0f172a;
-    border:none;
-    padding:12px 28px;
-    border-radius:10px;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-
-}
-
-.settings-save-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 25px rgba(255,215,0,.35);
-
-}
-
-.settings-cancel-btn{
-    background:#1e293b;
-    color:#ffffff;
-    border:1px solid #334155;
-    padding:12px 28px;
-    border-radius:10px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.3s;
-
-}
-
-.settings-cancel-btn:hover{
-
-    background:#334155;
+    resize:none;
+    min-height:150px;
 
 }
