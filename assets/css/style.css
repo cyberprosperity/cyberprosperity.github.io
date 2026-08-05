@@ -2392,6 +2392,10 @@ body {
 }
 
 .settings-save-btn{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding:14px 28px;
     background:#D4A64A;
     color:#111827;
@@ -2402,16 +2406,27 @@ body {
     transition:.25s;
 }
 
+.settings-save-btn i{
+
+    margin-right:8px;
+    font-size:14px;
+}
+
 .settings-save-btn:hover{
+
     transform:translateY(-2px);
     background:#E6B75C;
 }
 
 .settings-cancel-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     padding:14px 28px;
     background:transparent;
     border:1px solid #3B465C;
     border-radius:12px;
+    font-size: 14px;
     color:#F8FAFC;
     cursor:pointer;
     transition:.25s;
@@ -2437,15 +2452,25 @@ body {
 }
 
 .settings-form-group label{
-    display:block;
+    display:flex;
+    align-items:center;
+    gap:8px;
     color:#F1F5F9;
     font-size:14px;
     font-weight:600;
     margin-bottom:8px;
 
 }
-
-.settings-form-group input,
+ 
+.settings-form-group input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    accent-color:#D4A64A;
+    margin:0;
+ 
+}
+ 
+.settings-form-group input:not([type="checkbox"]),
 .settings-form-group textarea,
 .settings-form-group select{
     width:100%;
@@ -2455,22 +2480,127 @@ body {
     border-radius:12px;
     color:#FFFFFF;
     font-size:15px;
+    font-family:inherit;
     transition:.3s;
     box-sizing:border-box;
-
+ 
 }
-
-.settings-form-group input:focus,
+ 
+.settings-form-group input:not([type="checkbox"]):focus,
 .settings-form-group textarea:focus,
 .settings-form-group select:focus{
     outline:none;
     border-color:#D4A64A;
     box-shadow:0 0 0 3px rgba(212,166,74,.15);
-
+ 
 }
-
+ 
 .settings-form-group textarea{
     resize:none;
     min-height:150px;
+ 
+}
 
+/* ==========================================
+   PROFILE PHOTO
+========================================== */
+ 
+.profile-photo-wrapper{
+    display:flex;
+    justify-content:center;
+    margin-bottom:28px;
+}
+ 
+.profile-photo-preview{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #2A3448;
+    background:#101827;
+}
+ 
+/* ==========================================
+   COVER PHOTO PREVIEW
+========================================== */
+ 
+.cover-photo-wrapper{
+    margin-bottom:28px;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid #2A3448;
+}
+ 
+.cover-photo-preview{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    background:#101827;
+}
+ 
+/* ==========================================
+   PHOTO LAYOUT
+========================================== */
+ 
+.photo-layout{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    flex-wrap:wrap;
+}
+ 
+.photo-left{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    flex-shrink:0;
+}
+ 
+.photo-right{
+    flex:1;
+    min-width:240px;
+}
+
+.profile-avatar{
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #F0CE85, #D4A24C 45%, #8C6B2E 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"Sora", sans-serif;
+    font-weight:700;
+    font-size:28px;
+    color:#0D1220;
+}
+ 
+/* Dropzone upload */
+ 
+.upload-box{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:32px 20px;
+    border:1.5px dashed #2A3448;
+    border-radius:12px;
+    background:#101827;
+    color:#9AA3B5;
+    font-size:13px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
+}
+ 
+.upload-box:hover{
+    border-color:#D4A64A;
+    color:#D4A64A;
+}
+ 
+.upload-box i{
+    font-size:18px;
 }
