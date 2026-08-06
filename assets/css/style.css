@@ -311,101 +311,69 @@ body {
 ========================================== */
 
 .hero{
-
     padding:100px 0;
-
     background:transparent;
 
 }
 
 .hero-container{
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     gap:50px;
 
 }
 
 .hero-content{
-
     flex:1;
-
     max-width:620px;
 
 }
 
 .hero-content h1{
-
     font-size:60px;
-
     font-weight:800;
-
     line-height:1.1;
-
     color:#0f172a;
-
     margin-bottom:24px;
 
 }
 
 .hero-content p{
-
     font-size:20px;
-
     line-height:1.8;
-
     color:#475569;
-
     margin-bottom:35px;
 
 }
 
 .hero-buttons{
-
     display:flex;
-
     gap:20px;
-
     flex-wrap:wrap;
 
 }
 
 .hero-image{
-
     flex:1;
-
     display:flex;
-
     justify-content:flex-end;
-
     align-items:center;
 
 }
 
 .hero-image img{
-
     width:100%;
-
     max-width:620px;
-
     display:block;
-
     border-radius:22px;
-
     box-shadow:0 25px 60px rgba(0,0,0,.18);
-
     transition:all .35s ease;
 
 }
 
 .hero-image img:hover{
-
     transform:translateY(-8px);
-
     box-shadow:0 35px 80px rgba(0,0,0,.25);
 
 }
@@ -2604,3 +2572,4 @@ body {
 .upload-box i{
     font-size:18px;
 }
+
