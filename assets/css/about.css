@@ -477,3 +477,9 @@
     font-family: "Inter", sans-serif;
     font-size: 16px;
 }
+
+.cp-logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
