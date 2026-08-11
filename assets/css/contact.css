@@ -602,3 +602,45 @@ CONTACT LAYOUT
     height: 42px;
     object-fit: contain;
 }
+
+/* ==========================================
+   FOOTER — samakan dengan index.html/about.html
+========================================== */
+
+.cp-footer {
+    width: 100%;
+    background: #080c13;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cp-footer-inner {
+    width: min(100% - 60px, 1280px);
+    min-height: auto;
+    margin: 0 auto;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.cp-footer-brand .cp-brand {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cp-footer-brand p {
+    max-width: 300px;
+    margin: 0;
+    color: #69778c;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.cp-footer-copy {
+    color: #64748b;
+    font-size: 12px;
+    text-align: right;
+}
