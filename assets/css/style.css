@@ -5941,3 +5941,23 @@ a {
 .upload-box i{
     font-size:18px;
 }
+
+/* ==========================================
+   OVERRIDE NAVBAR INDEX — samakan gaya dengan contact.html
+========================================== */
+
+.cp-links a::after,
+.cp-links a::before {
+    content: none !important;
+}
+
+.cp-links a:hover,
+.cp-links a.active {
+    color: #F2C94C;
+}
+
+.cp-brand span,
+.cp-links a {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}

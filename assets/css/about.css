@@ -1,0 +1,479 @@
+/* ==========================================
+   ABOUT PAGE
+========================================== */
+
+.about-page {
+    min-height: calc(100vh - 80px);
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(212, 166, 65, 0.08),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #080d16 0%,
+            #0b111c 50%,
+            #080d16 100%
+        );
+
+    padding: 70px 24px 100px;
+}
+
+.about-container {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================
+   EYEBROW + TITLE
+========================================== */
+
+.about-eyebrow {
+    display: inline-block;
+
+    font-family: "JetBrains Mono", monospace;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    letter-spacing: 0.1em;
+
+    color: #F2C94C;
+
+    margin-bottom: 16px;
+}
+
+.about-title {
+    font-family: "Sora", sans-serif;
+
+    font-size: 40px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    color: #F8FAFC;
+
+    margin: 0 0 36px;
+}
+
+.about-title span {
+    color: #F2C94C;
+}
+
+
+/* ==========================================
+   LEAD PARAGRAPH
+========================================== */
+
+.about-lead {
+    color: #94A3B8;
+
+    font-size: 16.5px;
+
+    line-height: 1.95;
+
+    margin: 0;
+
+    text-align: justify;
+}
+
+.about-lead::first-letter {
+    font-family: "Sora", sans-serif;
+
+    font-size: 56px;
+    font-weight: 800;
+
+    color: #F2C94C;
+
+    float: left;
+
+    line-height: 1;
+
+    margin: 4px 8px 0 0;
+}
+
+.about-lead + .about-lead {
+    margin-top: 22px;
+}
+
+
+/* ==========================================
+   WHY CYBER PROSPERITY
+========================================== */
+
+.about-section {
+    margin-top: 72px;
+    padding: 0;
+}
+
+.about-section-eyebrow {
+    display: block;
+
+    font-family: "JetBrains Mono", monospace;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    letter-spacing: 0.1em;
+
+    color: #F2C94C;
+
+    margin-bottom: 8px;
+}
+
+.about-section-title {
+    font-family: "Sora", sans-serif;
+
+    font-size: 32px;
+    font-weight: 800;
+
+    color: #F8FAFC;
+
+    margin: 0 0 8px;
+
+    display: inline-block;
+}
+
+
+/* ==========================================
+   GOLD SQUIGGLE
+========================================== */
+
+.about-squiggle {
+    display: block;
+
+    width: 180px;
+    height: 12px;
+
+    margin-bottom: 32px;
+}
+
+
+/* ==========================================
+   WHY TEXT
+========================================== */
+
+.about-why-text {
+    color: #94A3B8;
+
+    font-size: 16.5px;
+
+    line-height: 1.95;
+
+    margin: 0;
+
+    text-align: justify;
+}
+
+.about-why-text::first-letter {
+    font-family: "Sora", sans-serif;
+
+    font-size: 56px;
+    font-weight: 800;
+
+    color: #F2C94C;
+
+    float: left;
+
+    line-height: 1;
+
+    margin: 4px 8px 0 0;
+}
+
+.about-why-text + .about-why-text {
+    margin-top: 22px;
+}
+
+
+/* ==========================================
+   HIGHLIGHT
+========================================== */
+
+.about-highlight {
+    color: #F2C94C;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   TAG PILLS
+========================================== */
+
+.about-tag-row {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin: 38px 0;
+}
+
+.about-tag {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 18px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    font-family: "JetBrains Mono", monospace;
+
+    transition: 0.2s;
+}
+
+.about-tag:hover {
+    transform: scale(1.06) rotate(0deg) !important;
+}
+
+.about-tag-1 {
+    background: rgba(212, 175, 55, 0.14);
+    color: #F2C94C;
+
+    transform: rotate(-2deg);
+}
+
+.about-tag-2 {
+    background: rgba(29, 158, 117, 0.14);
+    color: #4ade80;
+
+    transform: rotate(1.5deg);
+}
+
+.about-tag-3 {
+    background: rgba(56, 132, 255, 0.14);
+    color: #7ab3ff;
+
+    transform: rotate(-1deg);
+}
+
+.about-tag-4 {
+    background: rgba(212, 83, 126, 0.14);
+    color: #f18ba8;
+
+    transform: rotate(2deg);
+}
+
+
+/* ==========================================
+   PULL QUOTE
+========================================== */
+
+.about-pull-quote {
+    font-family: "Sora", sans-serif;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1.5;
+
+    color: #F8FAFC;
+
+    margin: 44px 0 8px 28px;
+
+    position: relative;
+
+    max-width: 560px;
+}
+
+.about-qmark {
+    font-size: 64px;
+
+    color: #D4AF37;
+
+    font-family: "Sora", sans-serif;
+
+    position: absolute;
+
+    left: -46px;
+    top: -24px;
+
+    opacity: 0.5;
+}
+
+.about-pull-quote span {
+    color: #F2C94C;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .about-page {
+        padding: 60px 20px 80px;
+    }
+
+    .about-title {
+        font-size: 32px;
+    }
+
+    .about-section-title {
+        font-size: 26px;
+    }
+
+    .about-lead,
+    .about-why-text {
+        font-size: 15.5px;
+    }
+
+    .about-pull-quote {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+}
+
+/* ==========================================
+   NAVBAR
+   Mengikuti Contact Page
+========================================== */
+
+.cp-nav {
+
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 80px;
+    background: #0b0f18;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 1000;
+}
+
+
+/* ==========================================
+   BRAND
+========================================== */
+
+.cp-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: #F8FAFC;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    font-size: 22px;
+}
+
+
+/* ==========================================
+   CP BADGE
+========================================== */
+
+.cp-badge {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #F2C94C,
+        #D4A843
+    );
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #111;
+
+    font-weight: 800;
+}
+
+
+/* ==========================================
+   NAVIGATION LINKS
+========================================== */
+
+.cp-links {
+
+    display: flex;
+
+    gap: 40px;
+}
+
+.cp-links a {
+
+    color: #CBD5E1;
+
+    text-decoration: none;
+
+    transition: .3s;
+}
+
+.cp-links a:hover,
+.cp-links .active {
+
+    color: #F2C94C;
+}
+
+
+/* ==========================================
+   RIGHT NAVIGATION
+========================================== */
+
+.cp-nav-right {
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+}
+
+.cp-signin {
+
+    padding: 10px 18px;
+
+    color: #CBD5E1;
+
+    text-decoration: none;
+}
+
+.cp-join {
+
+    background: linear-gradient(
+        135deg,
+        #F2C94C,
+        #D4A843
+    );
+
+    color: #111;
+
+    padding: 12px 24px;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.cp-brand span,
+.cp-links a {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
