@@ -392,16 +392,15 @@
 .cp-links {
 
     display: flex;
-
     gap: 40px;
 }
 
 .cp-links a {
-
     color: #CBD5E1;
-
     text-decoration: none;
-
+    font-family: "Sora", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
     transition: .3s;
 }
 

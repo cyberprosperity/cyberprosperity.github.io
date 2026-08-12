@@ -55,28 +55,21 @@ a {
 
 .cp-nav {
     position: relative;
-
     width: 100%;
     height: 82px;
-
     background: rgba(11, 15, 24, .96);
-
     border-bottom: 1px solid rgba(255,255,255,.06);
-
     z-index: 1000;
 }
 
 .cp-nav-inner {
-    width: min(100% - 60px, var(--cp-max-width));
-
+    width: 100%;
     height: 100%;
-
-    margin: 0 auto;
-
+    padding: 0 80px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 30px;
 }
 
@@ -142,31 +135,21 @@ a {
 
 .cp-links {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 34px;
-
     margin-left: auto;
     margin-right: auto;
 }
 
 .cp-links a {
     position: relative;
-
     color: #aeb8c8;
-
     text-decoration: none;
-
     font-family: "Sora", sans-serif;
-
     font-size: 14px;
     font-weight: 500;
-
     padding: 31px 0;
-
     transition:
         color .25s ease,
         transform .25s ease;
@@ -174,22 +157,14 @@ a {
 
 .cp-links a::after {
     content: "";
-
     position: absolute;
-
     left: 0;
     right: 0;
-
     bottom: 20px;
-
     height: 2px;
-
     background: var(--cp-gold);
-
     transform: scaleX(0);
-
     transform-origin: center;
-
     transition: transform .25s ease;
 }
 
