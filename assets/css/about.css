@@ -33,29 +33,20 @@
 
 .about-eyebrow {
     display: inline-block;
-
     font-family: "JetBrains Mono", monospace;
-
     font-size: 20px;
     font-weight: 600;
-
     letter-spacing: 0.1em;
-
     color: #F2C94C;
-
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .about-title {
     font-family: "Sora", sans-serif;
-
     font-size: 40px;
     font-weight: 800;
-
     line-height: 1.2;
-
     color: #F8FAFC;
-
     margin: 0 0 36px;
 }
 
@@ -111,16 +102,11 @@
 
 .about-section-eyebrow {
     display: block;
-
     font-family: "JetBrains Mono", monospace;
-
     font-size: 20px;
     font-weight: 600;
-
     letter-spacing: 0.1em;
-
     color: #F2C94C;
-
     margin-bottom: 8px;
 }
 
