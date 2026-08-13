@@ -354,6 +354,8 @@
     font-weight: 700;
 
     font-size: 22px;
+
+    font-family: "Inter", sans-serif;
 }
 
 
@@ -384,7 +386,6 @@
     font-weight: 800;
 }
 
-
 /* ==========================================
    NAVIGATION LINKS
 ========================================== */
@@ -398,10 +399,8 @@
 .cp-links a {
     color: #CBD5E1;
     text-decoration: none;
-    font-family: "Sora", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
     transition: .3s;
+    font-family: "Inter", sans-serif;
 }
 
 .cp-links a:hover,
@@ -428,9 +427,11 @@
 
     padding: 10px 18px;
 
-    color: #CBD5E1;
+    color: #F8FAFC;
 
     text-decoration: none;
+
+    font-family: "Inter", sans-serif;
 }
 
 .cp-join {
@@ -450,12 +451,8 @@
     font-weight: 700;
 
     text-decoration: none;
-}
 
-.cp-brand span,
-.cp-links a {
     font-family: "Inter", sans-serif;
-    font-size: 16px;
 }
 
 .cp-logo-img {
