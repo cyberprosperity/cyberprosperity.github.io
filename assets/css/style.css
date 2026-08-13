@@ -132,55 +132,23 @@ a {
 /* =========================================================
    NAVIGATION
 ========================================================= */
-
 .cp-links {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 34px;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 40px;
 }
 
 .cp-links a {
-    position: relative;
-    color: #aeb8c8;
+    color: #CBD5E1;
     text-decoration: none;
-    font-family: "Sora", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 31px 0;
-    transition:
-        color .25s ease,
-        transform .25s ease;
+    transition: .3s;
+    font-family: "Inter", sans-serif;
 }
 
-.cp-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 20px;
-    height: 2px;
-    background: var(--cp-gold);
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform .25s ease;
-}
-
-.cp-links a:hover {
-    color: var(--cp-white);
-}
-
-.cp-links a:hover::after,
-.cp-links a.active::after {
-    transform: scaleX(1);
-}
-
+.cp-links a:hover,
 .cp-links a.active {
-    color: var(--cp-white);
+    color: #F2C94C;
 }
-
 
 /* =========================================================
    NAV RIGHT
@@ -337,7 +305,7 @@ a {
     display: block;
 
     object-fit: cover;
-    object-position: center;
+    object-position: 75% center;
 
     transform: scale(1.02);
 
@@ -1114,7 +1082,7 @@ a {
     }
 
     .home-hero-bg img {
-        object-position: center;
+        object-position: 75% center;
     }
 
     .home-hero-bg::after {
@@ -5331,29 +5299,4 @@ a {
  
 .upload-box i{
     font-size:18px;
-}
-
-/* ==========================================
-   OVERRIDE NAVBAR INDEX
-========================================== */
-
-.cp-links a::after,
-.cp-links a::before {
-    content: none !important;
-}
-
-.cp-links a:hover,
-.cp-links a.active {
-    color: #F2C94C;
-}
-
-.cp-links a {
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
-}
-
-.cp-logo-img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
 }
