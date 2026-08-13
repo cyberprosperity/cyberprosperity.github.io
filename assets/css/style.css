@@ -80,43 +80,38 @@ a {
 
 .cp-brand {
     display: inline-flex;
-
     align-items: center;
-
     gap: 12px;
-
     color: var(--cp-white);
-
     text-decoration: none;
-
     flex-shrink: 0;
 }
 
 .cp-brand-logo {
     width: 42px;
     height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 12px;
-
     background: linear-gradient(
         135deg,
         var(--cp-gold-light),
-        var(--cp-gold)
     );
-
     color: #111827;
-
     font-family: "Sora", sans-serif;
-
     font-size: 16px;
     font-weight: 800;
-
     box-shadow:
         0 8px 22px rgba(212,166,74,.18);
+    overflow: hidden;
+}
+
+.cp-logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
 }
 
 .cp-brand span {
