@@ -309,7 +309,6 @@ CONTENT
     padding:0 40px;
     display:flex;
     flex-direction:column;
-    grid-template-columns:1fr;
     gap:40px;
     z-index:10;
 
@@ -330,14 +329,117 @@ CONTENT
 }
 
 /* ==========================================
+CONTACT LAYOUT (form + info card)
+========================================== */
+
+.cp-contact-section{
+
+    max-width:1400px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 520px;
+    gap:40px;
+    align-items:start;
+
+}
+
+.cp-form-card{
+
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:32px;
+
+}
+
+.cp-form-card h3{
+
+    font-size:22px;
+    margin-bottom:8px;
+
+}
+
+.cp-form-card > p{
+
+    color:var(--muted);
+    margin-bottom:24px;
+
+}
+
+.cp-form-group{
+
+    margin-bottom:18px;
+
+}
+
+.cp-form-group label{
+
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+
+}
+
+.cp-form-group input,
+.cp-form-group textarea{
+
+    width:100%;
+    padding:14px 16px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    font-size:15px;
+    font-family:inherit;
+    transition:.25s;
+
+}
+
+.cp-form-group input:focus,
+.cp-form-group textarea:focus{
+
+    outline:none;
+    border-color:var(--gold2);
+
+}
+
+.cp-form-group textarea{
+
+    resize:none;
+
+}
+
+.cp-form-btn{
+
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,var(--gold2),var(--gold));
+    color:#111;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+.cp-form-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================
 INFO CARD
 ========================================== */
 
 .cp-info-grid{
 
-    display:grid;
-    grid-template-columns:
-    repeat(4,1fr);
+    display:flex;
+    flex-direction:column;
     gap:20px;
 
 }
@@ -456,130 +558,76 @@ FLOATING CARD
 
 }
 
-
-
-
-/* ==========================================
-RESPONSIVE
-========================================== */
-
-@media(max-width:992px){
-.cp-nav{
-padding:20px;
-flex-wrap:wrap;
-height:auto;
-gap:20px;
-
-}
-
-.cp-hero{
-
-    position:relative;
-
-    min-height:720px;
-
-    display:flex;
-
-    align-items:center;
-
-    overflow:hidden;
-
-    padding:0 80px;
-
-    background-image:
-        linear-gradient(
-            90deg,
-            rgba(8,17,31,.92),
-            rgba(8,17,31,.75),
-            rgba(8,17,31,.45)
-        ),
-        url("../images/hero/contact-banner.png");
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-
-}
-
-}
-
-.cp-title{
-font-size:42px;
-
-}
-
-@media(max-width:768px){
-
-.cp-links{
-display:none;
-
-}
-
-.cp-hero{
-padding:40px 20px;
-min-height:430px;
-
-}
-
-.cp-title{
-font-size:34px;
-
-}
-
-.cp-map-section{
-padding:20px;
-
-}
-
-.cp-form-card{
-padding:25px;
-
-}
-
-.cp-contact-section{
-
-    grid-template-columns:1fr;
-
-}
-
-.cp-info-grid{
-
-    grid-template-columns:1fr;
-
-}
-}
-
-/* ==========================================
-CONTACT LAYOUT
-========================================== */
-
-.cp-contact-section{
-
-    max-width:1400px;
-    margin:px auto;
-    padding:0 40px;
-    display:grid;
-    grid-template-columns:1fr 520px;
-    gap:40px;
-    align-items:start;
-
-}
-
 .cp-logo-img {
     width: 42px;
     height: 42px;
     object-fit: contain;
 }
 
+/* ==========================================
+RESPONSIVE
+========================================== */
 
+@media(max-width:992px){
 
+    .cp-nav{
+        padding:20px;
+        flex-wrap:wrap;
+        height:auto;
+        gap:20px;
+    }
 
+    .cp-hero{
 
+        position:relative;
+        min-height:720px;
+        display:flex;
+        align-items:center;
+        overflow:hidden;
+        padding:0 80px;
 
+        background-image:
+            linear-gradient(
+                90deg,
+                rgba(8,17,31,.92),
+                rgba(8,17,31,.75),
+                rgba(8,17,31,.45)
+            ),
+            url("../images/hero/contact-banner.png");
 
+        background-size:cover;
+        background-position:center;
+        background-repeat:no-repeat;
 
+    }
 
+    .cp-title{
+        font-size:42px;
+    }
 
+}
 
+@media(max-width:768px){
 
+    .cp-links{
+        display:none;
+    }
 
+    .cp-hero{
+        padding:40px 20px;
+        min-height:430px;
+    }
+
+    .cp-title{
+        font-size:34px;
+    }
+
+    .cp-form-card{
+        padding:25px;
+    }
+
+    .cp-contact-section{
+        grid-template-columns:1fr;
+    }
+
+}
