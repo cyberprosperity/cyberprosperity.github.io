@@ -450,7 +450,7 @@ INFO CARD
     border:1px solid var(--border);
     border-radius:20px;
     padding:28px;
-    min-height:240px;
+    min-height:110px;
 
     display:flex;
     flex-direction:column;
