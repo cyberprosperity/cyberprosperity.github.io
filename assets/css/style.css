@@ -845,7 +845,6 @@ a {
     font-size: 12px;
     text-align: right;
 }
-
 /* =========================================================
    RESPONSIVE TABLET
 ========================================================= */
@@ -854,7 +853,6 @@ a {
 
     .cp-nav-inner {
         width: min(100% - 40px, var(--cp-max-width));
-
         gap: 18px;
     }
 
@@ -881,10 +879,14 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE MOBILE
+   RESPONSIVE MOBILE (768px) 
 ========================================================= */
 
 @media (max-width: 768px) {
+
+    /* ==========================
+       NAVBAR — versi .cp-nav (Home, dll)
+    ========================== */
 
     .cp-nav {
         height: auto;
@@ -905,7 +907,6 @@ a {
     .cp-brand-logo {
         width: 38px;
         height: 38px;
-
         border-radius: 10px;
     }
 
@@ -950,8 +951,53 @@ a {
         font-size: 12px;
     }
 
+    /* ==========================
+       NAVBAR — versi generic
+    ========================== */
 
-    /* HERO */
+    .navbar{
+        padding:10px 0;
+    }
+
+    .navbar .container,
+    .dashboard-header .container{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .nav-menu{
+        display:none;
+    }
+
+    .nav-buttons{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .btn-login,
+    .btn-join{
+        display:block;
+        font-size:15px;
+        font-weight:700;
+        color:#ffffff;
+        text-decoration:none;
+    }
+
+    .nav-divider{
+        color:#ffffff;
+        font-size:15px;
+        font-weight:700;
+    }
+
+    /* ==========================
+       HERO
+    ========================== */
 
     .home-hero {
         min-height: 650px;
@@ -1012,7 +1058,9 @@ a {
         bottom: 22px;
     }
 
-    /* SECTIONS */
+    /* ==========================
+       SECTIONS (umum)
+    ========================== */
 
     .cp-section {
         padding: 75px 20px;
@@ -1032,22 +1080,44 @@ a {
 
     .cp-feature-grid {
         grid-template-columns: 1fr;
-
         gap: 16px;
     }
 
     .cp-feature-card {
         min-height: auto;
-
         padding: 25px;
     }
 
+    .about h2,
+    .forum h2,
+    .contact h2,
+    .statistics h2{
+        font-size:30px;
+    }
 
-    /* STATISTICS */
+    .about-grid,
+    .forum-grid,
+    .contact-grid,
+    .stats-grid,
+    .broker-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .card,
+    .forum-card,
+    .contact-card,
+    .stat-card,
+    .broker-card{
+        padding:22px;
+    }
+
+    /* ==========================
+       STATISTICS
+    ========================== */
 
     .cp-stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-
         gap: 12px;
     }
 
@@ -1063,8 +1133,9 @@ a {
         font-size: 11px;
     }
 
-
-    /* CTA */
+    /* ==========================
+       CTA
+    ========================== */
 
     .cp-cta {
         padding: 75px 20px;
@@ -1078,27 +1149,139 @@ a {
         font-size: 14px;
     }
 
-
-    /* FOOTER */
+    /* ==========================
+       FOOTER
+    ========================== */
 
     .cp-footer-inner {
         width: calc(100% - 40px);
-
         flex-direction: column;
-
         align-items: flex-start;
-
         padding: 35px 0;
     }
 
     .cp-footer-copy {
         text-align: left;
     }
+
+    /* ==========================
+       FEED / BROKER ACTIONS
+    ========================== */
+
+    .feed-actions{
+        flex-wrap:wrap;
+    }
+
+    .feed-actions button,
+    .feed-actions a{
+        flex:1;
+        text-align:center;
+    }
+
+    .broker-buttons{
+        flex-direction:column;
+        gap: 12px;
+    }
+
+    /* ==========================
+       SIDEBAR / DASHBOARD
+    ========================== */
+
+    .app-layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:space-between;
+        align-items:center;
+        padding:14px 16px;
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .sidebar-logo{
+        flex-direction:row;
+        align-items:center;
+        margin-bottom:0;
+        text-align:left;
+    }
+
+    .sidebar-logo-img{
+        width:42px;
+        height:42px;
+        margin-bottom:0;
+        margin-right:10px;
+    }
+
+    .sidebar-logo h2{
+        font-size:14px;
+        margin-bottom:2px;
+    }
+
+    .sidebar-logo span{
+        font-size:11px;
+    }
+
+    .sidebar-menu,
+    .sidebar-divider,
+    .sidebar-bottom{
+        display:none;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    /* ==========================
+       PROFILE PAGE
+    ========================== */
+
+    .profile-profile{
+        flex-wrap:wrap;
+        gap:16px;
+    }
+
+    .profile-action{
+        padding-top:0;
+        width:100%;
+    }
+
+    .profile-stats{
+        gap:28px;
+    }
+
+    /* ==========================
+       SETTINGS LAYOUT
+    ========================== */
+
+    .settings-layout{
+        grid-template-columns:1fr;
+    }
+
+    .settings-menu{
+        width:100%;
+    }
 }
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   VERY SMALL MOBILE (430px)
 ========================================================= */
 
 @media (max-width: 430px) {
@@ -1131,6 +1314,7 @@ a {
         font-size: 32px;
     }
 }
+
 
 /* ==========================================
    LOGIN PAGE
@@ -2488,129 +2672,6 @@ a {
 
 }
 
-/* ==========================================
-   RESPONSIVE MOBILE
-========================================== */
-
-@media screen and (max-width:768px){
-
-    .container{
-        width:92%;
-        margin:auto;
-    }
-
-    /* ==========================
-       NAVBAR
-    ========================== */
-
-    .navbar{
-        padding:10px 0;
-    }
-
-    .navbar .container,
-    .dashboard-header .container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    }
-
-    .logo{
-        font-size:18px;
-    }
-
-    .nav-menu{
-        display:none;
-    }
-
-    .nav-buttons{
-        display:flex;
-        align-items:center;
-        gap:8px;
-    }
-
-    .btn-login,
-    .btn-join{
-        display:block;
-        font-size:15px;
-        font-weight:700;
-        color:#ffffff;
-        text-decoration:none;
-    }
-
-    .nav-divider{
-        color:#ffffff;
-        font-size:15px;
-        font-weight:700;
-    }
-
-    /* ==========================
-       HERO
-    ========================== */
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    /* ==========================
-       SECTION
-    ========================== */
-
-    .about h2,
-    .forum h2,
-    .contact h2,
-    .statistics h2{
-        font-size:30px;
-    }
-
-    .about-grid,
-    .forum-grid,
-    .contact-grid,
-    .stats-grid,
-    .broker-grid{
-        grid-template-columns:1fr;
-        gap:20px;
-    }
-
-    .card,
-    .forum-card,
-    .contact-card,
-    .stat-card,
-    .broker-card{
-        padding:22px;
-    }
-
-}
-
-    .feed-actions{
-        flex-wrap:wrap;
-    }
-
-    .feed-actions button,
-    .feed-actions a{
-        flex:1;
-        text-align:center;
-    }
-
-    .broker-buttons{
-        flex-direction:column;
-        gap: 12px;
-    }
-
-
 
 /* ==========================================
    FEED ACTION BUTTON
@@ -3350,47 +3411,6 @@ a {
     object-fit:cover;
     display:block;
     background:#101827;
-}
-
-/* ==========================
-   Responsive Mobile
-========================== */
-
-@media screen and (max-width:768px){
-
-    .navbar{
-        padding:10px 0;
-    }
-
-    .navbar .container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    }
-
-    .logo{
-        font-size:18px;
-    }
-
-    .nav-menu{
-        display:none;
-    }
-
-    .nav-buttons{
-        display:flex;
-        align-items:center;
-        gap:8px;
-    }
-
-    .btn-login,
-    .btn-join{
-        font-size:15px;
-    }
-
-    .nav-divider{
-        font-size:15px;
-    }
-
 }
 
 /* =========================
