@@ -69,6 +69,24 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // ---- SINKRONISASI KE TABEL PROFILES ----
+        // Cek apakah user ini sudah punya baris di tabel profiles.
+        // Kalau belum, buat otomatis pakai data dari metadata (full_name, username).
+        const user = data.user;
+        const { data: existingProfile } = await supabaseClient
+            .from("profiles")
+            .select("id")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (!existingProfile) {
+            await supabaseClient.from("profiles").insert({
+                id: user.id,
+                full_name: user.user_metadata?.full_name || "",
+                username: user.user_metadata?.username || ""
+            });
+        }
+
         // ---- HASIL / PEMBERITAHUAN ----
         showMessage("Login berhasil! Mengalihkan...", "success");
         setTimeout(() => {
