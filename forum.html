@@ -216,6 +216,33 @@
      FORUM THREAD LIST
 ========================================== -->
 
+<!-- MODAL BUAT THREAD BARU -->
+<div id="threadModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#12141c; padding:24px; border-radius:12px; width:90%; max-width:500px;">
+        <h3 style="color:#fff; margin-bottom:16px;">Buat Thread Baru</h3>
+
+        <input type="text" id="threadTitleInput" placeholder="Judul thread"
+               style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+
+        <select id="threadCategoryInput"
+                style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+            <option value="gold">Gold</option>
+            <option value="forex">Forex</option>
+            <option value="strategi">Strategi</option>
+            <option value="pemula">Pemula</option>
+            <option value="offtopic">Off Topic</option>
+        </select>
+
+        <textarea id="threadContentInput" placeholder="Tulis isi thread..." rows="4"
+                  style="width:100%; padding:10px; margin-bottom:16px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;"></textarea>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button id="threadCancelBtn" style="padding:10px 16px; border-radius:8px; border:none; background:#333; color:#fff; cursor:pointer;">Batal</button>
+            <button id="threadSubmitBtn" class="forum-create-btn" style="cursor:pointer;">Posting</button>
+        </div>
+    </div>
+</div>
+
 <section class="forum-feed">
 
     <!-- THREAD 1 -->
@@ -296,6 +323,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/auth-state.js"></script>
+<script src="assets/js/forum.js"></script>
 
 </body>
 
