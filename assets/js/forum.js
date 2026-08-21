@@ -2,7 +2,7 @@
 // FORUM PAGE LOGIC (versi Thread)
 // Alur: Cek login -> Ambil semua thread + data penulisnya ->
 //       Tampilkan sebagai thread-card -> Filter kategori ->
-//       Buat thread baru lewat modal
+//       Buat thread baru lewat modal -> Hapus thread milik sendiri
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -42,9 +42,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `${days} hari lalu`;
     }
 
+    // ---- HAPUS THREAD ----
+    async function deleteThread(threadId, cardElement) {
+        const confirmDelete = confirm("Yakin mau hapus postingan ini? Tindakan ini tidak bisa dibatalkan.");
+        if (!confirmDelete) return;
+
+        const { error } = await supabaseClient
+            .from("post")
+            .delete()
+            .eq("id", threadId);
+
+        if (error) {
+            alert("Gagal menghapus postingan: " + error.message);
+            return;
+        }
+
+        // Hapus dari tampilan & dari cache allThreads tanpa perlu fetch ulang
+        cardElement.remove();
+        allThreads = allThreads.filter((t) => t.id !== threadId);
+    }
+
     function renderThread(thread) {
         const authorName = thread.profiles?.full_name || thread.profiles?.username || "Pengguna";
         const authorAvatar = thread.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
+        const isOwner = thread.user_id === user.id;
 
         const article = document.createElement("article");
         article.className = "thread-card";
@@ -58,6 +79,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="thread-meta">
                     <span class="thread-author"></span>
                     <span class="thread-time">${timeAgo(thread.created_at)}</span>
+                    ${isOwner ? '<button type="button" class="thread-delete-btn" title="Hapus postingan"><i class="fa-regular fa-trash-can"></i> Hapus</button>' : ''}
                 </div>
                 <span class="thread-tag"></span>
                 <h3 class="thread-title"></h3>
@@ -75,6 +97,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         article.querySelector(".thread-tag").textContent = (thread.category || "gold").toUpperCase();
         article.querySelector(".thread-title").textContent = thread.title || "(Tanpa judul)";
         article.querySelector(".thread-preview").textContent = thread.content;
+
+        // Pasang event hapus (kalau tombolnya ada, cuma buat pemilik)
+        const deleteBtn = article.querySelector(".thread-delete-btn");
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", () => {
+                deleteThread(thread.id, article);
+            });
+        }
 
         return article;
     }

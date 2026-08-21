@@ -2890,6 +2890,34 @@ a {
 }
 
 /* ==========================================
+   THREAD ACTIONS (Hapus)
+========================================== */
+
+.thread-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.thread-delete-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-left:auto;
+    background:none;
+    border:none;
+    color:#EF4444;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.thread-delete-btn:hover{
+    color:#ff6b6b;
+    text-decoration:underline;
+}
+
+/* ==========================================
    SETTINGS MENU
 ========================================== */
 
