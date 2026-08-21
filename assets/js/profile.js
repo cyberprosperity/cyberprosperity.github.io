@@ -1,63 +1,74 @@
 // ============================================
-// PROFILE.JS
-// Cek login, ambil data asli user (full_name,
-// username, avatar_url) dari tabel profiles,
-// dan tangani upload foto profil ke Storage
+// PROFILE PAGE LOGIC
+// Alur: Cek login -> Ambil data dari tabel profiles ->
+//       Tampilkan nama & username asli -> Fitur upload avatar
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // 1. Cek session — kalau belum login, lempar ke login.html
-    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+    // ---- CEK LOGIN ----
+    const { data: { session } } = await supabaseClient.auth.getSession();
 
-    if (sessionError || !session) {
+    if (!session) {
+        // Kalau belum login, tendang ke halaman login
         window.location.href = "login.html";
         return;
     }
 
     const user = session.user;
 
-    // 2. Ambil data profil dari tabel profiles
-    const { data: profile, error: profileError } = await supabaseClient
+    // ---- AMBIL DATA PROFILE DARI DATABASE ----
+    const { data: profile, error } = await supabaseClient
         .from("profiles")
         .select("full_name, username, avatar_url")
         .eq("id", user.id)
-        .single();
+        .maybeSingle();
 
-    if (profileError) {
-        console.error("Gagal ambil data profil:", profileError.message);
-        return;
+    if (error) {
+        console.error("Gagal ambil data profile:", error.message);
     }
 
-    const nameEl = document.getElementById("profileName");
-    const usernameEl = document.getElementById("profileUsername");
+    const fullName = profile?.full_name || "Pengguna Baru";
+    const username = profile?.username || "user";
+    const avatarUrl = profile?.avatar_url || "assets/images/avatar/default-avatar.png";
 
-    if (nameEl) {
-        nameEl.textContent = profile.full_name || "Nama belum diisi";
-    }
+    // ---- TAMPILKAN DATA ASLI KE HALAMAN ----
+    const nameEl = document.querySelector(".profile-name h1");
+    const usernameEl = document.querySelector(".profile-username");
+    const avatarEls = document.querySelectorAll(".profile-avatar, .feed-avatar");
 
-    if (usernameEl) {
-        usernameEl.textContent = "@" + (profile.username || "username");
-    }
+    if (nameEl) nameEl.textContent = fullName;
+    if (usernameEl) usernameEl.textContent = "@" + username;
 
-    if (profile.avatar_url) {
-        document.querySelectorAll(".profile-avatar, .feed-avatar").forEach(img => {
-            img.src = profile.avatar_url;
-        });
-    }
+    avatarEls.forEach((img) => {
+        img.src = avatarUrl;
+    });
 
-    // 3. Fitur upload avatar
-    const avatarInput = document.getElementById("avatarUploadInput");
+    // ---- FITUR UPLOAD AVATAR ----
+    const avatarInput = document.querySelector("#avatarInput");
+    const avatarImg = document.querySelector(".profile-avatar");
 
     if (avatarInput) {
         avatarInput.addEventListener("change", async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
+            // Validasi sederhana
+            if (!file.type.startsWith("image/")) {
+                alert("File harus berupa gambar.");
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ukuran gambar maksimal 2MB.");
+                return;
+            }
+
             const fileExt = file.name.split(".").pop();
             const filePath = `${user.id}/avatar.${fileExt}`;
 
-            const { error: uploadError } = await supabaseClient.storage
+            // Upload ke Supabase Storage bucket 'avatars'
+            const { error: uploadError } = await supabaseClient
+                .storage
                 .from("avatars")
                 .upload(filePath, file, { upsert: true });
 
@@ -66,25 +77,40 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            const { data: publicUrlData } = supabaseClient.storage
+            // Ambil URL publik dari file yang baru diupload
+            const { data: publicUrlData } = supabaseClient
+                .storage
                 .from("avatars")
                 .getPublicUrl(filePath);
 
-            const avatarUrl = publicUrlData.publicUrl + "?t=" + Date.now();
+            const newAvatarUrl = publicUrlData.publicUrl;
+            const cacheBustedUrl = newAvatarUrl + "?t=" + Date.now();
 
+            // Simpan URL avatar baru ke tabel profiles
             const { error: updateError } = await supabaseClient
                 .from("profiles")
-                .update({ avatar_url: avatarUrl })
+                .update({ avatar_url: newAvatarUrl })
                 .eq("id", user.id);
 
             if (updateError) {
-                alert("Gagal simpan avatar ke profil: " + updateError.message);
+                alert("Gagal simpan foto ke profile: " + updateError.message);
                 return;
             }
 
-            document.querySelectorAll(".profile-avatar, .feed-avatar").forEach(img => {
-                img.src = avatarUrl;
+            // Update tampilan avatar langsung tanpa reload
+            avatarEls.forEach((img) => {
+                img.src = cacheBustedUrl;
             });
+
+            alert("Foto profil berhasil diperbarui!");
+        });
+    }
+
+    // Klik foto avatar untuk buka file picker
+    if (avatarImg && avatarInput) {
+        avatarImg.style.cursor = "pointer";
+        avatarImg.addEventListener("click", () => {
+            avatarInput.click();
         });
     }
 
