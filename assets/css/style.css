@@ -2875,21 +2875,6 @@ a {
 }
 
 /* ==========================================
-   SETTINGS LAYOUT
-========================================== */
-
-.settings-layout{
-
-    display:grid;
-    grid-template-columns:280px 760px;
-    gap:40px;
-    justify-content:start;
-    align-items:start;
-    margin-top:35px;
-
-}
-
-/* ==========================================
    THREAD ACTIONS (Hapus)
 ========================================== */
 
@@ -2915,6 +2900,132 @@ a {
 .thread-delete-btn:hover{
     color:#ff6b6b;
     text-decoration:underline;
+}
+
+/* ==========================================
+   THREAD COMMENTS
+========================================== */
+
+.thread-comment-toggle{
+    cursor:pointer;
+    transition:.2s;
+}
+
+.thread-comment-toggle:hover{
+    color:#D4A64A;
+}
+
+.thread-comments{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.comment-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-bottom:14px;
+}
+
+.comment-item{
+    display:flex;
+    gap:12px;
+}
+
+.comment-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+.comment-body{
+    flex:1;
+    background:#10151F;
+    border-radius:12px;
+    padding:10px 14px;
+}
+
+.comment-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:4px;
+}
+
+.comment-author{
+    color:#FFFFFF;
+    font-size:13px;
+    font-weight:700;
+}
+
+.comment-time{
+    color:#64748B;
+    font-size:11px;
+}
+
+.comment-delete-btn{
+    margin-left:auto;
+    background:none;
+    border:none;
+    color:#EF4444;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.comment-text{
+    margin:0;
+    color:#CBD5E1;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.comment-form{
+    display:flex;
+    gap:10px;
+}
+
+.comment-input{
+    flex:1;
+    background:#10151F;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;
+    padding:10px 14px;
+    color:#FFFFFF;
+    font-size:13px;
+    outline:none;
+}
+
+.comment-input::placeholder{
+    color:#64748B;
+}
+
+.comment-submit-btn{
+    background:#D4A64A;
+    color:#111827;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+}
+
+/* ==========================================
+   SETTINGS LAYOUT
+========================================== */
+
+.settings-layout{
+
+    display:grid;
+    grid-template-columns:280px 760px;
+    gap:40px;
+    justify-content:start;
+    align-items:start;
+    margin-top:35px;
+
 }
 
 /* ==========================================
