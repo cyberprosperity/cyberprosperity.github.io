@@ -15,20 +15,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ---- AMBIL DATA PROFILE ----
     const { data: profile } = await supabaseClient
         .from("profiles")
-        .select("full_name, username, avatar_url")
+        .select("full_name, username, avatar_url, bio")
         .eq("id", user.id)
         .maybeSingle();
 
     const fullName = profile?.full_name || "Pengguna Baru";
     const username = profile?.username || "user";
     const avatarUrl = profile?.avatar_url || "assets/images/avatar/default-avatar.png";
+    const bio = profile?.bio || "";
 
     const nameEl = document.querySelector(".profile-name h1");
     const usernameEl = document.querySelector(".profile-username");
+    const bioEl = document.querySelector(".profile-bio");
     const avatarEls = document.querySelectorAll(".profile-avatar, .feed-avatar");
 
     if (nameEl) nameEl.textContent = fullName;
     if (usernameEl) usernameEl.textContent = "@" + username;
+    if (bioEl) bioEl.textContent = bio;
     avatarEls.forEach((img) => { img.src = avatarUrl; });
 
     // ---- UPLOAD AVATAR (klik foto) ----
@@ -77,6 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const editModal = document.querySelector("#editProfileModal");
     const editNameInput = document.querySelector("#editFullName");
     const editUsernameInput = document.querySelector("#editUsername");
+    const editBioInput = document.querySelector("#editBio");
     const editSaveBtn = document.querySelector("#editProfileSaveBtn");
     const editCancelBtn = document.querySelector("#editProfileCancelBtn");
 
@@ -84,6 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         editBtn.addEventListener("click", () => {
             editNameInput.value = fullName;
             editUsernameInput.value = username;
+            if (editBioInput) editBioInput.value = bio;
             editModal.style.display = "flex";
         });
     }
@@ -98,6 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         editSaveBtn.addEventListener("click", async () => {
             const newName = editNameInput.value.trim();
             const newUsername = editUsernameInput.value.trim();
+            const newBio = editBioInput ? editBioInput.value.trim() : bio;
 
             if (!newName || !newUsername) {
                 alert("Nama dan username tidak boleh kosong.");
@@ -106,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const { error } = await supabaseClient
                 .from("profiles")
-                .update({ full_name: newName, username: newUsername })
+                .update({ full_name: newName, username: newUsername, bio: newBio })
                 .eq("id", user.id);
 
             if (error) {
@@ -116,6 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (nameEl) nameEl.textContent = newName;
             if (usernameEl) usernameEl.textContent = "@" + newUsername;
+            if (bioEl) bioEl.textContent = newBio;
             editModal.style.display = "none";
             alert("Profil berhasil diperbarui!");
         });
