@@ -1,5 +1,5 @@
 // ============================================
-// PROFILE PAGE LOGIC (versi lengkap)
+// PROFILE PAGE LOGIC (versi lengkap + sosial)
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         .eq("id", user.id)
         .maybeSingle();
 
-    const fullName = profile?.full_name || "Pengguna Baru";
-    const username = profile?.username || "user";
-    const avatarUrl = profile?.avatar_url || "assets/images/avatar/default-avatar.png";
-    const bio = profile?.bio || "";
+    let fullName = profile?.full_name || "Pengguna Baru";
+    let username = profile?.username || "user";
+    let avatarUrl = profile?.avatar_url || "assets/images/avatar/default-avatar.png";
+    let bio = profile?.bio || "";
 
     const nameEl = document.querySelector(".profile-name h1");
     const usernameEl = document.querySelector(".profile-username");
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (bioEl) bioEl.textContent = bio;
     avatarEls.forEach((img) => { img.src = avatarUrl; });
 
-    // ---- UPLOAD AVATAR (klik foto) ----
+    // ---- UPLOAD AVATAR ----
     const avatarInput = document.querySelector("#avatarInput");
     const avatarImg = document.querySelector(".profile-avatar");
 
@@ -53,11 +53,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (uploadError) { alert("Gagal upload: " + uploadError.message); return; }
 
             const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
-            const cacheBustedUrl = publicUrlData.publicUrl + "?t=" + Date.now();
+            avatarUrl = publicUrlData.publicUrl;
+            const cacheBustedUrl = avatarUrl + "?t=" + Date.now();
 
-            await supabaseClient.from("profiles").update({ avatar_url: publicUrlData.publicUrl }).eq("id", user.id);
+            await supabaseClient.from("profiles").update({ avatar_url: avatarUrl }).eq("id", user.id);
 
-            avatarEls.forEach((img) => { img.src = cacheBustedUrl; });
+            document.querySelectorAll(".profile-avatar, .feed-avatar").forEach((img) => { img.src = cacheBustedUrl; });
             alert("Foto profil berhasil diperbarui!");
         });
     }
@@ -67,12 +68,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         avatarImg.addEventListener("click", () => avatarInput.click());
     }
 
-    // ---- TOMBOL SETTINGS (di sebelah Edit Profile) -> arahkan ke settings.html ----
+    // ---- TOMBOL SETTINGS ----
     const settingsBtn = document.querySelector(".btn-setting-profile");
     if (settingsBtn) {
-        settingsBtn.addEventListener("click", () => {
-            window.location.href = "settings.html";
-        });
+        settingsBtn.addEventListener("click", () => { window.location.href = "settings.html"; });
     }
 
     // ---- MODAL EDIT PROFILE ----
@@ -94,9 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (editCancelBtn && editModal) {
-        editCancelBtn.addEventListener("click", () => {
-            editModal.style.display = "none";
-        });
+        editCancelBtn.addEventListener("click", () => { editModal.style.display = "none"; });
     }
 
     if (editSaveBtn) {
@@ -105,21 +102,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             const newUsername = editUsernameInput.value.trim();
             const newBio = editBioInput ? editBioInput.value.trim() : bio;
 
-            if (!newName || !newUsername) {
-                alert("Nama dan username tidak boleh kosong.");
-                return;
-            }
+            if (!newName || !newUsername) { alert("Nama dan username tidak boleh kosong."); return; }
 
             const { error } = await supabaseClient
                 .from("profiles")
                 .update({ full_name: newName, username: newUsername, bio: newBio })
                 .eq("id", user.id);
 
-            if (error) {
-                alert("Gagal menyimpan: " + error.message);
-                return;
-            }
+            if (error) { alert("Gagal menyimpan: " + error.message); return; }
 
+            fullName = newName;
+            username = newUsername;
+            bio = newBio;
             if (nameEl) nameEl.textContent = newName;
             if (usernameEl) usernameEl.textContent = "@" + newUsername;
             if (bioEl) bioEl.textContent = newBio;
@@ -128,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- STATISTIK: hitung jumlah Posts asli ----
+    // ---- STATISTIK POSTS ----
     const { count: postCount } = await supabaseClient
         .from("post")
         .select("id", { count: "exact", head: true })
@@ -136,12 +130,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         .eq("type", "thread");
 
     const statEls = document.querySelectorAll(".profile-stats .stat strong");
-    // urutan di HTML: Followers, Following, Posts
-    if (statEls[0]) statEls[0].textContent = "0"; // Followers (belum ada sistem follow)
-    if (statEls[1]) statEls[1].textContent = "0"; // Following (belum ada sistem follow)
-    if (statEls[2]) statEls[2].textContent = postCount ?? 0; // Posts (asli)
+    if (statEls[0]) statEls[0].textContent = "0";
+    if (statEls[1]) statEls[1].textContent = "0";
+    if (statEls[2]) statEls[2].textContent = postCount ?? 0;
 
-    // ---- STATUS: tampilkan & buat status asli ----
+    // ============================================
+    // STATUS FEED: tampil, buat, edit, hapus,
+    // like, comment, share
+    // ============================================
+
     const statusBox = document.querySelector(".status-box");
     const shareBtn = document.querySelector(".btn-status");
     const feedSection = document.querySelector(".profile-feed");
@@ -157,24 +154,275 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `${days} hari lalu`;
     }
 
-    function renderStatusCard(statusPost) {
+    async function renderStatusCard(statusPost) {
+        const isOwner = statusPost.user_id === user.id;
+
+        const [likeCountRes, myLikeRes, commentCountRes] = await Promise.all([
+            supabaseClient.from("likes").select("id", { count: "exact", head: true }).eq("post_id", statusPost.id),
+            supabaseClient.from("likes").select("id").eq("post_id", statusPost.id).eq("user_id", user.id).maybeSingle(),
+            supabaseClient.from("comments").select("id", { count: "exact", head: true }).eq("post_id", statusPost.id)
+        ]);
+
+        let likeCount = likeCountRes.count ?? 0;
+        let isLiked = !!myLikeRes.data;
+        const commentCount = commentCountRes.count ?? 0;
+
         const card = document.createElement("div");
         card.className = "profile-card";
-        card.innerHTML = `
-            <div class="feed-header">
-                <img src="${avatarUrl}" class="feed-avatar" alt="${fullName}">
-                <div>
-                    <strong>${fullName}</strong>
-                    <small>${timeAgo(statusPost.created_at)}</small>
-                </div>
-            </div>
-            <p class="feed-text"></p>
-            <div class="feed-footer">
-                <span><i class="fa-regular fa-heart"></i> 0</span>
-                <span><i class="fa-regular fa-comment"></i> 0</span>
+
+        const header = document.createElement("div");
+        header.className = "feed-header";
+        header.innerHTML = `
+            <img src="${avatarUrl}" class="feed-avatar" alt="${fullName}">
+            <div>
+                <strong></strong>
+                <small>${timeAgo(statusPost.created_at)}</small>
             </div>
         `;
-        card.querySelector(".feed-text").textContent = statusPost.content;
+        header.querySelector("strong").textContent = fullName;
+
+        if (isOwner) {
+            const ownerActions = document.createElement("div");
+            ownerActions.style.cssText = "margin-left:auto; display:flex; gap:12px; align-items:center;";
+            ownerActions.innerHTML = `
+                <i class="fa-regular fa-pen-to-square edit-status-btn" style="cursor:pointer; color:#aaa;"></i>
+                <i class="fa-solid fa-trash delete-status-btn" style="cursor:pointer; color:#aaa;"></i>
+            `;
+            header.appendChild(ownerActions);
+        }
+
+        const textEl = document.createElement("p");
+        textEl.className = "feed-text";
+        textEl.textContent = statusPost.content;
+
+        const footer = document.createElement("div");
+        footer.className = "feed-footer";
+        footer.style.cssText = "display:flex; align-items:center; gap:16px; flex-wrap:wrap;";
+        footer.innerHTML = `
+            <span class="like-btn" style="cursor:pointer;">
+                <i class="fa-${isLiked ? "solid" : "regular"} fa-heart" style="${isLiked ? "color:#e11d48;" : ""}"></i>
+                <span class="like-count">${likeCount}</span>
+            </span>
+            <span class="comment-toggle-btn" style="cursor:pointer;">
+                <i class="fa-regular fa-comment"></i>
+                <span class="comment-count">${commentCount}</span>
+            </span>
+            <span class="share-fb-btn" style="cursor:pointer;" title="Share ke Facebook">
+                <i class="fa-brands fa-facebook" style="color:#1877f2;"></i>
+            </span>
+            <span class="share-wa-btn" style="cursor:pointer;" title="Share ke WhatsApp">
+                <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i>
+            </span>
+        `;
+
+        const commentSection = document.createElement("div");
+        commentSection.className = "comment-section";
+        commentSection.style.cssText = "display:none; margin-top:14px; border-top:1px solid #2a2d3a; padding-top:14px;";
+
+        const commentList = document.createElement("div");
+        commentList.className = "comment-list";
+        commentSection.appendChild(commentList);
+
+        const commentInputWrap = document.createElement("div");
+        commentInputWrap.style.cssText = "display:flex; gap:8px; margin-top:10px;";
+        commentInputWrap.innerHTML = `
+            <input type="text" class="comment-input" placeholder="Tulis komentar..."
+                   style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+            <button class="comment-submit-btn" style="padding:8px 14px; border-radius:8px; border:none; background:#FFD700; color:#000; font-weight:bold; cursor:pointer;">Kirim</button>
+        `;
+        commentSection.appendChild(commentInputWrap);
+
+        card.appendChild(header);
+        card.appendChild(textEl);
+        card.appendChild(footer);
+        card.appendChild(commentSection);
+
+        const editBtnEl = header.querySelector(".edit-status-btn");
+        if (editBtnEl) {
+            editBtnEl.addEventListener("click", () => {
+                const textarea = document.createElement("textarea");
+                textarea.value = statusPost.content;
+                textarea.rows = 3;
+                textarea.style.cssText = "width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;";
+
+                const saveBtn = document.createElement("button");
+                saveBtn.textContent = "Simpan";
+                saveBtn.style.cssText = "margin-top:8px; padding:8px 14px; border-radius:8px; border:none; background:#FFD700; color:#000; font-weight:bold; cursor:pointer;";
+
+                textEl.replaceWith(textarea);
+                textarea.insertAdjacentElement("afterend", saveBtn);
+
+                saveBtn.addEventListener("click", async () => {
+                    const newContent = textarea.value.trim();
+                    if (!newContent) { alert("Status tidak boleh kosong."); return; }
+
+                    const { error } = await supabaseClient
+                        .from("post")
+                        .update({ content: newContent })
+                        .eq("id", statusPost.id);
+
+                    if (error) { alert("Gagal simpan: " + error.message); return; }
+
+                    statusPost.content = newContent;
+                    textEl.textContent = newContent;
+                    textarea.replaceWith(textEl);
+                    saveBtn.remove();
+                });
+            });
+        }
+
+        const deleteBtnEl = header.querySelector(".delete-status-btn");
+        if (deleteBtnEl) {
+            deleteBtnEl.addEventListener("click", async () => {
+                if (!confirm("Hapus status ini?")) return;
+                const { error } = await supabaseClient.from("post").delete().eq("id", statusPost.id);
+                if (error) { alert("Gagal hapus: " + error.message); return; }
+                card.remove();
+            });
+        }
+
+        const likeBtn = footer.querySelector(".like-btn");
+        likeBtn.addEventListener("click", async () => {
+            const icon = likeBtn.querySelector("i");
+            const countEl = likeBtn.querySelector(".like-count");
+
+            if (isLiked) {
+                const { error } = await supabaseClient.from("likes").delete()
+                    .eq("post_id", statusPost.id).eq("user_id", user.id);
+                if (error) return;
+                isLiked = false;
+                likeCount -= 1;
+            } else {
+                const { error } = await supabaseClient.from("likes").insert({
+                    post_id: statusPost.id, user_id: user.id
+                });
+                if (error) return;
+                isLiked = true;
+                likeCount += 1;
+            }
+
+            icon.className = `fa-${isLiked ? "solid" : "regular"} fa-heart`;
+            icon.style.color = isLiked ? "#e11d48" : "";
+            countEl.textContent = likeCount;
+        });
+
+        const commentToggleBtn = footer.querySelector(".comment-toggle-btn");
+        let commentsLoaded = false;
+
+        async function loadComments() {
+            const { data: comments, error } = await supabaseClient
+                .from("comments")
+                .select("id, user_id, content, created_at, profiles(full_name, username)")
+                .eq("post_id", statusPost.id)
+                .order("created_at", { ascending: true });
+
+            if (error) { console.error(error.message); return; }
+
+            commentList.innerHTML = "";
+
+            if (!comments || comments.length === 0) {
+                commentList.innerHTML = '<p style="color:#888; font-size:13px;">Belum ada komentar.</p>';
+                return;
+            }
+
+            comments.forEach((c) => {
+                const isCommentOwner = c.user_id === user.id;
+                const cName = c.profiles?.full_name || c.profiles?.username || "Pengguna";
+
+                const cEl = document.createElement("div");
+                cEl.style.cssText = "margin-bottom:10px; display:flex; justify-content:space-between; gap:8px;";
+
+                const cText = document.createElement("div");
+                cText.innerHTML = `<strong style="font-size:13px;"></strong><br><span class="comment-text" style="font-size:13px; color:#ccc;"></span>`;
+                cText.querySelector("strong").textContent = cName;
+                cText.querySelector(".comment-text").textContent = c.content;
+
+                cEl.appendChild(cText);
+
+                if (isCommentOwner) {
+                    const actions = document.createElement("div");
+                    actions.style.cssText = "display:flex; gap:8px; align-items:start; flex-shrink:0;";
+                    actions.innerHTML = `
+                        <i class="fa-regular fa-pen-to-square edit-comment-btn" style="cursor:pointer; color:#888; font-size:12px;"></i>
+                        <i class="fa-solid fa-trash delete-comment-btn" style="cursor:pointer; color:#888; font-size:12px;"></i>
+                    `;
+                    cEl.appendChild(actions);
+
+                    actions.querySelector(".edit-comment-btn").addEventListener("click", () => {
+                        const span = cText.querySelector(".comment-text");
+                        const input = document.createElement("input");
+                        input.type = "text";
+                        input.value = c.content;
+                        input.style.cssText = "font-size:13px; padding:4px 8px; border-radius:6px; border:1px solid #333; background:#1a1c26; color:#fff; width:100%;";
+                        span.replaceWith(input);
+                        input.focus();
+
+                        input.addEventListener("keydown", async (e) => {
+                            if (e.key === "Enter") {
+                                const newVal = input.value.trim();
+                                if (!newVal) return;
+                                const { error: updErr } = await supabaseClient
+                                    .from("comments").update({ content: newVal }).eq("id", c.id);
+                                if (updErr) { alert("Gagal update: " + updErr.message); return; }
+                                c.content = newVal;
+                                loadComments();
+                            }
+                        });
+                    });
+
+                    actions.querySelector(".delete-comment-btn").addEventListener("click", async () => {
+                        if (!confirm("Hapus komentar ini?")) return;
+                        const { error: delErr } = await supabaseClient.from("comments").delete().eq("id", c.id);
+                        if (delErr) { alert("Gagal hapus: " + delErr.message); return; }
+                        loadComments();
+                        const cc = commentToggleBtn.querySelector(".comment-count");
+                        cc.textContent = Math.max(0, parseInt(cc.textContent) - 1);
+                    });
+                }
+
+                commentList.appendChild(cEl);
+            });
+        }
+
+        commentToggleBtn.addEventListener("click", async () => {
+            const isHidden = commentSection.style.display === "none";
+            commentSection.style.display = isHidden ? "block" : "none";
+            if (isHidden && !commentsLoaded) {
+                commentsLoaded = true;
+                await loadComments();
+            }
+        });
+
+        const commentInput = commentInputWrap.querySelector(".comment-input");
+        const commentSubmitBtn = commentInputWrap.querySelector(".comment-submit-btn");
+
+        commentSubmitBtn.addEventListener("click", async () => {
+            const content = commentInput.value.trim();
+            if (!content) return;
+
+            const { error } = await supabaseClient.from("comments").insert({
+                post_id: statusPost.id, user_id: user.id, content: content
+            });
+
+            if (error) { alert("Gagal komentar: " + error.message); return; }
+
+            commentInput.value = "";
+            await loadComments();
+            const countEl = commentToggleBtn.querySelector(".comment-count");
+            countEl.textContent = parseInt(countEl.textContent) + 1;
+        });
+
+        footer.querySelector(".share-fb-btn").addEventListener("click", () => {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(statusPost.content);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, "_blank");
+        });
+
+        footer.querySelector(".share-wa-btn").addEventListener("click", () => {
+            const text = encodeURIComponent(statusPost.content + " - " + window.location.href);
+            window.open(`https://wa.me/?text=${text}`, "_blank");
+        });
+
         return card;
     }
 
@@ -183,53 +431,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const { data: statuses, error } = await supabaseClient
             .from("post")
-            .select("id, content, created_at")
+            .select("id, user_id, content, created_at")
             .eq("user_id", user.id)
             .eq("type", "status")
             .order("created_at", { ascending: false })
             .limit(10);
 
-        if (error) {
-            console.error("Gagal ambil status:", error.message);
-            return;
-        }
+        if (error) { console.error("Gagal ambil status:", error.message); return; }
 
-        // Hapus semua kartu status lama (termasuk dummy "Michael Tan")
         feedSection.querySelectorAll(".profile-card").forEach((el) => el.remove());
+        feedSection.querySelectorAll("p.empty-status-msg").forEach((el) => el.remove());
 
         if (!statuses || statuses.length === 0) {
             const empty = document.createElement("p");
+            empty.className = "empty-status-msg";
             empty.style.cssText = "color:#888; text-align:center; padding:24px;";
             empty.textContent = "Belum ada status. Tulis status pertamamu di atas!";
             feedSection.appendChild(empty);
             return;
         }
 
-        statuses.forEach((s) => {
-            feedSection.appendChild(renderStatusCard(s));
-        });
+        const cards = await Promise.all(statuses.map((s) => renderStatusCard(s)));
+        cards.forEach((card) => feedSection.appendChild(card));
     }
 
     if (shareBtn && statusBox) {
         shareBtn.addEventListener("click", async () => {
             const content = statusBox.value.trim();
-            if (!content) {
-                alert("Tulis sesuatu dulu.");
-                return;
-            }
+            if (!content) { alert("Tulis sesuatu dulu."); return; }
 
             const { error } = await supabaseClient
                 .from("post")
-                .insert({
-                    user_id: user.id,
-                    content: content,
-                    type: "status"
-                });
+                .insert({ user_id: user.id, content: content, type: "status" });
 
-            if (error) {
-                alert("Gagal membagikan status: " + error.message);
-                return;
-            }
+            if (error) { alert("Gagal membagikan status: " + error.message); return; }
 
             statusBox.value = "";
             loadStatuses();
