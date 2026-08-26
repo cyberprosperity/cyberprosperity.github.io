@@ -3014,6 +3014,121 @@ a {
 }
 
 /* ==========================================
+   EDIT THREAD & KOMENTAR
+========================================== */
+
+.thread-edit-btn{
+    background:none;
+    border:none;
+    color:#94A3B8;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+}
+
+.thread-edit-btn:hover{
+    color:#D4A64A;
+}
+
+.thread-edit-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.thread-edit-title,
+.thread-edit-content{
+    background:#10151F;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;
+    padding:12px 14px;
+    color:#FFFFFF;
+    font-size:14px;
+    font-family:inherit;
+    outline:none;
+    resize:none;
+}
+
+.thread-edit-actions,
+.comment-edit-actions{
+    display:flex;
+    gap:10px;
+}
+
+.thread-edit-save,
+.comment-edit-save{
+    background:#D4A64A;
+    color:#111827;
+    border:none;
+    padding:8px 16px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.thread-edit-cancel,
+.comment-edit-cancel{
+    background:transparent;
+    border:1px solid rgba(255,255,255,.15);
+    color:#FFFFFF;
+    padding:8px 16px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.comment-edit-btn{
+    background:none;
+    border:none;
+    color:#94A3B8;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.comment-edit-btn:hover{
+    color:#D4A64A;
+}
+
+.comment-edit-form{
+    margin-top:8px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.comment-edit-input{
+    background:#0e1420;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:8px;
+    padding:8px 12px;
+    color:#FFFFFF;
+    font-size:13px;
+    outline:none;
+}
+
+/* ==========================================
+   LINK OTOMATIS DI THREAD & KOMENTAR
+========================================== */
+
+.thread-preview a,
+.comment-text a{
+    color:#D4A64A;
+    text-decoration:none;
+    word-break:break-all;
+}
+
+.thread-preview a:hover,
+.comment-text a:hover{
+    text-decoration:underline;
+    color:#E7C15B;
+}
+
+/* ==========================================
    SETTINGS LAYOUT
 ========================================== */
 

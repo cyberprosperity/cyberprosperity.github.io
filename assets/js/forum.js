@@ -2,8 +2,9 @@
 // FORUM PAGE LOGIC (versi Thread)
 // Alur: Cek login -> Ambil semua thread + data penulisnya ->
 //       Tampilkan sebagai thread-card -> Filter kategori ->
-//       Buat thread baru lewat modal -> Hapus thread milik sendiri ->
-//       Komentar/balasan per thread
+//       Buat thread baru lewat modal -> Hapus/Edit thread milik sendiri ->
+//       Komentar/balasan per thread (kirim, hapus, edit) ->
+//       Link di teks otomatis bisa diklik
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoryButtons = document.querySelectorAll(".forum-categories button");
     const searchInput = document.querySelector(".forum-search input");
 
-    let allThreads = []; // simpan semua thread supaya bisa difilter tanpa fetch ulang
+    let allThreads = [];
 
     function timeAgo(dateString) {
         const diffMs = Date.now() - new Date(dateString).getTime();
@@ -41,6 +42,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (hours < 24) return `${hours} jam lalu`;
         const days = Math.floor(hours / 24);
         return `${days} hari lalu`;
+    }
+
+    // ---- HELPER: escape HTML supaya aman dari XSS ----
+    function escapeHtml(str) {
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // ---- HELPER: ubah URL di dalam teks jadi link yang bisa diklik ----
+    function linkify(text) {
+        const escaped = escapeHtml(text || "");
+        const urlRegex = /((https?:\/\/|www\.)[^\s<]+)/gi;
+
+        return escaped.replace(urlRegex, (match) => {
+            let href = match;
+            if (!/^https?:\/\//i.test(href)) {
+                href = "https://" + href;
+            }
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+        });
     }
 
     // ---- HAPUS THREAD ----
@@ -62,6 +87,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         allThreads = allThreads.filter((t) => t.id !== threadId);
     }
 
+    // ---- EDIT THREAD ----
+    async function saveThreadEdit(threadId, newTitle, newContent, titleEl, previewEl, threadObj) {
+        newTitle = newTitle.trim();
+        newContent = newContent.trim();
+
+        if (!newTitle || !newContent) {
+            alert("Judul dan isi tidak boleh kosong.");
+            return false;
+        }
+
+        const { error } = await supabaseClient
+            .from("post")
+            .update({ title: newTitle, content: newContent })
+            .eq("id", threadId);
+
+        if (error) {
+            alert("Gagal menyimpan perubahan: " + error.message);
+            return false;
+        }
+
+        titleEl.textContent = newTitle;
+        previewEl.innerHTML = linkify(newContent);
+        threadObj.title = newTitle;
+        threadObj.content = newContent;
+        return true;
+    }
+
     // ---- KOMENTAR: RENDER SATU KOMENTAR ----
     function renderComment(comment) {
         const authorName = comment.profiles?.full_name || comment.profiles?.username || "Pengguna";
@@ -77,15 +129,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="comment-meta">
                     <span class="comment-author"></span>
                     <span class="comment-time">${timeAgo(comment.created_at)}</span>
-                    ${isOwner ? '<button type="button" class="comment-delete-btn" title="Hapus komentar"><i class="fa-regular fa-trash-can"></i></button>' : ''}
+                    ${isOwner ? `
+                        <button type="button" class="comment-edit-btn" title="Edit komentar"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button type="button" class="comment-delete-btn" title="Hapus komentar"><i class="fa-regular fa-trash-can"></i></button>
+                    ` : ''}
                 </div>
                 <p class="comment-text"></p>
+                <div class="comment-edit-form" style="display:none;">
+                    <input type="text" class="comment-edit-input">
+                    <div class="comment-edit-actions">
+                        <button type="button" class="comment-edit-save">Simpan</button>
+                        <button type="button" class="comment-edit-cancel">Batal</button>
+                    </div>
+                </div>
             </div>
         `;
 
+        const textEl = item.querySelector(".comment-text");
         item.querySelector(".comment-author").textContent = authorName;
-        item.querySelector(".comment-text").textContent = comment.content;
+        textEl.innerHTML = linkify(comment.content);
 
+        // Hapus
         const delBtn = item.querySelector(".comment-delete-btn");
         if (delBtn) {
             delBtn.addEventListener("click", async () => {
@@ -106,32 +170,89 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
+        // Edit
+        const editBtn = item.querySelector(".comment-edit-btn");
+        const editForm = item.querySelector(".comment-edit-form");
+        const editInput = item.querySelector(".comment-edit-input");
+        const editSaveBtn = item.querySelector(".comment-edit-save");
+        const editCancelBtn = item.querySelector(".comment-edit-cancel");
+
+        if (editBtn) {
+            editBtn.addEventListener("click", () => {
+                editInput.value = comment.content;
+                textEl.style.display = "none";
+                editForm.style.display = "block";
+                editInput.focus();
+            });
+
+            editCancelBtn.addEventListener("click", () => {
+                editForm.style.display = "none";
+                textEl.style.display = "block";
+            });
+
+            editSaveBtn.addEventListener("click", async () => {
+                const newText = editInput.value.trim();
+                if (!newText) {
+                    alert("Komentar tidak boleh kosong.");
+                    return;
+                }
+
+                const { error } = await supabaseClient
+                    .from("comments")
+                    .update({ content: newText })
+                    .eq("id", comment.id);
+
+                if (error) {
+                    alert("Gagal menyimpan perubahan: " + error.message);
+                    return;
+                }
+
+                comment.content = newText;
+                textEl.innerHTML = linkify(newText);
+                editForm.style.display = "none";
+                textEl.style.display = "block";
+            });
+        }
+
         return item;
     }
 
-    // ---- KOMENTAR: MUAT SEMUA KOMENTAR UNTUK 1 THREAD ----
+    // ---- KOMENTAR: MUAT SEMUA KOMENTAR (comments & profiles diambil terpisah, digabung manual) ----
     async function loadComments(threadId, listEl) {
         listEl.innerHTML = '<p style="color:#64748B; font-size:13px;">Memuat komentar...</p>';
 
         const { data: comments, error } = await supabaseClient
             .from("comments")
-            .select("id, user_id, content, created_at, profiles(full_name, username, avatar_url)")
+            .select("id, user_id, content, created_at")
             .eq("post_id", threadId)
             .order("created_at", { ascending: true });
 
         if (error) {
-            listEl.innerHTML = '<p style="color:#EF4444; font-size:13px;">Gagal memuat komentar.</p>';
+            listEl.innerHTML = '<p style="color:#EF4444; font-size:13px;">Gagal memuat komentar: ' + error.message + '</p>';
             return;
         }
-
-        listEl.innerHTML = "";
 
         if (comments.length === 0) {
             listEl.innerHTML = '<p style="color:#64748B; font-size:13px;">Belum ada balasan. Jadilah yang pertama!</p>';
             return;
         }
 
+        const userIds = [...new Set(comments.map((c) => c.user_id))];
+
+        const { data: profilesData } = await supabaseClient
+            .from("profiles")
+            .select("id, full_name, username, avatar_url")
+            .in("id", userIds);
+
+        const profilesMap = {};
+        (profilesData || []).forEach((p) => {
+            profilesMap[p.id] = p;
+        });
+
+        listEl.innerHTML = "";
+
         comments.forEach((comment) => {
+            comment.profiles = profilesMap[comment.user_id] || null;
             listEl.appendChild(renderComment(comment));
         });
     }
@@ -157,7 +278,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         input.value = "";
         await loadComments(threadId, listEl);
 
-        // update angka "Balasan" di footer
         const currentCount = parseInt(countEl.textContent, 10) || 0;
         countEl.textContent = currentCount + 1;
     }
@@ -180,11 +300,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="thread-meta">
                     <span class="thread-author"></span>
                     <span class="thread-time">${timeAgo(thread.created_at)}</span>
-                    ${isOwner ? '<button type="button" class="thread-delete-btn" title="Hapus postingan"><i class="fa-regular fa-trash-can"></i> Hapus</button>' : ''}
+                    ${isOwner ? `
+                        <button type="button" class="thread-edit-btn" title="Edit postingan"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                        <button type="button" class="thread-delete-btn" title="Hapus postingan"><i class="fa-regular fa-trash-can"></i> Hapus</button>
+                    ` : ''}
                 </div>
                 <span class="thread-tag"></span>
                 <h3 class="thread-title"></h3>
                 <p class="thread-preview"></p>
+
+                <div class="thread-edit-form" style="display:none;">
+                    <input type="text" class="thread-edit-title" placeholder="Judul thread">
+                    <textarea class="thread-edit-content" rows="3" placeholder="Isi thread"></textarea>
+                    <div class="thread-edit-actions">
+                        <button type="button" class="thread-edit-save">Simpan</button>
+                        <button type="button" class="thread-edit-cancel">Batal</button>
+                    </div>
+                </div>
+
                 <div class="thread-footer">
                     <span class="thread-comment-toggle">💬 <span class="comment-count">${commentCount}</span> Balasan</span>
                     <span>👍 0 Like</span>
@@ -200,16 +333,60 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
         `;
 
+        const titleEl = article.querySelector(".thread-title");
+        const previewEl = article.querySelector(".thread-preview");
+
         article.querySelector(".thread-author").textContent = authorName;
         article.querySelector(".thread-tag").textContent = (thread.category || "gold").toUpperCase();
-        article.querySelector(".thread-title").textContent = thread.title || "(Tanpa judul)";
-        article.querySelector(".thread-preview").textContent = thread.content;
+        titleEl.textContent = thread.title || "(Tanpa judul)";
+        previewEl.innerHTML = linkify(thread.content);
 
-        // Tombol hapus thread
+        // Hapus thread
         const deleteBtn = article.querySelector(".thread-delete-btn");
         if (deleteBtn) {
             deleteBtn.addEventListener("click", () => {
                 deleteThread(thread.id, article);
+            });
+        }
+
+        // Edit thread
+        const editBtn = article.querySelector(".thread-edit-btn");
+        const editForm = article.querySelector(".thread-edit-form");
+        const editTitleInput = article.querySelector(".thread-edit-title");
+        const editContentInput = article.querySelector(".thread-edit-content");
+        const editSaveBtn = article.querySelector(".thread-edit-save");
+        const editCancelBtn = article.querySelector(".thread-edit-cancel");
+
+        if (editBtn) {
+            editBtn.addEventListener("click", () => {
+                editTitleInput.value = thread.title || "";
+                editContentInput.value = thread.content || "";
+                titleEl.style.display = "none";
+                previewEl.style.display = "none";
+                editForm.style.display = "block";
+            });
+
+            editCancelBtn.addEventListener("click", () => {
+                editForm.style.display = "none";
+                titleEl.style.display = "block";
+                previewEl.style.display = "block";
+            });
+
+            editSaveBtn.addEventListener("click", async () => {
+                const success = await saveThreadEdit(
+                    thread.id,
+                    editTitleInput.value,
+                    editContentInput.value,
+                    titleEl,
+                    previewEl,
+                    thread
+                );
+
+                if (success) {
+                    editForm.style.display = "none";
+                    titleEl.style.display = "block";
+                    previewEl.style.display = "block";
+                }
             });
         }
 
@@ -259,7 +436,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- AMBIL SEMUA THREAD DARI DATABASE ----
     async function loadThreads() {
         const { data: threads, error } = await supabaseClient
             .from("post")
@@ -275,7 +451,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         displayThreads(allThreads);
     }
 
-    // ---- FILTER KATEGORI ----
     categoryButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             categoryButtons.forEach((b) => b.classList.remove("active"));
@@ -290,7 +465,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    // ---- SEARCH THREAD ----
     if (searchInput) {
         searchInput.addEventListener("input", () => {
             const keyword = searchInput.value.trim().toLowerCase();
@@ -302,7 +476,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- MODAL BUAT THREAD BARU ----
     if (createBtn && modal) {
         createBtn.addEventListener("click", () => {
             modal.style.display = "flex";
