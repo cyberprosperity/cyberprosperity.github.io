@@ -106,6 +106,26 @@
          PROFILE HEADER
     ========================================== -->
 
+<!-- MODAL EDIT PROFILE -->
+<div id="editProfileModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#12141c; padding:24px; border-radius:12px; width:90%; max-width:450px;">
+        <h3 style="color:#fff; margin-bottom:16px;">Edit Profile</h3>
+
+        <label style="color:#aaa; font-size:13px;">Nama Lengkap</label>
+        <input type="text" id="editFullName" placeholder="Nama Lengkap"
+               style="width:100%; padding:10px; margin:6px 0 14px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+
+        <label style="color:#aaa; font-size:13px;">Username</label>
+        <input type="text" id="editUsername" placeholder="Username"
+               style="width:100%; padding:10px; margin:6px 0 16px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button id="editProfileCancelBtn" style="padding:10px 16px; border-radius:8px; border:none; background:#333; color:#fff; cursor:pointer;">Batal</button>
+            <button id="editProfileSaveBtn" class="btn-edit-profile-save" style="padding:10px 16px; border-radius:8px; border:none; background:#FFD700; color:#000; font-weight:bold; cursor:pointer;">Simpan</button>
+        </div>
+    </div>
+</div>
+
     <section class="profile-header">
 
         <div class="profile-cover"></div>

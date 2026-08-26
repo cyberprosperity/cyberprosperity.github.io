@@ -439,10 +439,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function loadThreads() {
         const { data: threads, error } = await supabaseClient
             .from("post")
-            .select("id, user_id, title, content, category, created_at, profiles(full_name, username, avatar_url), comments(count)")
+            .select("id, user_id, title, content, category, created_at, profiles(full_name, username, avatar_url)")
+            .eq("type", "thread")
             .order("created_at", { ascending: false });
 
-        if (error) {
+             if (error) {
             console.error("Gagal ambil data thread:", error.message);
             return;
         }
