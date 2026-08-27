@@ -606,6 +606,7 @@ RESPONSIVE
         font-size:42px;
     }
 
+    /* Widget chat mulai disusutkan sebelum masuk breakpoint mobile */
     .cp-float{
         width:260px;
         right:30px;
@@ -616,7 +617,7 @@ RESPONSIVE
 
 @media(max-width:768px){
 
-    /* ---- Navbar ----
+    /* ---- Navbar ---- */
 
     .cp-nav{
         position:relative;
@@ -664,6 +665,8 @@ RESPONSIVE
     .cp-contact-section{
         grid-template-columns:1fr;
     }
+
+    /* ---- Widget chat "Adinda" ---- */
 
     .cp-float{
         position:relative;
