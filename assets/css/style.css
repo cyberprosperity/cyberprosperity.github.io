@@ -3213,10 +3213,11 @@ a {
     }
 
     .cp-nav-inner {
-        width: calc(100% - 30px);
-        min-height: 72px;
-        flex-wrap: wrap;
-        padding: 12px 0;
+    width: calc(100% - 40px);
+    min-height: 72px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    padding: 12px 0;
     }
 
     .cp-brand span {
@@ -3327,9 +3328,10 @@ a {
     }
 
     .home-hero-copy {
-        width: calc(100% - 40px);
-        min-height: 650px;
-        padding: 60px 0 90px;
+    width: calc(100% - 40px);
+    min-height: 650px;
+    margin: 0 12px 0 28px;
+    padding: 60px 0 90px;
     }
 
     .home-hero-bg img {
