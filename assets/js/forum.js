@@ -1,5 +1,5 @@
 // ============================================
-// FORUM PAGE LOGIC (versi lengkap: thread + komentar + like/views/share)
+// FORUM PAGE LOGIC (gaya ikon disamakan dengan Profile)
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -51,27 +51,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- HAPUS THREAD ----
     async function deleteThread(threadId, cardElement) {
-        const confirmDelete = confirm("Yakin mau hapus postingan ini? Tindakan ini tidak bisa dibatalkan.");
-        if (!confirmDelete) return;
-
+        if (!confirm("Yakin mau hapus postingan ini? Tindakan ini tidak bisa dibatalkan.")) return;
         const { error } = await supabaseClient.from("post").delete().eq("id", threadId);
         if (error) { alert("Gagal menghapus postingan: " + error.message); return; }
-
         cardElement.remove();
         allThreads = allThreads.filter((t) => t.id !== threadId);
     }
 
-    // ---- EDIT THREAD ----
     async function saveThreadEdit(threadId, newTitle, newContent, titleEl, previewEl, threadObj) {
         newTitle = newTitle.trim();
         newContent = newContent.trim();
         if (!newTitle || !newContent) { alert("Judul dan isi tidak boleh kosong."); return false; }
 
-        const { error } = await supabaseClient.from("post")
-            .update({ title: newTitle, content: newContent }).eq("id", threadId);
-
+        const { error } = await supabaseClient
+            .from("post").update({ title: newTitle, content: newContent }).eq("id", threadId);
         if (error) { alert("Gagal menyimpan perubahan: " + error.message); return false; }
 
         titleEl.textContent = newTitle;
@@ -81,7 +75,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return true;
     }
 
-    // ---- KOMENTAR: RENDER SATU KOMENTAR ----
     function renderComment(comment) {
         const authorName = comment.profiles?.full_name || comment.profiles?.username || "Pengguna";
         const authorAvatar = comment.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
@@ -89,16 +82,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const item = document.createElement("div");
         item.className = "comment-item";
-
         item.innerHTML = `
             <img src="${authorAvatar}" alt="${authorName}" class="comment-avatar">
             <div class="comment-body">
-                <div class="comment-meta">
+                <div class="comment-meta" style="display:flex; align-items:center; gap:10px;">
                     <span class="comment-author"></span>
                     <span class="comment-time">${timeAgo(comment.created_at)}</span>
                     ${isOwner ? `
-                        <button type="button" class="comment-edit-btn" title="Edit komentar"><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button type="button" class="comment-delete-btn" title="Hapus komentar"><i class="fa-regular fa-trash-can"></i></button>
+                        <span style="margin-left:auto; display:flex; gap:10px;">
+                            <i class="fa-regular fa-pen-to-square comment-edit-btn" style="cursor:pointer; color:#aaa; font-size:13px;"></i>
+                            <i class="fa-solid fa-trash comment-delete-btn" style="cursor:pointer; color:#aaa; font-size:13px;"></i>
+                        </span>
                     ` : ''}
                 </div>
                 <p class="comment-text"></p>
@@ -148,12 +142,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             editSaveBtn.addEventListener("click", async () => {
                 const newText = editInput.value.trim();
                 if (!newText) { alert("Komentar tidak boleh kosong."); return; }
-
-                const { error } = await supabaseClient.from("comments")
-                    .update({ content: newText }).eq("id", comment.id);
-
+                const { error } = await supabaseClient.from("comments").update({ content: newText }).eq("id", comment.id);
                 if (error) { alert("Gagal menyimpan perubahan: " + error.message); return; }
-
                 comment.content = newText;
                 textEl.innerHTML = linkify(newText);
                 editForm.style.display = "none";
@@ -164,7 +154,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return item;
     }
 
-    // ---- KOMENTAR: MUAT SEMUA (comments & profiles diambil terpisah, digabung manual) ----
     async function loadComments(threadId, listEl) {
         listEl.innerHTML = '<p style="color:#64748B; font-size:13px;">Memuat komentar...</p>';
 
@@ -198,23 +187,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- KOMENTAR: KIRIM BARU ----
     async function submitComment(threadId, input, listEl, countEl) {
         const text = input.value.trim();
         if (!text) return;
-
-        const { error } = await supabaseClient.from("comments")
-            .insert({ post_id: threadId, user_id: user.id, content: text });
-
+        const { error } = await supabaseClient.from("comments").insert({
+            post_id: threadId, user_id: user.id, content: text
+        });
         if (error) { alert("Gagal mengirim balasan: " + error.message); return; }
-
         input.value = "";
         await loadComments(threadId, listEl);
         const currentCount = parseInt(countEl.textContent, 10) || 0;
         countEl.textContent = currentCount + 1;
     }
 
-    // ---- RENDER SATU THREAD (async karena perlu fetch like/comment count dulu) ----
     async function renderThread(thread) {
         const authorName = thread.profiles?.full_name || thread.profiles?.username || "Pengguna";
         const authorAvatar = thread.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
@@ -239,12 +224,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <img src="${authorAvatar}" alt="${authorName}">
             </div>
             <div class="thread-content">
-                <div class="thread-meta">
+                <div class="thread-meta" style="display:flex; align-items:center; gap:10px;">
                     <span class="thread-author"></span>
                     <span class="thread-time">${timeAgo(thread.created_at)}</span>
                     ${isOwner ? `
-                        <button type="button" class="thread-edit-btn" title="Edit postingan"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
-                        <button type="button" class="thread-delete-btn" title="Hapus postingan"><i class="fa-regular fa-trash-can"></i> Hapus</button>
+                        <span style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+                            <i class="fa-regular fa-pen-to-square thread-edit-btn" style="cursor:pointer; color:#aaa;"></i>
+                            <i class="fa-solid fa-trash thread-delete-btn" style="cursor:pointer; color:#aaa;"></i>
+                        </span>
                     ` : ''}
                 </div>
                 <span class="thread-tag"></span>
@@ -260,15 +247,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 </div>
 
-                <div class="thread-footer">
-                    <span class="thread-like-btn">
-                        <i class="fa-${isLiked ? "solid" : "regular"} fa-thumbs-up" style="${isLiked ? "color:#FFD700;" : ""}"></i>
-                        <span class="thread-like-count">${likeCount}</span> Like
+                <div class="thread-footer" style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                    <span class="thread-like-btn" style="cursor:pointer;">
+                        <i class="fa-${isLiked ? "solid" : "regular"} fa-heart" style="${isLiked ? "color:#e11d48;" : ""}"></i>
+                        <span class="thread-like-count">${likeCount}</span>
                     </span>
-                    <span class="thread-comment-toggle">💬 <span class="comment-count">${commentCount}</span> Balasan</span>
-                    <span>👁 <span class="thread-view-count">${thread.views ?? 0}</span> Views</span>
-                    <span class="thread-share-fb" title="Share ke Facebook"><i class="fa-brands fa-facebook" style="color:#1877f2;"></i></span>
-                    <span class="thread-share-wa" title="Share ke WhatsApp"><i class="fa-brands fa-whatsapp" style="color:#25d366;"></i></span>
+                    <span class="thread-comment-toggle" style="cursor:pointer;">
+                        <i class="fa-regular fa-comment"></i>
+                        <span class="comment-count">${commentCount}</span>
+                    </span>
+                    <span>
+                        <i class="fa-regular fa-eye"></i>
+                        <span class="thread-view-count">${thread.views ?? 0}</span>
+                    </span>
+                    <span class="thread-share-fb" style="cursor:pointer;" title="Share ke Facebook">
+                        <i class="fa-brands fa-facebook" style="color:#1877f2;"></i>
+                    </span>
+                    <span class="thread-share-wa" style="cursor:pointer;" title="Share ke WhatsApp">
+                        <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i>
+                    </span>
                 </div>
                 <div class="thread-comments" style="display:none;">
                     <div class="comment-list"></div>
@@ -288,9 +285,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         titleEl.textContent = thread.title || "(Tanpa judul)";
         previewEl.innerHTML = linkify(thread.content);
 
-        // Hapus & Edit thread
         const deleteBtn = article.querySelector(".thread-delete-btn");
-        if (deleteBtn) deleteBtn.addEventListener("click", () => deleteThread(thread.id, article));
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", () => deleteThread(thread.id, article));
+        }
 
         const editBtn = article.querySelector(".thread-edit-btn");
         const editForm = article.querySelector(".thread-edit-form");
@@ -315,7 +313,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             editSaveBtn.addEventListener("click", async () => {
-                const success = await saveThreadEdit(thread.id, editTitleInput.value, editContentInput.value, titleEl, previewEl, thread);
+                const success = await saveThreadEdit(
+                    thread.id, editTitleInput.value, editContentInput.value, titleEl, previewEl, thread
+                );
                 if (success) {
                     editForm.style.display = "none";
                     titleEl.style.display = "block";
@@ -324,7 +324,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        // Like
         const likeBtn = article.querySelector(".thread-like-btn");
         likeBtn.addEventListener("click", async () => {
             const icon = likeBtn.querySelector("i");
@@ -334,20 +333,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const { error } = await supabaseClient.from("likes").delete()
                     .eq("post_id", thread.id).eq("user_id", user.id);
                 if (error) return;
-                isLiked = false;
-                likeCount -= 1;
+                isLiked = false; likeCount -= 1;
             } else {
                 const { error } = await supabaseClient.from("likes").insert({ post_id: thread.id, user_id: user.id });
                 if (error) return;
-                isLiked = true;
-                likeCount += 1;
+                isLiked = true; likeCount += 1;
             }
-            icon.className = `fa-${isLiked ? "solid" : "regular"} fa-thumbs-up`;
-            icon.style.color = isLiked ? "#FFD700" : "";
+            icon.className = `fa-${isLiked ? "solid" : "regular"} fa-heart`;
+            icon.style.color = isLiked ? "#e11d48" : "";
             countEl.textContent = likeCount;
         });
 
-        // Share
+        let viewCounted = false;
+        article.addEventListener("click", async (e) => {
+            if (e.target.closest("i, button, .thread-like-btn, .thread-share-fb, .thread-share-wa, .thread-comment-toggle, a")) return;
+            if (viewCounted) return;
+            viewCounted = true;
+            const { error } = await supabaseClient.rpc("increment_post_views", { post_id_arg: thread.id });
+            if (!error) {
+                const viewEl = article.querySelector(".thread-view-count");
+                viewEl.textContent = parseInt(viewEl.textContent) + 1;
+            }
+        });
+
         article.querySelector(".thread-share-fb").addEventListener("click", () => {
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent(thread.title + " - " + thread.content);
@@ -359,15 +367,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.open(`https://wa.me/?text=${text}`, "_blank");
         });
 
-        // Toggle komentar
         const toggle = article.querySelector(".thread-comment-toggle");
         const commentsPanel = article.querySelector(".thread-comments");
         const commentList = article.querySelector(".comment-list");
         const commentInput = article.querySelector(".comment-input");
         const commentSubmitBtn = article.querySelector(".comment-submit-btn");
-        const countEl2 = article.querySelector(".comment-count");
+        const countEl = article.querySelector(".comment-count");
         let commentsLoaded = false;
-        let viewCounted = false;
 
         toggle.addEventListener("click", () => {
             const isHidden = commentsPanel.style.display === "none";
@@ -378,21 +384,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        commentSubmitBtn.addEventListener("click", () => submitComment(thread.id, commentInput, commentList, countEl2));
-        commentInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") submitComment(thread.id, commentInput, commentList, countEl2);
+        commentSubmitBtn.addEventListener("click", () => {
+            submitComment(thread.id, commentInput, commentList, countEl);
         });
 
-        // Hitung views: sekali per thread waktu pertama kali kartu ini dibuat/tampil
-        if (!viewCounted) {
-            viewCounted = true;
-            supabaseClient.rpc("increment_post_views", { post_id_arg: thread.id }).then(({ error }) => {
-                if (!error) {
-                    const viewEl = article.querySelector(".thread-view-count");
-                    viewEl.textContent = parseInt(viewEl.textContent, 10) + 1;
-                }
-            });
-        }
+        commentInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") submitComment(thread.id, commentInput, commentList, countEl);
+        });
 
         return article;
     }
@@ -414,6 +412,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const { data: threads, error } = await supabaseClient
             .from("post")
             .select("id, user_id, title, content, category, created_at, views, profiles(full_name, username, avatar_url)")
+            .eq("type", "thread")
             .order("created_at", { ascending: false });
 
         if (error) { console.error("Gagal ambil data thread:", error.message); return; }
@@ -427,7 +426,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             categoryButtons.forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
             const filter = btn.dataset.filter;
-            displayThreads(filter === "all" ? allThreads : allThreads.filter((t) => t.category === filter));
+            if (filter === "all") {
+                displayThreads(allThreads);
+            } else {
+                displayThreads(allThreads.filter((t) => t.category === filter));
+            }
         });
     });
 
@@ -442,8 +445,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    if (createBtn && modal) createBtn.addEventListener("click", () => { modal.style.display = "flex"; });
-    if (cancelBtn && modal) cancelBtn.addEventListener("click", () => { modal.style.display = "none"; });
+    if (createBtn && modal) {
+        createBtn.addEventListener("click", () => { modal.style.display = "flex"; });
+    }
+
+    if (cancelBtn && modal) {
+        cancelBtn.addEventListener("click", () => { modal.style.display = "none"; });
+    }
 
     if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
@@ -453,8 +461,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!title || !content) { alert("Judul dan isi thread wajib diisi."); return; }
 
-            const { error } = await supabaseClient.from("post")
-                .insert({ user_id: user.id, title, category, content });
+            const { error } = await supabaseClient
+                .from("post")
+                .insert({ user_id: user.id, title, category, content, type: "thread" });
 
             if (error) { alert("Gagal membuat thread: " + error.message); return; }
 
