@@ -1,18 +1,32 @@
 // ============================================
-// PROFILE PAGE LOGIC (versi lengkap + sosial)
+// PROFILE PAGE LOGIC (final)
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // ---- CEK LOGIN ----
     const { data: { session } } = await supabaseClient.auth.getSession();
+
+    // ---- TAMPILAN GUEST (belum login) ----
     if (!session) {
-        window.location.href = "login.html";
+        const mainEl = document.querySelector(".main-content") || document.body;
+        mainEl.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:70vh; text-align:center; padding:24px;">
+                <i class="fa-regular fa-circle-user" style="font-size:64px; color:#555; margin-bottom:16px;"></i>
+                <h2 style="color:#fff; margin-bottom:8px;">Kamu belum login</h2>
+                <p style="color:#999; margin-bottom:24px; max-width:360px;">
+                    Masuk ke akun kamu untuk melihat dan mengelola profil Cyber Prosperity.
+                </p>
+                <div style="display:flex; gap:12px;">
+                    <a href="login.html" style="padding:12px 24px; border-radius:8px; background:#FFD700; color:#000; font-weight:bold; text-decoration:none;">Login</a>
+                    <a href="register.html" style="padding:12px 24px; border-radius:8px; background:#333; color:#fff; text-decoration:none;">Daftar</a>
+                </div>
+            </div>
+        `;
         return;
     }
+
     const user = session.user;
 
-    // ---- AMBIL DATA PROFILE ----
     const { data: profile } = await supabaseClient
         .from("profiles")
         .select("full_name, username, avatar_url, bio")
@@ -57,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const cacheBustedUrl = avatarUrl + "?t=" + Date.now();
 
             await supabaseClient.from("profiles").update({ avatar_url: avatarUrl }).eq("id", user.id);
-
             document.querySelectorAll(".profile-avatar, .feed-avatar").forEach((img) => { img.src = cacheBustedUrl; });
             alert("Foto profil berhasil diperbarui!");
         });
@@ -91,29 +104,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             editModal.style.display = "flex";
         });
     }
-
     if (editCancelBtn && editModal) {
         editCancelBtn.addEventListener("click", () => { editModal.style.display = "none"; });
     }
-
     if (editSaveBtn) {
         editSaveBtn.addEventListener("click", async () => {
             const newName = editNameInput.value.trim();
             const newUsername = editUsernameInput.value.trim();
             const newBio = editBioInput ? editBioInput.value.trim() : bio;
-
             if (!newName || !newUsername) { alert("Nama dan username tidak boleh kosong."); return; }
 
             const { error } = await supabaseClient
                 .from("profiles")
                 .update({ full_name: newName, username: newUsername, bio: newBio })
                 .eq("id", user.id);
-
             if (error) { alert("Gagal menyimpan: " + error.message); return; }
 
-            fullName = newName;
-            username = newUsername;
-            bio = newBio;
+            fullName = newName; username = newUsername; bio = newBio;
             if (nameEl) nameEl.textContent = newName;
             if (usernameEl) usernameEl.textContent = "@" + newUsername;
             if (bioEl) bioEl.textContent = newBio;
@@ -124,10 +131,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ---- STATISTIK POSTS ----
     const { count: postCount } = await supabaseClient
-        .from("post")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", user.id)
-        .eq("type", "thread");
+        .from("post").select("id", { count: "exact", head: true })
+        .eq("user_id", user.id).eq("type", "thread");
 
     const statEls = document.querySelectorAll(".profile-stats .stat strong");
     if (statEls[0]) statEls[0].textContent = "0";
@@ -135,11 +140,87 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (statEls[2]) statEls[2].textContent = postCount ?? 0;
 
     // ============================================
-    // STATUS FEED: tampil, buat, edit, hapus,
-    // like, comment, share
+    // MOOD & FOTO (composer status)
     // ============================================
-
     const statusBox = document.querySelector(".status-box");
+    const toolButtons = document.querySelectorAll(".status-tools button");
+    const moodBtn = toolButtons[0];
+    const fotoBtn = toolButtons[1];
+
+    let selectedMood = "";
+    let pendingImageUrl = null;
+
+    // Hidden file input untuk Foto
+    const statusImageInput = document.createElement("input");
+    statusImageInput.type = "file";
+    statusImageInput.accept = "image/*";
+    statusImageInput.hidden = true;
+    document.body.appendChild(statusImageInput);
+
+    // Preview gambar terpilih
+    const imagePreviewWrap = document.createElement("div");
+    imagePreviewWrap.style.cssText = "display:none; margin-top:10px; position:relative; width:fit-content;";
+    imagePreviewWrap.innerHTML = `
+        <img style="max-width:200px; border-radius:8px;">
+        <span style="position:absolute; top:-8px; right:-8px; background:#e11d48; color:#fff; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;">✕</span>
+    `;
+    if (statusBox) statusBox.insertAdjacentElement("afterend", imagePreviewWrap);
+
+    // Mood picker
+    const moodPicker = document.createElement("div");
+    moodPicker.style.cssText = "display:none; gap:8px; margin-top:8px;";
+    ["😀", "😢", "😡", "😍", "🚀", "🔥", "🙏"].forEach((emoji) => {
+        const btn = document.createElement("span");
+        btn.textContent = emoji;
+        btn.style.cssText = "cursor:pointer; font-size:20px;";
+        btn.addEventListener("click", () => {
+            selectedMood = emoji;
+            if (statusBox) statusBox.value = (emoji + " " + statusBox.value).trim();
+            moodPicker.style.display = "none";
+        });
+        moodPicker.appendChild(btn);
+    });
+    if (statusBox) statusBox.insertAdjacentElement("afterend", moodPicker);
+
+    if (moodBtn) {
+        moodBtn.addEventListener("click", () => {
+            moodPicker.style.display = moodPicker.style.display === "none" ? "flex" : "none";
+        });
+    }
+
+    if (fotoBtn) {
+        fotoBtn.addEventListener("click", () => statusImageInput.click());
+    }
+
+    statusImageInput.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith("image/")) { alert("File harus gambar."); return; }
+        if (file.size > 3 * 1024 * 1024) { alert("Maksimal 3MB."); return; }
+
+        const fileExt = file.name.split(".").pop();
+        const filePath = `${user.id}/post-${Date.now()}.${fileExt}`;
+
+        const { error: uploadError } = await supabaseClient.storage
+            .from("avatars").upload(filePath, file);
+        if (uploadError) { alert("Gagal upload foto: " + uploadError.message); return; }
+
+        const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
+        pendingImageUrl = publicUrlData.publicUrl;
+
+        imagePreviewWrap.querySelector("img").src = pendingImageUrl;
+        imagePreviewWrap.style.display = "block";
+    });
+
+    imagePreviewWrap.querySelector("span").addEventListener("click", () => {
+        pendingImageUrl = null;
+        imagePreviewWrap.style.display = "none";
+        statusImageInput.value = "";
+    });
+
+    // ============================================
+    // STATUS FEED
+    // ============================================
     const shareBtn = document.querySelector(".btn-status");
     const feedSection = document.querySelector(".profile-feed");
 
@@ -174,10 +255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         header.className = "feed-header";
         header.innerHTML = `
             <img src="${avatarUrl}" class="feed-avatar" alt="${fullName}">
-            <div>
-                <strong></strong>
-                <small>${timeAgo(statusPost.created_at)}</small>
-            </div>
+            <div><strong></strong><small>${timeAgo(statusPost.created_at)}</small></div>
         `;
         header.querySelector("strong").textContent = fullName;
 
@@ -194,6 +272,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const textEl = document.createElement("p");
         textEl.className = "feed-text";
         textEl.textContent = statusPost.content;
+
+        let imageEl = null;
+        if (statusPost.image_url) {
+            imageEl = document.createElement("img");
+            imageEl.src = statusPost.image_url;
+            imageEl.style.cssText = "max-width:100%; border-radius:8px; margin:10px 0;";
+        }
 
         const footer = document.createElement("div");
         footer.className = "feed-footer";
@@ -218,7 +303,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const commentSection = document.createElement("div");
         commentSection.className = "comment-section";
         commentSection.style.cssText = "display:none; margin-top:14px; border-top:1px solid #2a2d3a; padding-top:14px;";
-
         const commentList = document.createElement("div");
         commentList.className = "comment-list";
         commentSection.appendChild(commentList);
@@ -234,6 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         card.appendChild(header);
         card.appendChild(textEl);
+        if (imageEl) card.appendChild(imageEl);
         card.appendChild(footer);
         card.appendChild(commentSection);
 
@@ -244,7 +329,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 textarea.value = statusPost.content;
                 textarea.rows = 3;
                 textarea.style.cssText = "width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;";
-
                 const saveBtn = document.createElement("button");
                 saveBtn.textContent = "Simpan";
                 saveBtn.style.cssText = "margin-top:8px; padding:8px 14px; border-radius:8px; border:none; background:#FFD700; color:#000; font-weight:bold; cursor:pointer;";
@@ -255,14 +339,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 saveBtn.addEventListener("click", async () => {
                     const newContent = textarea.value.trim();
                     if (!newContent) { alert("Status tidak boleh kosong."); return; }
-
-                    const { error } = await supabaseClient
-                        .from("post")
-                        .update({ content: newContent })
-                        .eq("id", statusPost.id);
-
+                    const { error } = await supabaseClient.from("post").update({ content: newContent }).eq("id", statusPost.id);
                     if (error) { alert("Gagal simpan: " + error.message); return; }
-
                     statusPost.content = newContent;
                     textEl.textContent = newContent;
                     textarea.replaceWith(textEl);
@@ -285,22 +363,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         likeBtn.addEventListener("click", async () => {
             const icon = likeBtn.querySelector("i");
             const countEl = likeBtn.querySelector(".like-count");
-
             if (isLiked) {
-                const { error } = await supabaseClient.from("likes").delete()
-                    .eq("post_id", statusPost.id).eq("user_id", user.id);
+                const { error } = await supabaseClient.from("likes").delete().eq("post_id", statusPost.id).eq("user_id", user.id);
                 if (error) return;
-                isLiked = false;
-                likeCount -= 1;
+                isLiked = false; likeCount -= 1;
             } else {
-                const { error } = await supabaseClient.from("likes").insert({
-                    post_id: statusPost.id, user_id: user.id
-                });
+                const { error } = await supabaseClient.from("likes").insert({ post_id: statusPost.id, user_id: user.id });
                 if (error) return;
-                isLiked = true;
-                likeCount += 1;
+                isLiked = true; likeCount += 1;
             }
-
             icon.className = `fa-${isLiked ? "solid" : "regular"} fa-heart`;
             icon.style.color = isLiked ? "#e11d48" : "";
             countEl.textContent = likeCount;
@@ -315,11 +386,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .select("id, user_id, content, created_at, profiles(full_name, username)")
                 .eq("post_id", statusPost.id)
                 .order("created_at", { ascending: true });
-
             if (error) { console.error(error.message); return; }
 
             commentList.innerHTML = "";
-
             if (!comments || comments.length === 0) {
                 commentList.innerHTML = '<p style="color:#888; font-size:13px;">Belum ada komentar.</p>';
                 return;
@@ -328,15 +397,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             comments.forEach((c) => {
                 const isCommentOwner = c.user_id === user.id;
                 const cName = c.profiles?.full_name || c.profiles?.username || "Pengguna";
-
                 const cEl = document.createElement("div");
                 cEl.style.cssText = "margin-bottom:10px; display:flex; justify-content:space-between; gap:8px;";
-
                 const cText = document.createElement("div");
                 cText.innerHTML = `<strong style="font-size:13px;"></strong><br><span class="comment-text" style="font-size:13px; color:#ccc;"></span>`;
                 cText.querySelector("strong").textContent = cName;
                 cText.querySelector(".comment-text").textContent = c.content;
-
                 cEl.appendChild(cText);
 
                 if (isCommentOwner) {
@@ -356,13 +422,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         input.style.cssText = "font-size:13px; padding:4px 8px; border-radius:6px; border:1px solid #333; background:#1a1c26; color:#fff; width:100%;";
                         span.replaceWith(input);
                         input.focus();
-
                         input.addEventListener("keydown", async (e) => {
                             if (e.key === "Enter") {
                                 const newVal = input.value.trim();
                                 if (!newVal) return;
-                                const { error: updErr } = await supabaseClient
-                                    .from("comments").update({ content: newVal }).eq("id", c.id);
+                                const { error: updErr } = await supabaseClient.from("comments").update({ content: newVal }).eq("id", c.id);
                                 if (updErr) { alert("Gagal update: " + updErr.message); return; }
                                 c.content = newVal;
                                 loadComments();
@@ -379,7 +443,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         cc.textContent = Math.max(0, parseInt(cc.textContent) - 1);
                     });
                 }
-
                 commentList.appendChild(cEl);
             });
         }
@@ -387,25 +450,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         commentToggleBtn.addEventListener("click", async () => {
             const isHidden = commentSection.style.display === "none";
             commentSection.style.display = isHidden ? "block" : "none";
-            if (isHidden && !commentsLoaded) {
-                commentsLoaded = true;
-                await loadComments();
-            }
+            if (isHidden && !commentsLoaded) { commentsLoaded = true; await loadComments(); }
         });
 
         const commentInput = commentInputWrap.querySelector(".comment-input");
         const commentSubmitBtn = commentInputWrap.querySelector(".comment-submit-btn");
-
         commentSubmitBtn.addEventListener("click", async () => {
             const content = commentInput.value.trim();
             if (!content) return;
-
-            const { error } = await supabaseClient.from("comments").insert({
-                post_id: statusPost.id, user_id: user.id, content: content
-            });
-
+            const { error } = await supabaseClient.from("comments").insert({ post_id: statusPost.id, user_id: user.id, content });
             if (error) { alert("Gagal komentar: " + error.message); return; }
-
             commentInput.value = "";
             await loadComments();
             const countEl = commentToggleBtn.querySelector(".comment-count");
@@ -417,7 +471,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const text = encodeURIComponent(statusPost.content);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, "_blank");
         });
-
         footer.querySelector(".share-wa-btn").addEventListener("click", () => {
             const text = encodeURIComponent(statusPost.content + " - " + window.location.href);
             window.open(`https://wa.me/?text=${text}`, "_blank");
@@ -428,15 +481,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function loadStatuses() {
         if (!feedSection) return;
-
         const { data: statuses, error } = await supabaseClient
             .from("post")
-            .select("id, user_id, content, created_at")
-            .eq("user_id", user.id)
-            .eq("type", "status")
-            .order("created_at", { ascending: false })
-            .limit(10);
-
+            .select("id, user_id, content, image_url, created_at")
+            .eq("user_id", user.id).eq("type", "status")
+            .order("created_at", { ascending: false }).limit(10);
         if (error) { console.error("Gagal ambil status:", error.message); return; }
 
         feedSection.querySelectorAll(".profile-card").forEach((el) => el.remove());
@@ -462,11 +511,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const { error } = await supabaseClient
                 .from("post")
-                .insert({ user_id: user.id, content: content, type: "status" });
+                .insert({ user_id: user.id, content, type: "status", image_url: pendingImageUrl });
 
             if (error) { alert("Gagal membagikan status: " + error.message); return; }
 
             statusBox.value = "";
+            pendingImageUrl = null;
+            imagePreviewWrap.style.display = "none";
+            statusImageInput.value = "";
             loadStatuses();
         });
     }
