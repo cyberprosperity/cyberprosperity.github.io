@@ -246,29 +246,61 @@ CONTACT CONTENT
                 <h3>Kirim Pesan</h3>
                 <p>Isi form di bawah, tim kami akan segera menghubungi Anda kembali.</p>
 
-                <form>
+                <form id="contact-form" novalidate>
 
-                    <div class="cp-form-group">
-                        <label>Nama Lengkap</label>
-                        <input type="text" name="full_name" placeholder="Nama lengkap">
-                    </div>
+                <div class="cp-form-group">
+                <label for="contact-name">Nama</label>
 
-                    <div class="cp-form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" placeholder="Name@email.com">
-                    </div>
+                    <input
+                    id="contact-name"
+                    type="text"
+                    name="full_name"
+                    placeholder="Masukkan nama"
+                    autocomplete="name"
+                    required>
+            </div>
 
-                    <div class="cp-form-group">
-                        <label>Pesan</label>
-                        <textarea name="message" rows="5" placeholder="Tulis pesan Anda di sini..."></textarea>
-                    </div>
+        <div class="cp-form-group">
+            <label for="contact-email">Email</label>
 
-                    <button type="submit" class="cp-form-btn">
-                        Kirim Pesan
-                    </button>
+        <input
+            id="contact-email"
+            type="email"
+            name="email"
+            placeholder="nama@email.com"
+            autocomplete="email"
+            required>
+        </div>
 
-                </form>
+            <div class="cp-form-group">
+        <label for="contact-phone">Telp</label>
 
+        <input
+            id="contact-phone"
+            type="tel"
+            name="phone"
+            placeholder="08xxxxxxxxxx"
+            autocomplete="tel"
+            inputmode="tel"
+            required>
+        </div>
+
+            <div class="cp-form-group">
+             <label for="contact-message">Pesan</label>
+
+            <textarea
+            id="contact-message"
+            name="message"
+            rows="5"
+            placeholder="Tulis pesan Anda di sini..."
+            required></textarea>
+        </div>
+
+            <button type="submit" class="cp-form-btn">
+             Kirim Pesan
+            </button>
+
+        </form>
             </div>
 
             <!-- EMAIL CARD (sama seperti sebelumnya) -->
@@ -349,6 +381,7 @@ CONTACT CONTENT
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/auth-state.js"></script>
+<script src="assets/js/contact.js"></script>
 
         </div>
 
