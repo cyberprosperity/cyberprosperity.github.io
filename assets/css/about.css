@@ -316,147 +316,42 @@
 
 }
 
-/* ==========================================
-   NAVBAR
-   Mengikuti Contact Page
-========================================== */
-
 .cp-nav {
-
-    position: relative;
-    width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    padding: 28px 80px;
-    background: #0b0f18;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    z-index: 1000;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 80px;
 }
 
+@media (max-width: 768px) {
 
-/* ==========================================
-   BRAND
-========================================== */
+    .cp-nav {
+        padding: 12px 20px;
+        gap: 10px;
+    }
 
-.cp-brand {
+    .cp-links {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        padding: 5px 0 2px;
+        gap: 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
 
-    display: flex;
+    .cp-links::-webkit-scrollbar {
+        display: none;
+    }
 
-    align-items: center;
+    .cp-links a {
+        flex-shrink: 0;
+        font-size: 13px;
+    }
 
-    gap: 14px;
-
-    color: #F8FAFC;
-
-    text-decoration: none;
-
-    font-weight: 700;
-
-    font-size: 22px;
-
-    font-family: "Inter", sans-serif;
-}
-
-
-/* ==========================================
-   CP BADGE
-========================================== */
-
-.cp-badge {
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 12px;
-
-    background: linear-gradient(
-        135deg,
-        #F2C94C,
-        #D4A843
-    );
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    color: #111;
-
-    font-weight: 800;
-}
-
-/* ==========================================
-   NAVIGATION LINKS
-========================================== */
-
-.cp-links {
-
-    display: flex;
-    gap: 40px;
-}
-
-.cp-links a {
-    color: #CBD5E1;
-    text-decoration: none;
-    transition: .3s;
-    font-family: "Inter", sans-serif;
-}
-
-.cp-links a:hover,
-.cp-links .active {
-
-    color: #F2C94C;
-}
-
-
-/* ==========================================
-   RIGHT NAVIGATION
-========================================== */
-
-.cp-nav-right {
-
-    display: flex;
-
-    gap: 15px;
-
-    align-items: center;
-}
-
-.cp-signin {
-
-    padding: 10px 18px;
-
-    color: #F8FAFC;
-
-    text-decoration: none;
-
-    font-family: "Inter", sans-serif;
-}
-
-.cp-join {
-
-    background: linear-gradient(
-        135deg,
-        #F2C94C,
-        #D4A843
-    );
-
-    color: #111;
-
-    padding: 12px 24px;
-
-    border-radius: 12px;
-
-    font-weight: 700;
-
-    text-decoration: none;
-
-    font-family: "Inter", sans-serif;
-}
-
-.cp-logo-img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
+    .cp-nav-right {
+        gap: 8px;
+    }
 }

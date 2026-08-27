@@ -22,7 +22,6 @@
     --cp-max-width: 1280px;
 }
 
-
 /* =========================================================
    GLOBAL HOMEPAGE
 ========================================================= */
@@ -44,7 +43,6 @@ body * {
 a {
     -webkit-tap-highlight-color: transparent;
 }
-
 
 /* =========================================================
    NAVBAR
@@ -844,475 +842,6 @@ a {
     color: #64748b;
     font-size: 12px;
     text-align: right;
-}
-/* =========================================================
-   RESPONSIVE TABLET
-========================================================= */
-
-@media (max-width: 1000px) {
-
-    .cp-nav-inner {
-        width: min(100% - 40px, var(--cp-max-width));
-        gap: 18px;
-    }
-
-    .cp-links {
-        gap: 20px;
-    }
-
-    .cp-links a {
-        font-size: 13px;
-    }
-
-    .cp-feature-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cp-stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .home-title {
-        max-width: 680px;
-    }
-}
-
-
-/* =========================================================
-   RESPONSIVE MOBILE (768px) 
-========================================================= */
-
-@media (max-width: 768px) {
-
-    /* ==========================
-       NAVBAR — versi .cp-nav (Home, dll)
-    ========================== */
-
-    .cp-nav {
-        height: auto;
-        min-height: 72px;
-    }
-
-    .cp-nav-inner {
-        width: calc(100% - 30px);
-        min-height: 72px;
-        flex-wrap: wrap;
-        padding: 12px 0;
-    }
-
-    .cp-brand span {
-        font-size: 15px;
-    }
-
-    .cp-brand-logo {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-    }
-
-    .cp-links {
-        order: 3;
-        width: 100%;
-        margin: 0;
-        padding: 5px 0 2px;
-        justify-content: flex-start;
-        gap: 20px;
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-
-    .cp-links::-webkit-scrollbar {
-        display: none;
-    }
-
-    .cp-links a {
-        flex-shrink: 0;
-        padding: 8px 0;
-        font-size: 12px;
-    }
-
-    .cp-links a::after {
-        bottom: 1px;
-    }
-
-    .cp-nav-right {
-        gap: 5px;
-    }
-
-    .cp-signin {
-        min-height: 38px;
-        padding: 0 10px;
-        font-size: 12px;
-    }
-
-    .cp-join {
-        min-height: 38px;
-        padding: 0 13px;
-        font-size: 12px;
-    }
-
-    /* ==========================
-       NAVBAR — versi generic
-    ========================== */
-
-    .navbar{
-        padding:10px 0;
-    }
-
-    .navbar .container,
-    .dashboard-header .container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    }
-
-    .logo{
-        font-size:18px;
-    }
-
-    .nav-menu{
-        display:none;
-    }
-
-    .nav-buttons{
-        display:flex;
-        align-items:center;
-        gap:8px;
-    }
-
-    .btn-login,
-    .btn-join{
-        display:block;
-        font-size:15px;
-        font-weight:700;
-        color:#ffffff;
-        text-decoration:none;
-    }
-
-    .nav-divider{
-        color:#ffffff;
-        font-size:15px;
-        font-weight:700;
-    }
-
-    /* ==========================
-       HERO
-    ========================== */
-
-    .home-hero {
-        min-height: 650px;
-    }
-
-    .home-slide {
-        min-height: 650px;
-    }
-
-    .home-hero-copy {
-        width: calc(100% - 40px);
-        min-height: 650px;
-        padding: 60px 0 90px;
-    }
-
-    .home-hero-bg img {
-        object-position: 75% center;
-    }
-
-    .home-hero-bg::after {
-        background:
-            linear-gradient(
-                90deg,
-                rgba(5,9,16,.94),
-                rgba(5,9,16,.70)
-            );
-    }
-
-    .home-eyebrow {
-        font-size: 9px;
-        letter-spacing: .06em;
-        margin-bottom: 16px;
-    }
-
-    .home-title {
-        max-width: 100%;
-        font-size: 39px;
-        line-height: 1.1;
-    }
-
-    .home-hero-copy > p {
-        max-width: 100%;
-        font-size: 14px;
-        line-height: 1.75;
-    }
-
-    .home-hero-buttons {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .home-hero-buttons a {
-        width: 100%;
-    }
-
-    .home-dots {
-        bottom: 22px;
-    }
-
-    /* ==========================
-       SECTIONS (umum)
-    ========================== */
-
-    .cp-section {
-        padding: 75px 20px;
-    }
-
-    .cp-section-heading {
-        margin-bottom: 38px;
-    }
-
-    .cp-section-heading h2 {
-        font-size: 32px;
-    }
-
-    .cp-section-heading p {
-        font-size: 14px;
-    }
-
-    .cp-feature-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .cp-feature-card {
-        min-height: auto;
-        padding: 25px;
-    }
-
-    .about h2,
-    .forum h2,
-    .contact h2,
-    .statistics h2{
-        font-size:30px;
-    }
-
-    .about-grid,
-    .forum-grid,
-    .contact-grid,
-    .stats-grid,
-    .broker-grid{
-        grid-template-columns:1fr;
-        gap:20px;
-    }
-
-    .card,
-    .forum-card,
-    .contact-card,
-    .stat-card,
-    .broker-card{
-        padding:22px;
-    }
-
-    /* ==========================
-       STATISTICS
-    ========================== */
-
-    .cp-stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .cp-stat-card {
-        padding: 26px 12px;
-    }
-
-    .cp-stat-card h3 {
-        font-size: 28px;
-    }
-
-    .cp-stat-card p {
-        font-size: 11px;
-    }
-
-    /* ==========================
-       CTA
-    ========================== */
-
-    .cp-cta {
-        padding: 75px 20px;
-    }
-
-    .cp-cta h2 {
-        font-size: 32px;
-    }
-
-    .cp-cta p {
-        font-size: 14px;
-    }
-
-    /* ==========================
-       FOOTER
-    ========================== */
-
-    .cp-footer-inner {
-        width: calc(100% - 40px);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 35px 0;
-    }
-
-    .cp-footer-copy {
-        text-align: left;
-    }
-
-    /* ==========================
-       FEED / BROKER ACTIONS
-    ========================== */
-
-    .feed-actions{
-        flex-wrap:wrap;
-    }
-
-    .feed-actions button,
-    .feed-actions a{
-        flex:1;
-        text-align:center;
-    }
-
-    .broker-buttons{
-        flex-direction:column;
-        gap: 12px;
-    }
-
-    /* ==========================
-       SIDEBAR / DASHBOARD
-    ========================== */
-
-    .app-layout{
-        flex-direction:column;
-    }
-
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-        flex-direction:row;
-        flex-wrap:wrap;
-        justify-content:space-between;
-        align-items:center;
-        padding:14px 16px;
-        border-right:none;
-        border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .sidebar-logo{
-        flex-direction:row;
-        align-items:center;
-        margin-bottom:0;
-        text-align:left;
-    }
-
-    .sidebar-logo-img{
-        width:42px;
-        height:42px;
-        margin-bottom:0;
-        margin-right:10px;
-    }
-
-    .sidebar-logo h2{
-        font-size:14px;
-        margin-bottom:2px;
-    }
-
-    .sidebar-logo span{
-        font-size:11px;
-    }
-
-    .sidebar-menu,
-    .sidebar-divider,
-    .sidebar-bottom{
-        display:none;
-    }
-
-    .main-content{
-        margin-left:0;
-        padding:20px;
-    }
-
-    .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:16px;
-    }
-
-    .search-box{
-        width:100%;
-    }
-
-    /* ==========================
-       PROFILE PAGE
-    ========================== */
-
-    .profile-profile{
-        flex-wrap:wrap;
-        gap:16px;
-    }
-
-    .profile-action{
-        padding-top:0;
-        width:100%;
-    }
-
-    .profile-stats{
-        gap:28px;
-    }
-
-    /* ==========================
-       SETTINGS LAYOUT
-    ========================== */
-
-    .settings-layout{
-        grid-template-columns:1fr;
-    }
-
-    .settings-menu{
-        width:100%;
-    }
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE (430px)
-========================================================= */
-
-@media (max-width: 430px) {
-
-    .cp-brand span {
-        font-size: 14px;
-    }
-
-    .cp-nav-right {
-        gap: 2px;
-    }
-
-    .cp-signin {
-        padding: 0 7px;
-    }
-
-    .cp-join {
-        padding: 0 10px;
-    }
-
-    .home-title {
-        font-size: 34px;
-    }
-
-    .cp-stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cp-stat-card h3 {
-        font-size: 32px;
-    }
 }
 
 
@@ -3166,7 +2695,6 @@ a {
 }
 
 
-
 /* ==========================================
    SETTINGS LAYOUT
 ========================================== */
@@ -3634,4 +3162,474 @@ a {
 .stat-card p {
     color: #64748b;
     font-size: 1rem;
+}
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .cp-nav-inner {
+        width: min(100% - 40px, var(--cp-max-width));
+        gap: 18px;
+    }
+
+    .cp-links {
+        gap: 20px;
+    }
+
+    .cp-links a {
+        font-size: 13px;
+    }
+
+    .cp-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cp-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-title {
+        max-width: 680px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE (768px) 
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* ==========================
+       NAVBAR — versi .cp-nav (Home, dll)
+    ========================== */
+
+    .cp-nav {
+        height: auto;
+        min-height: 72px;
+    }
+
+    .cp-nav-inner {
+        width: calc(100% - 30px);
+        min-height: 72px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+    }
+
+    .cp-brand span {
+        font-size: 15px;
+    }
+
+    .cp-brand-logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .cp-links {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        padding: 5px 0 2px;
+        justify-content: flex-start;
+        gap: 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .cp-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cp-links a {
+        flex-shrink: 0;
+        padding: 8px 0;
+        font-size: 12px;
+    }
+
+    .cp-links a::after {
+        bottom: 1px;
+    }
+
+    .cp-nav-right {
+        gap: 5px;
+    }
+
+    .cp-signin {
+        min-height: 38px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .cp-join {
+        min-height: 38px;
+        padding: 0 13px;
+        font-size: 12px;
+    }
+
+    /* ==========================
+       NAVBAR — versi generic
+    ========================== */
+
+    .navbar{
+        padding:10px 0;
+    }
+
+    .navbar .container,
+    .dashboard-header .container{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .nav-menu{
+        display:none;
+    }
+
+    .nav-buttons{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .btn-login,
+    .btn-join{
+        display:block;
+        font-size:15px;
+        font-weight:700;
+        color:#ffffff;
+        text-decoration:none;
+    }
+
+    .nav-divider{
+        color:#ffffff;
+        font-size:15px;
+        font-weight:700;
+    }
+
+    /* ==========================
+       HERO
+    ========================== */
+
+    .home-hero {
+        min-height: 650px;
+    }
+
+    .home-slide {
+        min-height: 650px;
+    }
+
+    .home-hero-copy {
+        width: calc(100% - 40px);
+        min-height: 650px;
+        padding: 60px 0 90px;
+    }
+
+    .home-hero-bg img {
+        object-position: 75% center;
+    }
+
+    .home-hero-bg::after {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(5,9,16,.94),
+                rgba(5,9,16,.70)
+            );
+    }
+
+    .home-eyebrow {
+        font-size: 9px;
+        letter-spacing: .06em;
+        margin-bottom: 16px;
+    }
+
+    .home-title {
+        max-width: 100%;
+        font-size: 39px;
+        line-height: 1.1;
+    }
+
+    .home-hero-copy > p {
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 1.75;
+    }
+
+    .home-hero-buttons {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home-hero-buttons a {
+        width: 100%;
+    }
+
+    .home-dots {
+        bottom: 22px;
+    }
+
+    /* ==========================
+       SECTIONS (umum)
+    ========================== */
+
+    .cp-section {
+        padding: 75px 20px;
+    }
+
+    .cp-section-heading {
+        margin-bottom: 38px;
+    }
+
+    .cp-section-heading h2 {
+        font-size: 32px;
+    }
+
+    .cp-section-heading p {
+        font-size: 14px;
+    }
+
+    .cp-feature-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .cp-feature-card {
+        min-height: auto;
+        padding: 25px;
+    }
+
+    .about h2,
+    .forum h2,
+    .contact h2,
+    .statistics h2{
+        font-size:30px;
+    }
+
+    .about-grid,
+    .forum-grid,
+    .contact-grid,
+    .stats-grid,
+    .broker-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .card,
+    .forum-card,
+    .contact-card,
+    .stat-card,
+    .broker-card{
+        padding:22px;
+    }
+
+    /* ==========================
+       STATISTICS
+    ========================== */
+
+    .cp-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .cp-stat-card {
+        padding: 26px 12px;
+    }
+
+    .cp-stat-card h3 {
+        font-size: 28px;
+    }
+
+    .cp-stat-card p {
+        font-size: 11px;
+    }
+
+    /* ==========================
+       CTA
+    ========================== */
+
+    .cp-cta {
+        padding: 75px 20px;
+    }
+
+    .cp-cta h2 {
+        font-size: 32px;
+    }
+
+    .cp-cta p {
+        font-size: 14px;
+    }
+
+    /* ==========================
+       FOOTER
+    ========================== */
+
+    .cp-footer-inner {
+        width: calc(100% - 40px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 35px 0;
+    }
+
+    .cp-footer-copy {
+        text-align: left;
+    }
+
+    /* ==========================
+       FEED / BROKER ACTIONS
+    ========================== */
+
+    .feed-actions{
+        flex-wrap:wrap;
+    }
+
+    .feed-actions button,
+    .feed-actions a{
+        flex:1;
+        text-align:center;
+    }
+
+    .broker-buttons{
+        flex-direction:column;
+        gap: 12px;
+    }
+
+    /* ==========================
+       SIDEBAR / DASHBOARD
+    ========================== */
+
+    .app-layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:space-between;
+        align-items:center;
+        padding:14px 16px;
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .sidebar-logo{
+        flex-direction:row;
+        align-items:center;
+        margin-bottom:0;
+        text-align:left;
+    }
+
+    .sidebar-logo-img{
+        width:42px;
+        height:42px;
+        margin-bottom:0;
+        margin-right:10px;
+    }
+
+    .sidebar-logo h2{
+        font-size:14px;
+        margin-bottom:2px;
+    }
+
+    .sidebar-logo span{
+        font-size:11px;
+    }
+
+    .sidebar-menu,
+    .sidebar-divider,
+    .sidebar-bottom{
+        display:none;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    /* ==========================
+       PROFILE PAGE
+    ========================== */
+
+    .profile-profile{
+        flex-wrap:wrap;
+        gap:16px;
+    }
+
+    .profile-action{
+        padding-top:0;
+        width:100%;
+    }
+
+    .profile-stats{
+        gap:28px;
+    }
+
+    /* ==========================
+       SETTINGS LAYOUT
+    ========================== */
+
+    .settings-layout{
+        grid-template-columns:1fr;
+    }
+
+    .settings-menu{
+        width:100%;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE (430px)
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .cp-brand span {
+        font-size: 14px;
+    }
+
+    .cp-nav-right {
+        gap: 2px;
+    }
+
+    .cp-signin {
+        padding: 0 7px;
+    }
+
+    .cp-join {
+        padding: 0 10px;
+    }
+
+    .home-title {
+        font-size: 34px;
+    }
+
+    .cp-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cp-stat-card h3 {
+        font-size: 32px;
+    }
 }
