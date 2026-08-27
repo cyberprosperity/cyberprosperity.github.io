@@ -277,9 +277,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (statusPost.image_url) {
             imageEl = document.createElement("img");
             imageEl.src = statusPost.image_url;
-            imageEl.style.cssText = "max-width:100%; border-radius:8px; margin:10px 0;";
+            imageEl.className = "feed-post-image";
+            imageEl.addEventListener("click", () => {
+                window.open(statusPost.image_url, "_blank");
+            });
         }
-
+        
         const footer = document.createElement("div");
         footer.className = "feed-footer";
         footer.style.cssText = "display:flex; align-items:center; gap:16px; flex-wrap:wrap;";

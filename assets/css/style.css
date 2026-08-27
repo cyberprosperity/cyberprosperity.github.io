@@ -2090,6 +2090,12 @@ a {
     width:100%;
 }
 
+.profile-feed{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
 .section-title{
     color:#94A3B8;
     font-size:13px;
@@ -2168,7 +2174,6 @@ a {
 ========================================== */
 
 .feed-header{
-
     display:flex;
     align-items:center;
     gap:15px;
@@ -2177,7 +2182,6 @@ a {
 }
 
 .feed-avatar{
-
     width:48px;
     height:48px;
     border-radius:50%;
@@ -2187,20 +2191,17 @@ a {
 }
 
 .feed-header strong{
-
     color:#ffffff;
     display:block;
 
 }
 
 .feed-header small{
-
     color:#94A3B8;
 
 }
 
 .feed-text{
-
     color:#CBD5E1;
     line-height:1.8;
     margin-bottom:20px;
@@ -2208,11 +2209,28 @@ a {
 }
 
 .feed-footer{
-
     display:flex;
     gap:25px;
     color:#94A3B8;
 
+}
+
+.feed-post-image{
+    display:block;
+    max-width:480px;
+    max-height:420px;
+    width:auto;
+    height:auto;
+    margin:10px auto;
+    border-radius:10px;
+    object-fit:contain;
+    background:#0e1420;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.feed-post-image:hover{
+    opacity:0.92;
 }
 
 /* ==========================================
@@ -2497,7 +2515,6 @@ a {
     color:#D4A64A;
 
 }
-
 
 /* ==========================================
    FEED ACTION BUTTON
@@ -3147,6 +3164,8 @@ a {
 .thread-share-wa:hover{
     transform:translateY(-2px);
 }
+
+
 
 /* ==========================================
    SETTINGS LAYOUT
