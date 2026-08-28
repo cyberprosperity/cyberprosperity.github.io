@@ -1,12 +1,13 @@
 // ============================================
 // FORUM PAGE LOGIC (gaya ikon disamakan dengan Profile)
+// - Semua orang bisa MEMBACA thread & komentar tanpa login
+// - Like, komentar, buat thread, edit, hapus WAJIB login
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
 
     const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) { window.location.href = "login.html"; return; }
-    const user = session.user;
+    const user = session ? session.user : null;
 
     const feedContainer = document.querySelector(".forum-feed");
     const createBtn = document.querySelector(".forum-create-btn");
@@ -20,6 +21,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const searchInput = document.querySelector(".forum-search input");
 
     let allThreads = [];
+
+    // ==========================================
+    // GUARD LOGIN - dipanggil sebelum aksi yang butuh akun
+    // ==========================================
+    function requireLogin(message) {
+        if (!user) {
+            const ok = confirm(
+                (message || "Anda harus login untuk melakukan ini.") +
+                "\n\nLogin sekarang?"
+            );
+            if (ok) window.location.href = "login.html";
+            return false;
+        }
+        return true;
+    }
 
     function timeAgo(dateString) {
         const diffMs = Date.now() - new Date(dateString).getTime();
@@ -52,6 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function deleteThread(threadId, cardElement) {
+        if (!requireLogin("Anda harus login untuk menghapus postingan.")) return;
         if (!confirm("Yakin mau hapus postingan ini? Tindakan ini tidak bisa dibatalkan.")) return;
         const { error } = await supabaseClient.from("post").delete().eq("id", threadId);
         if (error) { alert("Gagal menghapus postingan: " + error.message); return; }
@@ -78,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderComment(comment) {
         const authorName = comment.profiles?.full_name || comment.profiles?.username || "Pengguna";
         const authorAvatar = comment.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
-        const isOwner = comment.user_id === user.id;
+        const isOwner = user && comment.user_id === user.id;
 
         const item = document.createElement("div");
         item.className = "comment-item";
@@ -113,6 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const delBtn = item.querySelector(".comment-delete-btn");
         if (delBtn) {
             delBtn.addEventListener("click", async () => {
+                if (!requireLogin("Anda harus login untuk menghapus komentar.")) return;
                 if (!confirm("Hapus komentar ini?")) return;
                 const { error } = await supabaseClient.from("comments").delete().eq("id", comment.id);
                 if (error) { alert("Gagal menghapus komentar: " + error.message); return; }
@@ -128,6 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (editBtn) {
             editBtn.addEventListener("click", () => {
+                if (!requireLogin("Anda harus login untuk mengedit komentar.")) return;
                 editInput.value = comment.content;
                 textEl.style.display = "none";
                 editForm.style.display = "block";
@@ -188,6 +207,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function submitComment(threadId, input, listEl, countEl) {
+        if (!requireLogin("Anda harus login untuk berkomentar.")) return;
+
         const text = input.value.trim();
         if (!text) return;
         const { error } = await supabaseClient.from("comments").insert({
@@ -203,11 +224,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function renderThread(thread) {
         const authorName = thread.profiles?.full_name || thread.profiles?.username || "Pengguna";
         const authorAvatar = thread.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
-        const isOwner = thread.user_id === user.id;
+        const isOwner = user && thread.user_id === user.id;
 
         const [likeCountRes, myLikeRes, commentCountRes] = await Promise.all([
             supabaseClient.from("likes").select("id", { count: "exact", head: true }).eq("post_id", thread.id),
-            supabaseClient.from("likes").select("id").eq("post_id", thread.id).eq("user_id", user.id).maybeSingle(),
+            user
+                ? supabaseClient.from("likes").select("id").eq("post_id", thread.id).eq("user_id", user.id).maybeSingle()
+                : Promise.resolve({ data: null }),
             supabaseClient.from("comments").select("id", { count: "exact", head: true }).eq("post_id", thread.id)
         ]);
 
@@ -270,7 +293,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="thread-comments" style="display:none;">
                     <div class="comment-list"></div>
                     <div class="comment-form">
-                        <input type="text" class="comment-input" placeholder="Tulis balasan...">
+                        <input type="text" class="comment-input" placeholder="${user ? 'Tulis balasan...' : 'Login untuk membalas...'}">
                         <button type="button" class="comment-submit-btn">Kirim</button>
                     </div>
                 </div>
@@ -299,6 +322,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (editBtn) {
             editBtn.addEventListener("click", () => {
+                if (!requireLogin("Anda harus login untuk mengedit postingan.")) return;
                 editTitleInput.value = thread.title || "";
                 editContentInput.value = thread.content || "";
                 titleEl.style.display = "none";
@@ -326,6 +350,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const likeBtn = article.querySelector(".thread-like-btn");
         likeBtn.addEventListener("click", async () => {
+            if (!requireLogin("Anda harus login untuk menyukai postingan.")) return;
+
             const icon = likeBtn.querySelector("i");
             const countEl = likeBtn.querySelector(".thread-like-count");
 
@@ -392,6 +418,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (e.key === "Enter") submitComment(thread.id, commentInput, commentList, countEl);
         });
 
+        // tamu: klik input komentar langsung diarahkan ke login, biar tidak ngetik sia-sia
+        if (!user) {
+            commentInput.addEventListener("focus", () => {
+                commentInput.blur();
+                requireLogin("Anda harus login untuk berkomentar.");
+            });
+        }
+
         return article;
     }
 
@@ -446,7 +480,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (createBtn && modal) {
-        createBtn.addEventListener("click", () => { modal.style.display = "flex"; });
+        createBtn.addEventListener("click", () => {
+            if (!requireLogin("Anda harus login untuk membuat thread baru.")) return;
+            modal.style.display = "flex";
+        });
     }
 
     if (cancelBtn && modal) {
@@ -455,6 +492,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
+            if (!requireLogin("Anda harus login untuk membuat thread baru.")) return;
+
             const title = titleInput.value.trim();
             const category = categoryInput.value;
             const content = contentInput.value.trim();
