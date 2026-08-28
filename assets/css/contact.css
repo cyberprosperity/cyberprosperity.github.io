@@ -59,31 +59,28 @@ NAVBAR
     top:0;
     left:0;
     width:100%;
-
+    min-height:98px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    flex-wrap:wrap;
-
+    flex-wrap:nowrap;
     padding:28px 80px;
-
     background:transparent;
     border:none;
-
     z-index:1000;
 
 }
 
+.cp-brand,
+.cp-nav-right{
+    flex-shrink:0;
+}
+
 .cp-brand{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
-
     font-weight:700;
-
     font-size:22px;
 
 }
@@ -91,21 +88,13 @@ NAVBAR
 .cp-badge{
 
     width:42px;
-
     height:42px;
-
     border-radius:12px;
-
     background:linear-gradient(135deg,var(--gold2),var(--gold));
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     color:#111;
-
     font-weight:800;
 
 }
@@ -113,16 +102,17 @@ NAVBAR
 .cp-links{
 
     display:flex;
-
     gap:40px;
+    flex-wrap:nowrap;
+    flex-shrink:0;
 
 }
 
 .cp-links a{
 
     color:#CBD5E1;
-
-    transition:.3s;
+    transition:color .3s;
+    white-space:nowrap;
 
 }
 

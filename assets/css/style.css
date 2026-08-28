@@ -66,6 +66,7 @@ a {
     align-items: center;
     justify-content: space-between;
     gap: 30px;
+    flex-wrap: nowrap;
 }
 
 /* =========================================================
@@ -123,13 +124,15 @@ a {
     display: flex;
     align-items: center;
     gap: 40px;
+    flex-wrap: nowrap;
 }
 
 .cp-links a {
     color: #CBD5E1;
     text-decoration: none;
-    transition: .3s;
+    transition: color .3s;
     font-family: "Inter", sans-serif;
+    white-space: nowrap;
 }
 
 .cp-links a:hover,
@@ -146,6 +149,7 @@ a {
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+    flex-wrap: nowrap;
 }
 
 .cp-signin {
@@ -160,6 +164,10 @@ a {
     font-size: 14px;
     font-weight: 600;
     transition: .25s ease;
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cp-signin:hover {
@@ -180,6 +188,10 @@ a {
     font-size: 14px;
     font-weight: 700;
     box-shadow:0 8px 22px rgba(212,166,74,.18);
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     transition:
         transform .25s ease,

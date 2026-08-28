@@ -23,9 +23,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             user.user_metadata?.username ||
             user.email;
 
+        // Potong nama yang terlalu panjang supaya lebar navbar tidak
+        // berubah drastis / tidak memicu header membungkus ke baris baru
+        const shortDisplayName =
+            displayName.length > 14
+                ? displayName.slice(0, 14) + "…"
+                : displayName;
+
         // --- Struktur 1: Navbar publik (index.html) pakai .cp-signin / .cp-join ---
         if (signInButton) {
-            signInButton.textContent = displayName;
+            signInButton.textContent = shortDisplayName;
+            signInButton.title = displayName; // nama lengkap muncul saat di-hover (tooltip)
             signInButton.href = "profile.html";
         }
 
@@ -49,7 +57,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const label = span.textContent.trim();
 
             if (label === "Profile") {
-                span.textContent = displayName;
+                span.textContent = shortDisplayName;
+                span.title = displayName;
             }
 
             if (label === "Logout") {
