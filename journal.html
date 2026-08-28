@@ -238,6 +238,62 @@
             gap:14px;
         }
 
+        
+    @media (max-width: 768px){
+
+        .journal-stats{
+            grid-template-columns: repeat(2, 1fr);
+            gap:12px;
+        }
+
+        .journal-stat-card{
+            padding:16px;
+        }
+
+        .journal-stat-card strong{
+            font-size:20px;
+        }
+
+        .journal-card{
+            flex-direction:column;
+            gap:14px;
+            padding:18px;
+        }
+
+        .journal-icon{
+            width:46px;
+            height:46px;
+            font-size:16px;
+        }
+
+        .journal-card-top{
+            flex-direction:column;
+            align-items:flex-start;
+            gap:8px;
+        }
+
+        .journal-card-title h3{
+            font-size:16px;
+        }
+
+        .journal-card-date{
+            white-space:normal;
+        }
+
+        .journal-card-actions{
+            align-self:flex-end;
+        }
+
+        .journal-pl{
+            font-size:19px;
+        }
+
+        .journal-modal-grid{
+            grid-template-columns:1fr;
+        }
+
+    }
+
     </style>
 
 </head>
@@ -483,6 +539,7 @@
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/auth-state.js"></script>
 <script src="assets/js/journal.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
 

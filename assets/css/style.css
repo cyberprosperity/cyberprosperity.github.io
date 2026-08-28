@@ -3523,52 +3523,187 @@ a {
     .app-layout{
         flex-direction:column;
     }
-
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-        flex-direction:row;
-        flex-wrap:wrap;
+        .sidebar{
+        position:fixed;
+        top:0;
+        left:0;
+        bottom:0;
+        width:260px;
+        height:100vh;
+        flex-direction:column;
+        flex-wrap:nowrap;
         justify-content:space-between;
-        align-items:center;
-        padding:14px 16px;
-        border-right:none;
-        border-bottom:1px solid rgba(255,255,255,.06);
+        align-items:stretch;
+        padding:25px 20px;
+        border-right:1px solid rgba(255,255,255,.08);
+        border-bottom:none;
+        transform:translateX(-100%);
+        transition:transform .3s ease;
+        z-index:2000;
+        overflow-y:auto;
+    }
+
+    .sidebar.sidebar-open{
+        transform:translateX(0);
+        box-shadow:0 0 50px rgba(0,0,0,.55);
     }
 
     .sidebar-logo{
-        flex-direction:row;
+        flex-direction:column;
         align-items:center;
-        margin-bottom:0;
-        text-align:left;
+        margin-bottom:40px;
+        text-align:center;
     }
 
     .sidebar-logo-img{
-        width:42px;
-        height:42px;
-        margin-bottom:0;
-        margin-right:10px;
+        width:80px;
+        height:80px;
+        margin-bottom:15px;
+        margin-right:0;
     }
 
     .sidebar-logo h2{
-        font-size:14px;
-        margin-bottom:2px;
+        font-size:18px;
+        margin-bottom:6px;
     }
 
     .sidebar-logo span{
-        font-size:11px;
+        font-size:13px;
     }
 
     .sidebar-menu,
     .sidebar-divider,
     .sidebar-bottom{
-        display:none;
+        display:flex;
     }
 
     .main-content{
         margin-left:0;
         padding:20px;
+    }
+
+    .sidebar-overlay{
+        display:block;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.55);
+        z-index:1999;
+        opacity:0;
+        visibility:hidden;
+        transition:opacity .3s ease, visibility .3s ease;
+    }
+
+    .sidebar-overlay.active{
+        opacity:1;
+        visibility:visible;
+    }
+
+    .sidebar-edge-hint{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        position:fixed;
+        top:50%;
+        left:0;
+        transform:translateY(-50%);
+        width:16px;
+        height:60px;
+        background:#D4A64A;
+        color:#111827;
+        border-radius:0 10px 10px 0;
+        z-index:1500;
+        font-size:11px;
+        box-shadow:2px 0 12px rgba(0,0,0,.35);
+    }
+
+        .feature-grid{
+        grid-template-columns: 1fr;
+        gap:18px;
+    }
+
+    .feature-card{
+        padding:22px;
+        gap:16px;
+        width:100%;
+        box-sizing:border-box;
+    }
+
+    .feature-icon{
+        flex-shrink:0;
+    }
+
+    .feature-info h2{
+        word-break:break-word;
+    }
+
+    .forum-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:18px;
+    }
+
+    .forum-header h1{
+        font-size:28px;
+    }
+
+    .forum-header p{
+        font-size:14px;
+        line-height:1.6;
+    }
+
+    .forum-create-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .forum-toolbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .forum-categories{
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding-bottom:6px;
+        scrollbar-width:none;
+    }
+
+    .forum-categories::-webkit-scrollbar{
+        display:none;
+    }
+
+    .forum-categories button{
+        flex-shrink:0;
+        padding:10px 16px;
+        font-size:13px;
+    }
+
+    .forum-search{
+        width:100%;
+    }
+
+    .thread-card{
+        gap:14px;
+        padding:18px;
+    }
+
+    .thread-avatar{
+        width:50px;
+        height:50px;
+    }
+
+    .thread-title{
+        font-size:16px;
+    }
+
+    .thread-preview{
+        font-size:13px;
+    }
+
+    .thread-footer{
+        flex-wrap:wrap;
+        gap:10px;
+        font-size:12px;
     }
 
     .topbar{
@@ -3585,14 +3720,52 @@ a {
        PROFILE PAGE
     ========================== */
 
+        .profile-cover{
+        height:160px;
+    }
+
     .profile-profile{
         flex-wrap:wrap;
         gap:16px;
+        margin-top:-45px;
+        padding:0 16px;
+    }
+
+    .profile-avatar{
+        width:90px;
+        height:90px;
+        border-width:4px;
+    }
+
+    .profile-info{
+        margin-left:14px;
+        padding-top:30px;
+    }
+
+    .profile-name h1{
+        font-size:15px;
+    }
+
+    .profile-username{
+        font-size:12px;
     }
 
     .profile-action{
-        padding-top:0;
-        width:100%;
+        padding-top:30px;
+        width:auto;
+        gap:8px;
+    }
+
+    .btn-edit-profile,
+    .btn-setting-profile{
+        padding:10px;
+        width:42px;
+        height:42px;
+        justify-content:center;
+    }
+
+    .btn-label{
+        display:none;
     }
 
     .profile-stats{
