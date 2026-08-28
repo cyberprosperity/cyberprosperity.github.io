@@ -214,8 +214,8 @@ journalSubmitBtn.addEventListener("click", async () => {
         pair: pair,
         position_type: type,
         lot_size: lot ? Number(lot) : null,
-        entry_price: entry ? Number(entry) : null,
-        exit_price: exit_ ? Number(exit_) : null,
+        entry_price: parseDecimal(entry),
+        exit_price: parseDecimal(exit_),
         profit_loss: Number(pl),
         notes: notes || null,
     };
@@ -277,6 +277,33 @@ function formatDate(dateStr) {
     if (!dateStr) return "-";
     const d = new Date(dateStr);
     return d.toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function parseDecimal(str) {
+    if (!str) return null;
+
+    // buang semua karakter selain angka, titik, koma, dan minus
+    let cleaned = String(str).trim().replace(/[^0-9.,-]/g, "");
+
+    if (cleaned === "") return null;
+
+    // kalau ada lebih dari satu titik/koma, anggap yang terakhir sebagai desimal
+    // dan sisanya sebagai pemisah ribuan yang dibuang
+    const lastDot   = cleaned.lastIndexOf(".");
+    const lastComma = cleaned.lastIndexOf(",");
+    const decimalPos = Math.max(lastDot, lastComma);
+
+    if (decimalPos === -1) {
+        const num = Number(cleaned);
+        return isNaN(num) ? null : num;
+    }
+
+    const wholePart    = cleaned.slice(0, decimalPos).replace(/[.,]/g, "");
+    const decimalPart  = cleaned.slice(decimalPos + 1).replace(/[.,]/g, "");
+    const normalized   = `${wholePart}.${decimalPart}`;
+
+    const num = Number(normalized);
+    return isNaN(num) ? null : num;
 }
 
 function escapeHtml(str) {
