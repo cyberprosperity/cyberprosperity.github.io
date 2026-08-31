@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             email: email,
             password: password,
             options: {
-                emailRedirectTo: "http://127.0.0.1:5500/login.html",
+                emailRedirectTo: `${window.location.origin}/login.html`,
                 data: {
                     full_name: fullName,
                     username: username,
@@ -103,11 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // ---- SINKRONISASI AWAL KE TABEL PROFILES ----
-        // Kalau email confirmation OFF, user langsung dapat session di sini,
-        // jadi kita bisa langsung insert ke profiles (termasuk phone).
-        // Kalau email confirmation ON, sinkronisasi ini akan dilakukan oleh
-        // login.js saat user pertama kali berhasil login (lihat login.js).
         if (data.session && data.user) {
             await supabaseClient.from("profiles").insert({
                 id: data.user.id,
