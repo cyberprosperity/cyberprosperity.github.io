@@ -45,10 +45,12 @@
 
     <input
         type="tel"
+        id="register-phone"
         name="phone"
-        placeholder="Nomor Telepon (contoh: 08123456789)"
+        placeholder="+62 8123456789"
         inputmode="tel"
-        pattern="^\+?[0-9]{8,15}$"
+        pattern="^\+62[0-9]{8,13}$"
+        title="Gunakan format +62 diikuti nomor Anda, contoh: +628123456789"
         required>
 
     <input
@@ -86,6 +88,41 @@
 
     </div>
 </section>
+
+<script>
+    // ==========================================
+    // AUTO-FORMAT NOMOR TELEPON KE +62
+    // - Diketik "08123456789"  -> otomatis jadi "+628123456789"
+    // - Diketik "8123456789"   -> otomatis jadi "+628123456789"
+    // - Diketik "62812..."     -> otomatis jadi "+62812..."
+    // - Sudah diawali "+62"    -> dibiarkan apa adanya
+    // ==========================================
+    (function () {
+        const phoneInput = document.getElementById("register-phone");
+        if (!phoneInput) return;
+
+        phoneInput.addEventListener("input", function () {
+            let value = this.value;
+
+            // buang semua karakter selain angka dan tanda +
+            value = value.replace(/[^\d+]/g, "");
+
+            if (value.startsWith("+62")) {
+                // sudah benar, tidak diapa-apakan
+            } else if (value.startsWith("62")) {
+                value = "+" + value;
+            } else if (value.startsWith("0")) {
+                value = "+62" + value.slice(1);
+            } else if (value.startsWith("+")) {
+                // ada + tapi bukan +62 (misal orang ketik +1...), biarkan user yang perbaiki
+            } else if (value.length > 0) {
+                value = "+62" + value;
+            }
+
+            this.value = value;
+        });
+    })();
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
