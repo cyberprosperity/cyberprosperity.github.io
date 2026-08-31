@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
+    function isValidPhone(phone) {
+        // Wajib format +62 diikuti 8-13 digit, sama seperti pattern di HTML
+        return /^\+62[0-9]{8,13}$/.test(phone);
+    }
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         clearMessage();
@@ -45,17 +50,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const fullName = form.full_name.value.trim();
         const username = form.username.value.trim();
         const email = form.email.value.trim();
+        const phone = form.phone.value.trim();
         const password = form.password.value;
         const confirmPassword = form.confirm_password.value;
 
         // ---- VALIDASI FORM ----
-        if (!fullName || !username || !email || !password || !confirmPassword) {
+        if (!fullName || !username || !email || !phone || !password || !confirmPassword) {
             showMessage("Semua field wajib diisi.", "error");
             return;
         }
 
         if (!isValidEmail(email)) {
             showMessage("Format email tidak valid.", "error");
+            return;
+        }
+
+        if (!isValidPhone(phone)) {
+            showMessage("Nomor telepon harus diawali +62, contoh: +628123456789", "error");
             return;
         }
 
@@ -79,7 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailRedirectTo: "http://127.0.0.1:5500/login.html",
                 data: {
                     full_name: fullName,
-                    username: username
+                    username: username,
+                    phone: phone
                 }
             }
         });
@@ -89,6 +101,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (error) {
             showMessage(error.message, "error");
             return;
+        }
+
+        // ---- SINKRONISASI AWAL KE TABEL PROFILES ----
+        // Kalau email confirmation OFF, user langsung dapat session di sini,
+        // jadi kita bisa langsung insert ke profiles (termasuk phone).
+        // Kalau email confirmation ON, sinkronisasi ini akan dilakukan oleh
+        // login.js saat user pertama kali berhasil login (lihat login.js).
+        if (data.session && data.user) {
+            await supabaseClient.from("profiles").insert({
+                id: data.user.id,
+                full_name: fullName,
+                username: username,
+                phone: phone
+            });
         }
 
         // ---- HASIL / PEMBERITAHUAN ----

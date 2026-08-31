@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ---- SINKRONISASI KE TABEL PROFILES ----
         // Cek apakah user ini sudah punya baris di tabel profiles.
-        // Kalau belum, buat otomatis pakai data dari metadata (full_name, username).
+        // Kalau belum, buat otomatis pakai data dari metadata
+        // (full_name, username, phone yang diisi saat register).
         const user = data.user;
         const { data: existingProfile } = await supabaseClient
             .from("profiles")
@@ -83,7 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
             await supabaseClient.from("profiles").insert({
                 id: user.id,
                 full_name: user.user_metadata?.full_name || "",
-                username: user.user_metadata?.username || ""
+                username: user.user_metadata?.username || "",
+                phone: user.user_metadata?.phone || null
             });
         }
 
