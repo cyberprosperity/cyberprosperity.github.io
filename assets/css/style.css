@@ -3072,6 +3072,56 @@ a {
     background:#101827;
 }
 
+/* ==========================================
+   SETTINGS - CHANGE PHOTO LAYOUT
+========================================== */
+
+.photo-layout{
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    align-items:flex-start;
+    margin-top:10px;
+}
+
+.photo-left{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.photo-right{
+    flex:1;
+    min-width:220px;
+}
+
+.upload-box{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    min-height:140px;
+    border:2px dashed #2A3448;
+    border-radius:14px;
+    background:#101827;
+    color:#94A3B8;
+    font-size:14px;
+    text-align:center;
+    padding:20px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.upload-box:hover{
+    border-color:#D4A64A;
+    color:#D4A64A;
+}
+
+.upload-box i{
+    font-size:24px;
+}
+
 /* =========================
    Why Cyber Prosperity
 ========================= */
