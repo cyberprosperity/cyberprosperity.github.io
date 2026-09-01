@@ -2,6 +2,8 @@
 // FORUM PAGE LOGIC (gaya ikon disamakan dengan Profile)
 // - Semua orang bisa MEMBACA thread & komentar tanpa login
 // - Like, komentar, buat thread, edit, hapus WAJIB login
+// - Status dari Profile ikut tampil di sini (kategori Off Topic)
+// - Nama/avatar penulis bisa diklik menuju profile.html?id=<user_id>
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -79,13 +81,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function saveThreadEdit(threadId, newTitle, newContent, titleEl, previewEl, threadObj) {
         newTitle = newTitle.trim();
         newContent = newContent.trim();
-        if (!newTitle || !newContent) { alert("Judul dan isi tidak boleh kosong."); return false; }
+        if (!newContent) { alert("Isi tidak boleh kosong."); return false; }
 
         const { error } = await supabaseClient
-            .from("post").update({ title: newTitle, content: newContent }).eq("id", threadId);
+            .from("post").update({ title: newTitle || null, content: newContent }).eq("id", threadId);
         if (error) { alert("Gagal menyimpan perubahan: " + error.message); return false; }
 
-        titleEl.textContent = newTitle;
+        if (newTitle) {
+            titleEl.textContent = newTitle;
+            titleEl.style.display = "";
+        } else {
+            titleEl.style.display = "none";
+        }
         previewEl.innerHTML = linkify(newContent);
         threadObj.title = newTitle;
         threadObj.content = newContent;
@@ -96,14 +103,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const authorName = comment.profiles?.full_name || comment.profiles?.username || "Pengguna";
         const authorAvatar = comment.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
         const isOwner = user && comment.user_id === user.id;
+        const profileHref = `profile.html?id=${comment.user_id}`;
 
         const item = document.createElement("div");
         item.className = "comment-item";
         item.innerHTML = `
-            <img src="${authorAvatar}" alt="${authorName}" class="comment-avatar">
+            <a href="${profileHref}"><img src="${authorAvatar}" alt="${authorName}" class="comment-avatar"></a>
             <div class="comment-body">
                 <div class="comment-meta" style="display:flex; align-items:center; gap:10px;">
-                    <span class="comment-author"></span>
+                    <a href="${profileHref}" style="color:inherit; text-decoration:none;">
+                        <span class="comment-author"></span>
+                    </a>
                     <span class="comment-time">${timeAgo(comment.created_at)}</span>
                     ${isOwner ? `
                         <span style="margin-left:auto; display:flex; gap:10px;">
@@ -225,6 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const authorName = thread.profiles?.full_name || thread.profiles?.username || "Pengguna";
         const authorAvatar = thread.profiles?.avatar_url || "assets/images/avatar/default-avatar.png";
         const isOwner = user && thread.user_id === user.id;
+        const profileHref = `profile.html?id=${thread.user_id}`;
 
         const [likeCountRes, myLikeRes, commentCountRes] = await Promise.all([
             supabaseClient.from("likes").select("id", { count: "exact", head: true }).eq("post_id", thread.id),
@@ -244,11 +255,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         article.innerHTML = `
             <div class="thread-avatar">
-                <img src="${authorAvatar}" alt="${authorName}">
+                <a href="${profileHref}"><img src="${authorAvatar}" alt="${authorName}"></a>
             </div>
             <div class="thread-content">
                 <div class="thread-meta" style="display:flex; align-items:center; gap:10px;">
-                    <span class="thread-author"></span>
+                    <a href="${profileHref}" style="color:inherit; text-decoration:none;">
+                        <span class="thread-author"></span>
+                    </a>
                     <span class="thread-time">${timeAgo(thread.created_at)}</span>
                     ${isOwner ? `
                         <span style="margin-left:auto; display:flex; gap:12px; align-items:center;">
@@ -262,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p class="thread-preview"></p>
 
                 <div class="thread-edit-form" style="display:none;">
-                    <input type="text" class="thread-edit-title" placeholder="Judul thread">
+                    <input type="text" class="thread-edit-title" placeholder="Judul thread (opsional)">
                     <textarea class="thread-edit-content" rows="3" placeholder="Isi thread"></textarea>
                     <div class="thread-edit-actions">
                         <button type="button" class="thread-edit-save">Simpan</button>
@@ -305,7 +318,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         article.querySelector(".thread-author").textContent = authorName;
         article.querySelector(".thread-tag").textContent = (thread.category || "gold").toUpperCase();
-        titleEl.textContent = thread.title || "(Tanpa judul)";
+
+        if (thread.title) {
+            titleEl.textContent = thread.title;
+            titleEl.style.display = "";
+        } else {
+            // post tipe "status" (dari Profile) biasanya tidak punya judul
+            titleEl.style.display = "none";
+        }
+
         previewEl.innerHTML = linkify(thread.content);
 
         const deleteBtn = article.querySelector(".thread-delete-btn");
@@ -332,7 +353,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             editCancelBtn.addEventListener("click", () => {
                 editForm.style.display = "none";
-                titleEl.style.display = "block";
+                if (thread.title) titleEl.style.display = "block";
                 previewEl.style.display = "block";
             });
 
@@ -342,7 +363,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 );
                 if (success) {
                     editForm.style.display = "none";
-                    titleEl.style.display = "block";
                     previewEl.style.display = "block";
                 }
             });
@@ -372,7 +392,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let viewCounted = false;
         article.addEventListener("click", async (e) => {
-            if (e.target.closest("i, button, .thread-like-btn, .thread-share-fb, .thread-share-wa, .thread-comment-toggle, a")) return;
+            if (e.target.closest("i, button, a, .thread-like-btn, .thread-share-fb, .thread-share-wa, .thread-comment-toggle")) return;
             if (viewCounted) return;
             viewCounted = true;
             const { error } = await supabaseClient.rpc("increment_post_views", { post_id_arg: thread.id });
@@ -384,12 +404,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         article.querySelector(".thread-share-fb").addEventListener("click", () => {
             const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent(thread.title + " - " + thread.content);
+            const text = encodeURIComponent((thread.title || "") + " " + thread.content);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, "_blank");
         });
 
         article.querySelector(".thread-share-wa").addEventListener("click", () => {
-            const text = encodeURIComponent(thread.title + "\n" + thread.content + "\n" + window.location.href);
+            const text = encodeURIComponent((thread.title ? thread.title + "\n" : "") + thread.content + "\n" + window.location.href);
             window.open(`https://wa.me/?text=${text}`, "_blank");
         });
 
@@ -443,10 +463,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function loadThreads() {
+        // Ambil thread ("thread") DAN status dari Profile ("status") - keduanya tampil
+        // di Forum, status otomatis dianggap kategori "offtopic" (lihat profile.js).
         const { data: threads, error } = await supabaseClient
             .from("post")
-            .select("id, user_id, title, content, category, created_at, views, profiles(full_name, username, avatar_url)")
-            .eq("type", "thread")
+            .select("id, user_id, title, content, category, created_at, views, type, profiles(full_name, username, avatar_url)")
+            .in("type", ["thread", "status"])
             .order("created_at", { ascending: false });
 
         if (error) { console.error("Gagal ambil data thread:", error.message); return; }

@@ -1,13 +1,17 @@
 // ============================================
-// PROFILE PAGE LOGIC (final)
+// PROFILE PAGE LOGIC (final + Follow + Lihat Profil Orang Lain)
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
 
     const { data: { session } } = await supabaseClient.auth.getSession();
+    const currentUser = session ? session.user : null;
 
-    // ---- TAMPILAN GUEST (belum login) ----
-    if (!session) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewedUserId = urlParams.get("id") || (currentUser ? currentUser.id : null);
+
+    // ---- TAMPILAN GUEST tanpa target profil (buka profile.html sendiri, belum login) ----
+    if (!viewedUserId) {
         const mainEl = document.querySelector(".main-content") || document.body;
         mainEl.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:70vh; text-align:center; padding:24px;">
@@ -25,13 +29,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const user = session.user;
+    const isOwnProfile = !!currentUser && viewedUserId === currentUser.id;
 
-    const { data: profile } = await supabaseClient
+    const { data: profile, error: profileError } = await supabaseClient
         .from("profiles")
         .select("full_name, username, avatar_url, cover_url, bio")
-        .eq("id", user.id)
+        .eq("id", viewedUserId)
         .maybeSingle();
+
+    if (profileError || !profile) {
+        const mainEl = document.querySelector(".main-content") || document.body;
+        mainEl.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:70vh; text-align:center; padding:24px;">
+                <h2 style="color:#fff; margin-bottom:8px;">Profil tidak ditemukan</h2>
+                <p style="color:#999;">User yang kamu cari mungkin sudah tidak ada.</p>
+            </div>
+        `;
+        return;
+    }
 
     let fullName = profile?.full_name || "Pengguna Baru";
     let username = profile?.username || "user";
@@ -60,11 +75,97 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // ---- UPLOAD AVATAR ----
+    // ==========================================
+    // TOMBOL AKSI: Edit Profile/Settings (profil sendiri) vs Follow (profil orang lain)
+    // ==========================================
+    const editBtn = document.querySelector(".btn-edit-profile");
+    const settingsBtn = document.querySelector(".btn-setting-profile");
+    const followBtn = document.querySelector(".btn-follow-profile");
+    const statusComposerSection = document.querySelector(".profile-status");
+
+    let isFollowing = false;
+    let followerCount = 0;
+    let followingCount = 0;
+
+    async function loadFollowCounts() {
+        const [followerCountRes, followingCountRes, myFollowRes] = await Promise.all([
+            supabaseClient.from("follows").select("id", { count: "exact", head: true }).eq("following_id", viewedUserId),
+            supabaseClient.from("follows").select("id", { count: "exact", head: true }).eq("follower_id", viewedUserId),
+            currentUser
+                ? supabaseClient.from("follows").select("id").eq("follower_id", currentUser.id).eq("following_id", viewedUserId).maybeSingle()
+                : Promise.resolve({ data: null })
+        ]);
+
+        followerCount = followerCountRes.count ?? 0;
+        followingCount = followingCountRes.count ?? 0;
+        isFollowing = !!myFollowRes.data;
+
+        const statEls = document.querySelectorAll(".profile-stats .stat strong");
+        if (statEls[0]) statEls[0].textContent = followerCount;
+        if (statEls[1]) statEls[1].textContent = followingCount;
+    }
+
+    function updateFollowBtnUI() {
+        if (!followBtn) return;
+        followBtn.innerHTML = isFollowing
+            ? '<i class="fa-solid fa-user-check"></i><span class="btn-label">Following</span>'
+            : '<i class="fa-solid fa-user-plus"></i><span class="btn-label">Follow</span>';
+    }
+
+    await loadFollowCounts();
+
+    if (isOwnProfile) {
+        if (followBtn) followBtn.style.display = "none";
+    } else {
+        if (editBtn) editBtn.style.display = "none";
+        if (settingsBtn) settingsBtn.style.display = "none";
+        if (statusComposerSection) statusComposerSection.style.display = "none";
+
+        if (followBtn) {
+            followBtn.style.display = "inline-flex";
+            updateFollowBtnUI();
+
+            followBtn.addEventListener("click", async () => {
+                if (!currentUser) {
+                    const ok = confirm("Anda harus login untuk follow user ini.\n\nLogin sekarang?");
+                    if (ok) window.location.href = "login.html";
+                    return;
+                }
+
+                followBtn.disabled = true;
+
+                if (isFollowing) {
+                    const { error } = await supabaseClient
+                        .from("follows")
+                        .delete()
+                        .eq("follower_id", currentUser.id)
+                        .eq("following_id", viewedUserId);
+                    if (error) { alert("Gagal unfollow: " + error.message); followBtn.disabled = false; return; }
+                    isFollowing = false;
+                    followerCount = Math.max(0, followerCount - 1);
+                } else {
+                    const { error } = await supabaseClient
+                        .from("follows")
+                        .insert({ follower_id: currentUser.id, following_id: viewedUserId });
+                    if (error) { alert("Gagal follow: " + error.message); followBtn.disabled = false; return; }
+                    isFollowing = true;
+                    followerCount += 1;
+                }
+
+                const statEls = document.querySelectorAll(".profile-stats .stat strong");
+                if (statEls[0]) statEls[0].textContent = followerCount;
+
+                updateFollowBtnUI();
+                followBtn.disabled = false;
+            });
+        }
+    }
+
+    // ---- UPLOAD AVATAR (hanya profil sendiri) ----
     const avatarInput = document.querySelector("#avatarInput");
     const avatarImg = document.querySelector(".profile-avatar");
 
-    if (avatarInput) {
+    if (isOwnProfile && avatarInput) {
         avatarInput.addEventListener("change", async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -72,7 +173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (file.size > 2 * 1024 * 1024) { alert("Maksimal 2MB."); return; }
 
             const fileExt = file.name.split(".").pop();
-            const filePath = `${user.id}/avatar.${fileExt}`;
+            const filePath = `${currentUser.id}/avatar.${fileExt}`;
 
             const { error: uploadError } = await supabaseClient.storage
                 .from("avatars").upload(filePath, file, { upsert: true });
@@ -82,25 +183,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             avatarUrl = publicUrlData.publicUrl;
             const cacheBustedUrl = avatarUrl + "?t=" + Date.now();
 
-            await supabaseClient.from("profiles").update({ avatar_url: avatarUrl }).eq("id", user.id);
+            await supabaseClient.from("profiles").update({ avatar_url: avatarUrl }).eq("id", currentUser.id);
             document.querySelectorAll(".profile-avatar, .feed-avatar").forEach((img) => { img.src = cacheBustedUrl; });
             alert("Foto profil berhasil diperbarui!");
         });
     }
 
-    if (avatarImg && avatarInput) {
+    if (isOwnProfile && avatarImg && avatarInput) {
         avatarImg.style.cursor = "pointer";
         avatarImg.addEventListener("click", () => avatarInput.click());
     }
 
     // ---- TOMBOL SETTINGS ----
-    const settingsBtn = document.querySelector(".btn-setting-profile");
-    if (settingsBtn) {
+    if (isOwnProfile && settingsBtn) {
         settingsBtn.addEventListener("click", () => { window.location.href = "settings.html"; });
     }
 
-    // ---- MODAL EDIT PROFILE ----
-    const editBtn = document.querySelector(".btn-edit-profile");
+    // ---- MODAL EDIT PROFILE (hanya profil sendiri) ----
     const editModal = document.querySelector("#editProfileModal");
     const editNameInput = document.querySelector("#editFullName");
     const editUsernameInput = document.querySelector("#editUsername");
@@ -108,7 +207,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const editSaveBtn = document.querySelector("#editProfileSaveBtn");
     const editCancelBtn = document.querySelector("#editProfileCancelBtn");
 
-    if (editBtn && editModal) {
+    if (isOwnProfile && editBtn && editModal) {
         editBtn.addEventListener("click", () => {
             editNameInput.value = fullName;
             editUsernameInput.value = username;
@@ -119,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (editCancelBtn && editModal) {
         editCancelBtn.addEventListener("click", () => { editModal.style.display = "none"; });
     }
-    if (editSaveBtn) {
+    if (isOwnProfile && editSaveBtn) {
         editSaveBtn.addEventListener("click", async () => {
             const newName = editNameInput.value.trim();
             const newUsername = editUsernameInput.value.trim();
@@ -129,7 +228,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const { error } = await supabaseClient
                 .from("profiles")
                 .update({ full_name: newName, username: newUsername, bio: newBio })
-                .eq("id", user.id);
+                .eq("id", currentUser.id);
             if (error) { alert("Gagal menyimpan: " + error.message); return; }
 
             fullName = newName; username = newUsername; bio = newBio;
@@ -141,18 +240,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ---- STATISTIK POSTS ----
+    // ---- STATISTIK POSTS (thread yang dibuat oleh user yang sedang dilihat) ----
     const { count: postCount } = await supabaseClient
         .from("post").select("id", { count: "exact", head: true })
-        .eq("user_id", user.id).eq("type", "thread");
+        .eq("user_id", viewedUserId).eq("type", "thread");
 
     const statEls = document.querySelectorAll(".profile-stats .stat strong");
-    if (statEls[0]) statEls[0].textContent = "0";
-    if (statEls[1]) statEls[1].textContent = "0";
     if (statEls[2]) statEls[2].textContent = postCount ?? 0;
 
     // ============================================
-    // MOOD & FOTO (composer status)
+    // MOOD & FOTO (composer status) — hanya aktif kalau profil sendiri
+    // (statusComposerSection sudah disembunyikan di atas kalau bukan profil sendiri)
     // ============================================
     const statusBox = document.querySelector(".status-box");
     const toolButtons = document.querySelectorAll(".status-tools button");
@@ -162,76 +260,82 @@ document.addEventListener("DOMContentLoaded", async () => {
     let selectedMood = "";
     let pendingImageUrl = null;
 
-    // Hidden file input untuk Foto
-    const statusImageInput = document.createElement("input");
-    statusImageInput.type = "file";
-    statusImageInput.accept = "image/*";
-    statusImageInput.hidden = true;
-    document.body.appendChild(statusImageInput);
+    let statusImageInput = null;
+    let imagePreviewWrap = null;
+    let moodPicker = null;
 
-    // Preview gambar terpilih
-    const imagePreviewWrap = document.createElement("div");
-    imagePreviewWrap.style.cssText = "display:none; margin-top:10px; position:relative; width:fit-content;";
-    imagePreviewWrap.innerHTML = `
-        <img style="max-width:200px; border-radius:8px;">
-        <span style="position:absolute; top:-8px; right:-8px; background:#e11d48; color:#fff; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;">✕</span>
-    `;
-    if (statusBox) statusBox.insertAdjacentElement("afterend", imagePreviewWrap);
+    if (isOwnProfile) {
+        // Hidden file input untuk Foto
+        statusImageInput = document.createElement("input");
+        statusImageInput.type = "file";
+        statusImageInput.accept = "image/*";
+        statusImageInput.hidden = true;
+        document.body.appendChild(statusImageInput);
 
-    // Mood picker
-    const moodPicker = document.createElement("div");
-    moodPicker.style.cssText = "display:none; gap:8px; margin-top:8px;";
-    ["😀", "😢", "😡", "😍", "🚀", "🔥", "🙏"].forEach((emoji) => {
-        const btn = document.createElement("span");
-        btn.textContent = emoji;
-        btn.style.cssText = "cursor:pointer; font-size:20px;";
-        btn.addEventListener("click", () => {
-            selectedMood = emoji;
-            if (statusBox) statusBox.value = (emoji + " " + statusBox.value).trim();
-            moodPicker.style.display = "none";
+        // Preview gambar terpilih
+        imagePreviewWrap = document.createElement("div");
+        imagePreviewWrap.style.cssText = "display:none; margin-top:10px; position:relative; width:fit-content;";
+        imagePreviewWrap.innerHTML = `
+            <img style="max-width:200px; border-radius:8px;">
+            <span style="position:absolute; top:-8px; right:-8px; background:#e11d48; color:#fff; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;">✕</span>
+        `;
+        if (statusBox) statusBox.insertAdjacentElement("afterend", imagePreviewWrap);
+
+        // Mood picker
+        moodPicker = document.createElement("div");
+        moodPicker.style.cssText = "display:none; gap:8px; margin-top:8px;";
+        ["😀", "😢", "😡", "😍", "🚀", "🔥", "🙏"].forEach((emoji) => {
+            const btn = document.createElement("span");
+            btn.textContent = emoji;
+            btn.style.cssText = "cursor:pointer; font-size:20px;";
+            btn.addEventListener("click", () => {
+                selectedMood = emoji;
+                if (statusBox) statusBox.value = (emoji + " " + statusBox.value).trim();
+                moodPicker.style.display = "none";
+            });
+            moodPicker.appendChild(btn);
         });
-        moodPicker.appendChild(btn);
-    });
-    if (statusBox) statusBox.insertAdjacentElement("afterend", moodPicker);
+        if (statusBox) statusBox.insertAdjacentElement("afterend", moodPicker);
 
-    if (moodBtn) {
-        moodBtn.addEventListener("click", () => {
-            moodPicker.style.display = moodPicker.style.display === "none" ? "flex" : "none";
+        if (moodBtn) {
+            moodBtn.addEventListener("click", () => {
+                moodPicker.style.display = moodPicker.style.display === "none" ? "flex" : "none";
+            });
+        }
+
+        if (fotoBtn) {
+            fotoBtn.addEventListener("click", () => statusImageInput.click());
+        }
+
+        statusImageInput.addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) { alert("File harus gambar."); return; }
+            if (file.size > 3 * 1024 * 1024) { alert("Maksimal 3MB."); return; }
+
+            const fileExt = file.name.split(".").pop();
+            const filePath = `${currentUser.id}/post-${Date.now()}.${fileExt}`;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from("avatars").upload(filePath, file);
+            if (uploadError) { alert("Gagal upload foto: " + uploadError.message); return; }
+
+            const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
+            pendingImageUrl = publicUrlData.publicUrl;
+
+            imagePreviewWrap.querySelector("img").src = pendingImageUrl;
+            imagePreviewWrap.style.display = "block";
+        });
+
+        imagePreviewWrap.querySelector("span").addEventListener("click", () => {
+            pendingImageUrl = null;
+            imagePreviewWrap.style.display = "none";
+            statusImageInput.value = "";
         });
     }
-
-    if (fotoBtn) {
-        fotoBtn.addEventListener("click", () => statusImageInput.click());
-    }
-
-    statusImageInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (!file.type.startsWith("image/")) { alert("File harus gambar."); return; }
-        if (file.size > 3 * 1024 * 1024) { alert("Maksimal 3MB."); return; }
-
-        const fileExt = file.name.split(".").pop();
-        const filePath = `${user.id}/post-${Date.now()}.${fileExt}`;
-
-        const { error: uploadError } = await supabaseClient.storage
-            .from("avatars").upload(filePath, file);
-        if (uploadError) { alert("Gagal upload foto: " + uploadError.message); return; }
-
-        const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
-        pendingImageUrl = publicUrlData.publicUrl;
-
-        imagePreviewWrap.querySelector("img").src = pendingImageUrl;
-        imagePreviewWrap.style.display = "block";
-    });
-
-    imagePreviewWrap.querySelector("span").addEventListener("click", () => {
-        pendingImageUrl = null;
-        imagePreviewWrap.style.display = "none";
-        statusImageInput.value = "";
-    });
 
     // ============================================
-    // STATUS FEED
+    // STATUS FEED (status milik user yang sedang dilihat)
     // ============================================
     const shareBtn = document.querySelector(".btn-status");
     const feedSection = document.querySelector(".profile-feed");
@@ -248,11 +352,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function renderStatusCard(statusPost) {
-        const isOwner = statusPost.user_id === user.id;
+        const isOwner = !!currentUser && statusPost.user_id === currentUser.id;
 
         const [likeCountRes, myLikeRes, commentCountRes] = await Promise.all([
             supabaseClient.from("likes").select("id", { count: "exact", head: true }).eq("post_id", statusPost.id),
-            supabaseClient.from("likes").select("id").eq("post_id", statusPost.id).eq("user_id", user.id).maybeSingle(),
+            currentUser
+                ? supabaseClient.from("likes").select("id").eq("post_id", statusPost.id).eq("user_id", currentUser.id).maybeSingle()
+                : Promise.resolve({ data: null }),
             supabaseClient.from("comments").select("id", { count: "exact", head: true }).eq("post_id", statusPost.id)
         ]);
 
@@ -325,7 +431,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const commentInputWrap = document.createElement("div");
         commentInputWrap.style.cssText = "display:flex; gap:8px; margin-top:10px;";
         commentInputWrap.innerHTML = `
-            <input type="text" class="comment-input" placeholder="Tulis komentar..."
+            <input type="text" class="comment-input" placeholder="${currentUser ? 'Tulis komentar...' : 'Login untuk berkomentar...'}"
                    style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
             <button class="comment-submit-btn" style="padding:8px 14px; border-radius:8px; border:none; background:#FFD700; color:#000; font-weight:bold; cursor:pointer;">Kirim</button>
         `;
@@ -376,14 +482,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const likeBtn = footer.querySelector(".like-btn");
         likeBtn.addEventListener("click", async () => {
+            if (!currentUser) {
+                const ok = confirm("Anda harus login untuk menyukai status ini.\n\nLogin sekarang?");
+                if (ok) window.location.href = "login.html";
+                return;
+            }
             const icon = likeBtn.querySelector("i");
             const countEl = likeBtn.querySelector(".like-count");
             if (isLiked) {
-                const { error } = await supabaseClient.from("likes").delete().eq("post_id", statusPost.id).eq("user_id", user.id);
+                const { error } = await supabaseClient.from("likes").delete().eq("post_id", statusPost.id).eq("user_id", currentUser.id);
                 if (error) return;
                 isLiked = false; likeCount -= 1;
             } else {
-                const { error } = await supabaseClient.from("likes").insert({ post_id: statusPost.id, user_id: user.id });
+                const { error } = await supabaseClient.from("likes").insert({ post_id: statusPost.id, user_id: currentUser.id });
                 if (error) return;
                 isLiked = true; likeCount += 1;
             }
@@ -410,7 +521,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             comments.forEach((c) => {
-                const isCommentOwner = c.user_id === user.id;
+                const isCommentOwner = !!currentUser && c.user_id === currentUser.id;
                 const cName = c.profiles?.full_name || c.profiles?.username || "Pengguna";
                 const cEl = document.createElement("div");
                 cEl.style.cssText = "margin-bottom:10px; display:flex; justify-content:space-between; gap:8px;";
@@ -470,10 +581,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const commentInput = commentInputWrap.querySelector(".comment-input");
         const commentSubmitBtn = commentInputWrap.querySelector(".comment-submit-btn");
+
+        if (!currentUser) {
+            commentInput.addEventListener("focus", () => {
+                commentInput.blur();
+                const ok = confirm("Anda harus login untuk berkomentar.\n\nLogin sekarang?");
+                if (ok) window.location.href = "login.html";
+            });
+        }
+
         commentSubmitBtn.addEventListener("click", async () => {
+            if (!currentUser) {
+                const ok = confirm("Anda harus login untuk berkomentar.\n\nLogin sekarang?");
+                if (ok) window.location.href = "login.html";
+                return;
+            }
             const content = commentInput.value.trim();
             if (!content) return;
-            const { error } = await supabaseClient.from("comments").insert({ post_id: statusPost.id, user_id: user.id, content });
+            const { error } = await supabaseClient.from("comments").insert({ post_id: statusPost.id, user_id: currentUser.id, content });
             if (error) { alert("Gagal komentar: " + error.message); return; }
             commentInput.value = "";
             await loadComments();
@@ -499,7 +624,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const { data: statuses, error } = await supabaseClient
             .from("post")
             .select("id, user_id, content, image_url, created_at")
-            .eq("user_id", user.id).eq("type", "status")
+            .eq("user_id", viewedUserId).eq("type", "status")
             .order("created_at", { ascending: false }).limit(10);
         if (error) { console.error("Gagal ambil status:", error.message); return; }
 
@@ -510,7 +635,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const empty = document.createElement("p");
             empty.className = "empty-status-msg";
             empty.style.cssText = "color:#888; text-align:center; padding:24px;";
-            empty.textContent = "Belum ada status. Tulis status pertamamu di atas!";
+            empty.textContent = isOwnProfile
+                ? "Belum ada status. Tulis status pertamamu di atas!"
+                : "Belum ada status.";
             feedSection.appendChild(empty);
             return;
         }
@@ -519,21 +646,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         cards.forEach((card) => feedSection.appendChild(card));
     }
 
-    if (shareBtn && statusBox) {
+    if (isOwnProfile && shareBtn && statusBox) {
         shareBtn.addEventListener("click", async () => {
             const content = statusBox.value.trim();
             if (!content) { alert("Tulis sesuatu dulu."); return; }
 
+            // type "status" + category "offtopic" supaya otomatis tampil
+            // di Forum pada kategori Off Topic (dan ikut di filter "Semua").
             const { error } = await supabaseClient
                 .from("post")
-                .insert({ user_id: user.id, content, type: "status", image_url: pendingImageUrl });
+                .insert({
+                    user_id: currentUser.id,
+                    content,
+                    type: "status",
+                    category: "offtopic",
+                    image_url: pendingImageUrl
+                });
 
             if (error) { alert("Gagal membagikan status: " + error.message); return; }
 
             statusBox.value = "";
             pendingImageUrl = null;
-            imagePreviewWrap.style.display = "none";
-            statusImageInput.value = "";
+            if (imagePreviewWrap) imagePreviewWrap.style.display = "none";
+            if (statusImageInput) statusImageInput.value = "";
             loadStatuses();
         });
     }
