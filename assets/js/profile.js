@@ -29,24 +29,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const { data: profile } = await supabaseClient
         .from("profiles")
-        .select("full_name, username, avatar_url, bio")
+        .select("full_name, username, avatar_url, cover_url, bio")
         .eq("id", user.id)
         .maybeSingle();
 
     let fullName = profile?.full_name || "Pengguna Baru";
     let username = profile?.username || "user";
     let avatarUrl = profile?.avatar_url || "assets/images/avatar/default-avatar.png";
+    let coverUrl = profile?.cover_url || "";
     let bio = profile?.bio || "";
 
     const nameEl = document.querySelector(".profile-name h1");
     const usernameEl = document.querySelector(".profile-username");
     const bioEl = document.querySelector(".profile-bio");
     const avatarEls = document.querySelectorAll(".profile-avatar, .feed-avatar");
+    const coverEl = document.querySelector(".profile-cover");
 
     if (nameEl) nameEl.textContent = fullName;
     if (usernameEl) usernameEl.textContent = "@" + username;
     if (bioEl) bioEl.textContent = bio;
     avatarEls.forEach((img) => { img.src = avatarUrl; });
+
+    if (coverEl) {
+        if (coverUrl) {
+            coverEl.style.backgroundImage = `url('${coverUrl}')`;
+            coverEl.style.backgroundSize = "cover";
+            coverEl.style.backgroundPosition = "center";
+        } else {
+            coverEl.style.backgroundImage = "none";
+        }
+    }
 
     // ---- UPLOAD AVATAR ----
     const avatarInput = document.querySelector("#avatarInput");
@@ -282,7 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.open(statusPost.image_url, "_blank");
             });
         }
-        
+
         const footer = document.createElement("div");
         footer.className = "feed-footer";
         footer.style.cssText = "display:flex; align-items:center; gap:16px; flex-wrap:wrap;";
