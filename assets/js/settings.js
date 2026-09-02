@@ -1,9 +1,121 @@
 /* =====================================================
    CYBER PROSPERITY
    SETTINGS PAGE
-   Version 3.1 — Terhubung ke Supabase + Auto-Compress Image
-   (Edit Profile, Upload Avatar, Upload Cover, Ganti Password)
 ===================================================== */
+
+function compressImage(file, maxSizeBytes = 2 * 1024 * 1024, maxDimension = 1600) {
+    return new Promise((resolve, reject) => {
+
+        if (file.size <= maxSizeBytes) {
+            resolve(file);
+            return;
+        }
+
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            img.onload = () => {
+                let { width, height } = img;
+
+                if (width > maxDimension || height > maxDimension) {
+                    if (width > height) {
+                        height = Math.round((height * maxDimension) / width);
+                        width = maxDimension;
+                    } else {
+                        width = Math.round((width * maxDimension) / height);
+                        height = maxDimension;
+                    }
+                }
+
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const qualitySteps = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
+                let stepIndex = 0;
+
+                function tryCompress() {
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Gagal memproses gambar."));
+                                return;
+                            }
+
+                            if (blob.size <= maxSizeBytes || stepIndex === qualitySteps.length - 1) {
+                                const compressedFile = new File(
+                                    [blob],
+                                    file.name.replace(/\.[^.]+$/, "") + ".jpg",
+                                    { type: "image/jpeg" }
+                                );
+                                resolve(compressedFile);
+                                return;
+                            }
+
+                            stepIndex++;
+                            tryCompress();
+                        },
+                        "image/jpeg",
+                        qualitySteps[stepIndex]
+                    );
+                }
+
+                tryCompress();
+            };
+
+            img.onerror = () => reject(new Error("Gagal membaca gambar."));
+            img.src = e.target.result;
+        };
+
+        reader.onerror = () => reject(new Error("Gagal membaca file."));
+        reader.readAsDataURL(file);
+    });
+}
+
+/* ==========================================
+   VALIDASI TIPE FILE + AUTO-COMPRESS
+   Dipakai bersama oleh upload foto profil & cover
+========================================== */
+
+async function processImageUpload(file, inputEl, previewEl, maxSize = 2 * 1024 * 1024) {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert("Format file harus JPG, PNG, atau WEBP.");
+        inputEl.value = "";
+        return null;
+    }
+
+    let finalFile = file;
+
+    try {
+        if (file.size > maxSize) {
+            previewEl.style.opacity = "0.5";
+            finalFile = await compressImage(file, maxSize);
+            previewEl.style.opacity = "1";
+
+            if (finalFile.size > maxSize) {
+                alert(
+                    "File masih terlalu besar setelah dikompres otomatis (" +
+                    (finalFile.size / 1024 / 1024).toFixed(2) +
+                    "MB). Coba pakai foto lain."
+                );
+                inputEl.value = "";
+                return null;
+            }
+        }
+    } catch (err) {
+        previewEl.style.opacity = "1";
+        alert("Gagal memproses gambar: " + err.message);
+        inputEl.value = "";
+        return null;
+    }
+
+    return finalFile;
+}
 
 /* ==========================================
    ELEMENT
@@ -14,87 +126,6 @@ const panel = document.getElementById("settings-panel");
 
 let currentUser = null;
 let currentProfile = null;
-
-/* ==========================================
-   IMAGE COMPRESSOR
-   Mengecilkan dimensi & kualitas gambar secara
-   otomatis di browser sampai di bawah target size,
-   sebelum diupload ke Supabase Storage.
-========================================== */
-
-const MAX_UPLOAD_SIZE = 2 * 1024 * 1024; // 2MB, sesuai limit bucket "avatars"
-const MAX_DIMENSION = 1600; // lebar/tinggi maksimal setelah resize
-
-function compressImage(file, maxSizeBytes = MAX_UPLOAD_SIZE, maxDimension = MAX_DIMENSION) {
-    return new Promise((resolve, reject) => {
-
-        if (file.size <= maxSizeBytes) {
-            resolve(file);
-            return;
-        }
-
-        const img = new Image();
-        const objectUrl = URL.createObjectURL(file);
-
-        img.onload = () => {
-            URL.revokeObjectURL(objectUrl);
-
-            let { width, height } = img;
-
-            if (width > maxDimension || height > maxDimension) {
-                const ratio = Math.min(maxDimension / width, maxDimension / height);
-                width = Math.round(width * ratio);
-                height = Math.round(height * ratio);
-            }
-
-            const canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const qualities = [0.85, 0.75, 0.65, 0.55, 0.45, 0.35];
-            let i = 0;
-
-            function tryQuality() {
-                if (i >= qualities.length) {
-                    canvas.toBlob(
-                        (blob) => resolve(blob),
-                        "image/jpeg",
-                        qualities[qualities.length - 1]
-                    );
-                    return;
-                }
-
-                canvas.toBlob(
-                    (blob) => {
-                        if (!blob) {
-                            reject(new Error("Gagal memproses gambar."));
-                            return;
-                        }
-                        if (blob.size <= maxSizeBytes || i === qualities.length - 1) {
-                            resolve(blob);
-                        } else {
-                            i++;
-                            tryQuality();
-                        }
-                    },
-                    "image/jpeg",
-                    qualities[i]
-                );
-            }
-
-            tryQuality();
-        };
-
-        img.onerror = () => {
-            URL.revokeObjectURL(objectUrl);
-            reject(new Error("File bukan gambar yang valid."));
-        };
-
-        img.src = objectUrl;
-    });
-}
 
 /* ==========================================
    TEMPLATE
@@ -165,14 +196,12 @@ const templates = {
 
     <p>
         Upload foto profil baru yang akan ditampilkan kepada seluruh member Cyber Prosperity.
-        Foto besar akan otomatis dikompres.
+        Foto besar akan otomatis dikompres agar muat (maks 2MB).
     </p>
 
     <div class="profile-photo-wrapper">
         <img src="assets/images/avatar/default-avatar.png" id="profilePreview" class="profile-photo-preview" alt="Profile Photo">
     </div>
-
-    <p id="photoCompressStatus" style="display:none; color:#94A3B8; font-size:13px; margin-bottom:10px;"></p>
 
     <div class="settings-form">
 
@@ -224,14 +253,12 @@ const templates = {
 
     <p>
         Upload cover photo baru untuk profil Cyber Prosperity Anda.
-        Foto besar akan otomatis dikompres.
+        Foto besar akan otomatis dikompres agar muat (maks 2MB).
     </p>
 
     <div class="cover-photo-wrapper">
         <img src="assets/images/cover/default-cover.jpg" id="coverPreview" class="cover-photo-preview" alt="Cover Photo">
     </div>
-
-    <p id="coverCompressStatus" style="display:none; color:#94A3B8; font-size:13px; margin-bottom:10px;"></p>
 
     <div class="settings-form">
 
@@ -422,7 +449,6 @@ const templates = {
     </form>
 
     `
-
 };
 
 /* ==========================================
@@ -557,7 +583,8 @@ function activateProfileForm() {
 }
 
 /* ==========================================
-   PROFILE PHOTO — preview, auto-compress & upload
+   PROFILE PHOTO — preview & upload ke Supabase
+   (dengan auto-compress kalau file > 2MB)
 ========================================== */
 
 function activatePhotoUpload() {
@@ -566,7 +593,6 @@ function activatePhotoUpload() {
     const preview = document.getElementById("profilePreview");
     const saveBtn = document.getElementById("photoSaveBtn");
     const removeBtn = document.getElementById("photoRemoveBtn");
-    const statusText = document.getElementById("photoCompressStatus");
 
     if (!upload || !preview) return;
 
@@ -578,39 +604,14 @@ function activatePhotoUpload() {
         const file = this.files[0];
         if (!file) return;
 
-        if (!file.type.startsWith("image/")) {
-            alert("File harus berupa gambar.");
-            this.value = "";
-            return;
-        }
+        const processed = await processImageUpload(file, this, preview);
+        if (!processed) return;
 
-        const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
+        selectedFile = processed;
 
-        if (file.size > MAX_UPLOAD_SIZE) {
-            statusText.style.display = "block";
-            statusText.textContent = `Mengompres gambar (${originalSizeMB}MB)...`;
-        } else {
-            statusText.style.display = "none";
-        }
-
-        try {
-            const compressed = await compressImage(file);
-            selectedFile = compressed;
-
-            if (file.size > MAX_UPLOAD_SIZE) {
-                const newSizeMB = (compressed.size / 1024 / 1024).toFixed(2);
-                statusText.textContent = `Dikompres dari ${originalSizeMB}MB menjadi ${newSizeMB}MB.`;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (e) => { preview.src = e.target.result; };
-            reader.readAsDataURL(compressed);
-
-        } catch (err) {
-            alert("Gagal memproses gambar: " + err.message);
-            this.value = "";
-            statusText.style.display = "none";
-        }
+        const reader = new FileReader();
+        reader.onload = (e) => { preview.src = e.target.result; };
+        reader.readAsDataURL(selectedFile);
     });
 
     if (saveBtn) {
@@ -624,15 +625,12 @@ function activatePhotoUpload() {
             saveBtn.disabled = true;
             saveBtn.innerHTML = "Mengunggah...";
 
-            const ext = selectedFile.name ? selectedFile.name.split(".").pop() : "jpg";
+            const ext = selectedFile.name.split(".").pop();
             const path = `${currentUser.id}/avatar-${Date.now()}.${ext}`;
 
             const { error: uploadError } = await supabaseClient
                 .storage.from("avatars")
-                .upload(path, selectedFile, {
-                    upsert: true,
-                    contentType: selectedFile.type || "image/jpeg"
-                });
+                .upload(path, selectedFile, { upsert: true, contentType: selectedFile.type });
 
             if (uploadError) {
                 alert("Gagal mengunggah foto: " + uploadError.message);
@@ -662,7 +660,6 @@ function activatePhotoUpload() {
 
             currentProfile.avatar_url = newAvatarUrl;
             selectedFile = null;
-            statusText.style.display = "none";
             alert("Foto profil berhasil diperbarui.");
         });
     }
@@ -690,7 +687,8 @@ function activatePhotoUpload() {
 }
 
 /* ==========================================
-   COVER PHOTO — preview, auto-compress & upload
+   COVER PHOTO — preview & upload ke Supabase
+   (dengan auto-compress kalau file > 2MB)
 ========================================== */
 
 function activateCoverUpload() {
@@ -699,7 +697,6 @@ function activateCoverUpload() {
     const preview = document.getElementById("coverPreview");
     const saveBtn = document.getElementById("coverSaveBtn");
     const cancelBtn = document.getElementById("coverCancelBtn");
-    const statusText = document.getElementById("coverCompressStatus");
 
     if (!upload || !preview) return;
 
@@ -711,39 +708,14 @@ function activateCoverUpload() {
         const file = this.files[0];
         if (!file) return;
 
-        if (!file.type.startsWith("image/")) {
-            alert("File harus berupa gambar.");
-            this.value = "";
-            return;
-        }
+        const processed = await processImageUpload(file, this, preview);
+        if (!processed) return;
 
-        const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
+        selectedFile = processed;
 
-        if (file.size > MAX_UPLOAD_SIZE) {
-            statusText.style.display = "block";
-            statusText.textContent = `Mengompres gambar (${originalSizeMB}MB)...`;
-        } else {
-            statusText.style.display = "none";
-        }
-
-        try {
-            const compressed = await compressImage(file);
-            selectedFile = compressed;
-
-            if (file.size > MAX_UPLOAD_SIZE) {
-                const newSizeMB = (compressed.size / 1024 / 1024).toFixed(2);
-                statusText.textContent = `Dikompres dari ${originalSizeMB}MB menjadi ${newSizeMB}MB.`;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (e) => { preview.src = e.target.result; };
-            reader.readAsDataURL(compressed);
-
-        } catch (err) {
-            alert("Gagal memproses gambar: " + err.message);
-            this.value = "";
-            statusText.style.display = "none";
-        }
+        const reader = new FileReader();
+        reader.onload = (e) => { preview.src = e.target.result; };
+        reader.readAsDataURL(selectedFile);
     });
 
     if (saveBtn) {
@@ -757,15 +729,12 @@ function activateCoverUpload() {
             saveBtn.disabled = true;
             saveBtn.textContent = "Menyimpan...";
 
-            const ext = selectedFile.name ? selectedFile.name.split(".").pop() : "jpg";
+            const ext = selectedFile.name.split(".").pop();
             const path = `${currentUser.id}/cover-${Date.now()}.${ext}`;
 
             const { error: uploadError } = await supabaseClient
                 .storage.from("avatars")
-                .upload(path, selectedFile, {
-                    upsert: true,
-                    contentType: selectedFile.type || "image/jpeg"
-                });
+                .upload(path, selectedFile, { upsert: true, contentType: selectedFile.type });
 
             if (uploadError) {
                 alert("Gagal mengunggah cover: " + uploadError.message);
@@ -795,7 +764,6 @@ function activateCoverUpload() {
 
             currentProfile.cover_url = newCoverUrl;
             selectedFile = null;
-            statusText.style.display = "none";
             alert("Cover berhasil diperbarui.");
         });
     }
