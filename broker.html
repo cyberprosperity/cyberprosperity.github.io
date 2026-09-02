@@ -14,6 +14,9 @@
           href="assets/css/style.css">
 
     <link rel="stylesheet"
+          href="assets/css/broker.css">
+
+    <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
@@ -128,176 +131,235 @@
     <main class="main-content">
 
         <!-- ==========================================
-     BROKER HEADER
-========================================== -->
+             BROKER HERO
+        ========================================== -->
 
-<section class="broker-header">
+        <section class="broker-hero">
 
-    <div class="broker-header-top">
-
-        <span class="broker-subtitle">
-
-            Broker Center
-
-        </span>
-
-        <h1>
-
-            Broker Directory
-
-        </h1>
-
-        <p>
-
-            Discover trusted brokers recommended by the Cyber Prosperity community.
-
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     BROKER LIST
-========================================== -->
-
-<section class="broker-list">
-
-    <div class="broker-grid">
-
-    <!-- ==========================
-         BROKER 1
-    =========================== -->
-
-    <article class="broker-card featured">
-
-        <div class="partner-ribbon">
-            OFFICIAL PARTNER
-        </div>
-
-        <div class="broker-logo">
-    <img src="assets/images/brokers/cfforex.png"
-         alt="CFForex">
-
-</div>
-
-        <h2>
-
-            CFFOREX
-
-        </h2>
-
-        <p class="broker-license">
-            BAPPEBTI / OJK / BI • Indonesia
-
-        </p>
-
-        <div class="broker-info">
-
-            <div class="broker-item">
-                <small>Minimum Deposit</small>
-                <strong>$100 / Fee $0.1</strong>
+            <div class="broker-hero-bg">
+                <img src="assets/images/hero/contact-banner.png" alt="">
             </div>
 
-            <div class="broker-item">
-                <small>Markets</small>
-                <div class="market-tags">
-                    <span>Forex</span>
-                    <span>Gold</span>
+            <div class="broker-hero-inner">
+
+                <span class="broker-subtitle">
+                    Broker Center
+                </span>
+
+                <h1>
+                    Trade with partners the<br>community already trusts
+                </h1>
+
+                <p>
+                    Setiap broker di sini sudah melalui verifikasi Cyber Prosperity —
+                    dari legalitas, kondisi trading, sampai kualitas eksekusi.
+                </p>
+
+                <div class="broker-hero-chips">
+                    <span><i class="fa-solid fa-check"></i> Terverifikasi komunitas</span>
+                    <span><i class="fa-solid fa-check"></i> Regulasi jelas</span>
+                    <span><i class="fa-solid fa-check"></i> Support 24/7</span>
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
-        <div class="broker-actions">
 
-            <a
-                 href="https://clientarea.cfforex.com/auth/register/cypros7"
-                 class="btn-primary"
-                 target="_blank"
-                rel="noopener noreferrer"
-            >
+        <!-- ==========================================
+             BROKER LAYOUT (grid broker + panel highlight)
+        ========================================== -->
 
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <div class="broker-layout">
 
-                 Visit Broker
+            <section class="broker-list">
 
-             </a>
+                <div class="broker-grid">
 
-        </div>
+                <!-- ==========================
+                     BROKER 1 — CFFOREX (aksen gold)
+                =========================== -->
 
-    </article>
+                <article class="broker-card broker-card--gold">
 
-    <!-- ==========================
-         BROKER 2
-    =========================== -->
+                    <div class="partner-ribbon">
+                        OFFICIAL PARTNER
+                    </div>
 
-    <article class="broker-card featured">
+                    <div class="broker-logo">
+                        <img src="assets/images/brokers/cfforex.png" alt="CFForex">
+                    </div>
 
-        <div class="partner-ribbon">
-            OFFICIAL PARTNER
-        </div>
+                    <h2>CFFOREX</h2>
 
-        <div class="broker-logo">
-    <img src="assets/images/brokers/Firsttrade.png"
-         alt="CFForex">
+                    <p class="broker-license">
+                        BAPPEBTI / OJK / BI &bull; Indonesia
+                    </p>
 
-</div>
+                    <div class="broker-info">
 
-        <h2>
+                        <div class="broker-item">
+                            <div class="broker-item-icon">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <div>
+                                <small>Minimum Deposit</small>
+                                <strong>$100</strong>
+                            </div>
+                        </div>
 
-            FIRT TRADE
+                        <div class="broker-item">
+                            <div class="broker-item-icon">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div>
+                                <small>Fee per Lot</small>
+                                <strong>$0.1</strong>
+                            </div>
+                        </div>
 
-        </h2>
+                    </div>
 
-        <p class="broker-license">
-            Global Multi Asset International Broker
+                    <div class="market-tags">
+                        <span>Forex</span>
+                        <span>Gold</span>
+                    </div>
 
-        </p>
+                    <div class="broker-actions">
 
-        <div class="broker-info">
+                        <a
+                             href="https://clientarea.cfforex.com/auth/register/cypros7"
+                             class="btn-primary"
+                             target="_blank"
+                            rel="noopener noreferrer"
+                        >
 
-            <div class="broker-item">
-                <small>Minimum Deposit</small>
-                <strong>$30 / Fee $0</strong>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                             Visit Broker
+
+                         </a>
+
+                    </div>
+
+                </article>
+
+                <!-- ==========================
+                     BROKER 2 — FIRST TRADE (aksen biru)
+                =========================== -->
+
+                <article class="broker-card broker-card--blue">
+
+                    <div class="partner-ribbon partner-ribbon--blue">
+                        OFFICIAL PARTNER
+                    </div>
+
+                    <div class="broker-logo">
+                        <img src="assets/images/brokers/Firsttrade.png" alt="First Trade">
+                    </div>
+
+                    <h2>FIRST TRADE</h2>
+
+                    <p class="broker-license">
+                        Global Multi Asset International Broker
+                    </p>
+
+                    <div class="broker-info">
+
+                        <div class="broker-item">
+                            <div class="broker-item-icon broker-item-icon--blue">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <div>
+                                <small>Minimum Deposit</small>
+                                <strong>$30</strong>
+                            </div>
+                        </div>
+
+                        <div class="broker-item">
+                            <div class="broker-item-icon broker-item-icon--blue">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div>
+                                <small>Fee per Lot</small>
+                                <strong>$0</strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="market-tags">
+                        <span>Forex</span>
+                        <span>Gold</span>
+                        <span>Crypto</span>
+                    </div>
+
+                    <div class="broker-actions">
+
+                        <a
+                             href="https://cabinet.firsttrademarkets.com/signup?refferal=69ce54a549802"
+                             class="btn-primary btn-primary--blue"
+                             target="_blank"
+                            rel="noopener noreferrer"
+                        >
+
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                             Visit Broker
+
+                         </a>
+
+                    </div>
+
+                </article>
+
             </div>
 
-            <div class="broker-item">
-                <small>Markets</small>
-                <div class="market-tags">
-                    <span>Forex</span>
-                    <span>Gold</span>
-                    <span>Cripto</span>
+            </section>
+
+            <!-- ==========================================
+                 PANEL HIGHLIGHT (Trusted, Best Conditions, Support)
+            ========================================== -->
+
+            <aside class="broker-highlight">
+
+                <div class="broker-highlight-item">
+                    <div class="broker-highlight-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h4>Trusted &amp; Secure</h4>
+                        <p>All brokers are verified partners of Cyber Prosperity.</p>
+                    </div>
                 </div>
 
-            </div>
+                <div class="broker-highlight-item">
+                    <div class="broker-highlight-icon">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h4>Best Conditions</h4>
+                        <p>Competitive spreads, low fees, and fast execution.</p>
+                    </div>
+                </div>
+
+                <div class="broker-highlight-item">
+                    <div class="broker-highlight-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <h4>24/7 Support</h4>
+                        <p>Professional support whenever you need it.</p>
+                    </div>
+                </div>
+
+                <div class="broker-highlight-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+            </aside>
 
         </div>
-
-        <div class="broker-actions">
-
-            <a
-                 href="https://cabinet.firsttrademarkets.com/signup?refferal=69ce54a549802"
-                 class="btn-primary"
-                 target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                 Visit Broker
-
-             </a>
-
-        </div>
-
-    </article>
-
-</div>
-
-</section>
 
     </main>
 

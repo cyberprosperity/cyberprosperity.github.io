@@ -1,0 +1,482 @@
+/* =========================================================
+   CYBER PROSPERITY
+   BROKER DIRECTORY PAGE
+   File CSS khusus halaman Broker (broker.html)
+   Dependency: style.css (variabel --cp-gold, --cp-white,
+   --cp-muted, dll, dan class .btn-primary dasar)
+========================================================= */
+
+:root {
+    --cp-blue: #3b82f6;
+    --cp-blue-light: #60a5fa;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.broker-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    margin-bottom: 40px;
+    padding: 64px 48px;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    background: #0a0f18;
+}
+
+.broker-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.broker-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(.42) saturate(.85);
+}
+
+.broker-hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        100deg,
+        rgba(8,15,24,.96) 10%,
+        rgba(8,15,24,.75) 45%,
+        rgba(8,15,24,.35) 100%
+    );
+}
+
+.broker-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 620px;
+}
+
+.broker-subtitle {
+    display: inline-block;
+    color: var(--cp-gold, #D4A64A);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.broker-hero-inner h1 {
+    margin: 12px 0 18px;
+    color: #FFFFFF;
+    font-family: "Sora", sans-serif;
+    font-size: clamp(30px, 3.4vw, 44px);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -.02em;
+}
+
+.broker-hero-inner > p {
+    margin: 0 0 26px;
+    color: #B8C2D4;
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 480px;
+}
+
+.broker-hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.broker-hero-chips span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #E2E8F0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.broker-hero-chips i {
+    color: #3ED598;
+    font-size: 12px;
+}
+
+/* =========================================================
+   BROKER LAYOUT (grid broker + panel highlight)
+========================================================= */
+
+.broker-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 30px;
+    align-items: start;
+}
+
+.broker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 320px);
+    gap: 24px;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+/* =========================================================
+   BROKER CARD
+========================================================= */
+
+.broker-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    padding: 24px 20px;
+    border-radius: 22px;
+    overflow: hidden;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+
+    background:
+        radial-gradient(circle at 15% 0%, rgba(212,166,74,.10), transparent 55%),
+        linear-gradient(165deg, #1B2740 0%, #131C2E 100%);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.broker-card--blue {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(59,130,246,.14), transparent 55%),
+        linear-gradient(165deg, #1B2740 0%, #131C2E 100%);
+}
+
+.broker-card:hover {
+    transform: translateY(-6px);
+}
+
+.broker-card--gold:hover {
+    border-color: rgba(212,166,74,.5);
+    box-shadow: 0 24px 40px rgba(212,166,74,.12), 0 8px 20px rgba(0,0,0,.35);
+}
+
+.broker-card--blue:hover {
+    border-color: rgba(59,130,246,.5);
+    box-shadow: 0 24px 40px rgba(59,130,246,.14), 0 8px 20px rgba(0,0,0,.35);
+}
+
+/* Ribbon "OFFICIAL PARTNER" */
+
+.partner-ribbon {
+    position: absolute;
+    top: 18px;
+    right: -45px;
+    width: 180px;
+    background: var(--cp-gold, #D4A64A);
+    color: #111827;
+    text-align: center;
+    padding: 7px 0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transform: rotate(35deg);
+    z-index: 10;
+}
+
+.partner-ribbon--blue {
+    background: var(--cp-blue);
+    color: #FFFFFF;
+}
+
+/* Logo broker */
+
+.broker-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 70px;
+    margin: 18px auto 22px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+}
+
+.broker-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Nama & lisensi */
+
+.broker-card h2 {
+    color: #FFFFFF;
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.broker-license {
+    color: #94A3B8;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Statistik: Min Deposit / Fee, dengan icon chip berwarna */
+
+.broker-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.broker-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.05);
+}
+
+.broker-item-icon {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: rgba(212,166,74,.15);
+    border: 1px solid rgba(212,166,74,.3);
+    color: #E7C15B;
+    font-size: 14px;
+}
+
+.broker-item-icon--blue {
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    color: var(--cp-blue-light);
+}
+
+.broker-item small {
+    display: block;
+    color: #64748B;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+}
+
+.broker-item strong {
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* Tag pasar (Forex, Gold, Crypto) */
+
+.market-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.market-tags span {
+    background: #10151F;
+    color: var(--cp-gold, #D4A64A);
+    border: 1px solid rgba(212,166,74,.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Tombol aksi */
+
+.broker-actions {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.broker-actions .btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    background: var(--cp-gold, #D4A64A);
+    color: #111827;
+    transition: background .25s ease, transform .25s ease;
+}
+
+.broker-actions .btn-primary:hover {
+    background: var(--cp-gold-light, #E7C15B);
+    transform: translateY(-2px);
+}
+
+.broker-actions .btn-primary--blue {
+    background: var(--cp-blue);
+    color: #FFFFFF;
+}
+
+.broker-actions .btn-primary--blue:hover {
+    background: var(--cp-blue-light);
+}
+
+/* =========================================================
+   PANEL HIGHLIGHT (kanan)
+========================================================= */
+
+.broker-highlight {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    min-height: 460px;
+    padding: 32px 26px;
+    background:
+        radial-gradient(circle at 30% 15%, rgba(212,166,74,.18), transparent 55%),
+        radial-gradient(circle at 85% 85%, rgba(59,130,246,.12), transparent 50%),
+        linear-gradient(160deg, #16213A 0%, #0E1626 100%);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.broker-highlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: .5;
+    pointer-events: none;
+}
+
+.broker-highlight-item {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.broker-highlight-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(212,166,74,.15);
+    border: 1px solid rgba(212,166,74,.3);
+    color: #E7C15B;
+    font-size: 16px;
+}
+
+.broker-highlight-item h4 {
+    margin: 0 0 6px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.broker-highlight-item p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.broker-highlight-badge {
+    position: relative;
+    z-index: 1;
+    margin: auto auto 0;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,166,74,.25), rgba(212,166,74,.05) 70%);
+    border: 1px solid rgba(212,166,74,.35);
+    color: var(--cp-gold, #D4A64A);
+    font-size: 26px;
+    box-shadow: 0 0 40px rgba(212,166,74,.25);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+    .broker-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .broker-hero {
+        padding: 40px 28px;
+        border-radius: 20px;
+    }
+
+    .broker-hero-inner > p {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .broker-grid {
+        grid-template-columns: 1fr;
+        justify-content: stretch;
+    }
+
+    .broker-card {
+        width: 100%;
+    }
+
+    .broker-hero-inner h1 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 430px) {
+    .broker-hero {
+        padding: 30px 20px;
+    }
+
+    .broker-hero-chips span {
+        font-size: 12px;
+        padding: 7px 12px;
+    }
+}
