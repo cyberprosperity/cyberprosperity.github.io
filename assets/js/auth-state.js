@@ -2,8 +2,10 @@
 // AUTH STATE CHECKER
 // Dipasang di SEMUA halaman yang punya navbar
 // (index, forum, profile, dll)
-// Alur: Cek sesi login -> Kalau login, ganti
-//       tombol Sign In/Join jadi nama user + Logout
+// Alur: Cek sesi login -> ambil nama dari tabel "profiles"
+//       (bukan user_metadata, supaya selalu sinkron dengan
+//       perubahan nama di Settings) -> ganti tombol
+//       Sign In/Join jadi nama user + Logout
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -18,7 +20,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (session) {
         // ---- USER SUDAH LOGIN ----
         const user = session.user;
+
+        // Ambil nama terbaru dari tabel "profiles" - ini sumber yang sama
+        // dipakai Settings & Forum, supaya nama selalu sinkron di semua halaman.
+        const { data: profileData } = await supabaseClient
+            .from("profiles")
+            .select("full_name, username")
+            .eq("id", user.id)
+            .maybeSingle();
+
         const displayName =
+            profileData?.full_name ||
+            profileData?.username ||
             user.user_metadata?.full_name ||
             user.user_metadata?.username ||
             user.email;
