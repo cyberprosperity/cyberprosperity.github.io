@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Gold Risk Calculator | Cyber Prosperity</title>
+
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        .risk-layout{
+            display:grid;
+            grid-template-columns: 420px 1fr;
+            gap:28px;
+            align-items:start;
+        }
+
+        .risk-form-card{
+            background:#1B2434;
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:20px;
+            padding:28px;
+        }
+
+        .risk-field{
+            margin-bottom:20px;
+        }
+
+        .risk-field label{
+            display:block;
+            color:#CBD5E1;
+            font-size:13px;
+            font-weight:600;
+            margin-bottom:8px;
+        }
+
+        .risk-field .risk-hint{
+            display:block;
+            color:#64748B;
+            font-size:12px;
+            font-weight:400;
+            margin-top:4px;
+        }
+
+        .risk-input-group{
+            position:relative;
+        }
+
+        .risk-input-group input{
+            width:100%;
+            padding:13px 14px;
+            border-radius:10px;
+            border:1px solid #2A3448;
+            background:#10151F;
+            color:#FFFFFF;
+            font-size:15px;
+            font-family:inherit;
+            box-sizing:border-box;
+            transition:.25s;
+        }
+
+        .risk-input-group input:focus{
+            outline:none;
+            border-color:#D4A64A;
+            box-shadow:0 0 0 3px rgba(212,166,74,.15);
+        }
+
+        .risk-input-group .risk-suffix{
+            position:absolute;
+            right:14px;
+            top:50%;
+            transform:translateY(-50%);
+            color:#64748B;
+            font-size:13px;
+            pointer-events:none;
+        }
+
+        .risk-slider-row{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+
+        .risk-slider-row input[type="range"]{
+            flex:1;
+            accent-color:#D4A64A;
+        }
+
+        .risk-slider-value{
+            min-width:52px;
+            text-align:right;
+            color:#D4A64A;
+            font-weight:700;
+            font-size:15px;
+        }
+
+        /* ==========================
+           RESULT PANEL
+        ========================== */
+
+        .risk-result-hero{
+            position:relative;
+            overflow:hidden;
+            border-radius:22px;
+            padding:36px 32px;
+            margin-bottom:24px;
+            background:
+                radial-gradient(circle at 20% 0%, rgba(212,166,74,.16), transparent 55%),
+                linear-gradient(160deg, #1B2740 0%, #10151F 100%);
+            border:1px solid rgba(212,166,74,.25);
+        }
+
+        .risk-result-label{
+            color:#94A3B8;
+            font-size:13px;
+            margin-bottom:8px;
+        }
+
+        .risk-result-value{
+            display:flex;
+            align-items:baseline;
+            gap:10px;
+        }
+
+        .risk-result-value strong{
+            font-family:"Sora", sans-serif;
+            font-size:56px;
+            font-weight:800;
+            color:#FFFFFF;
+            line-height:1;
+        }
+
+        .risk-result-value span{
+            color:#D4A64A;
+            font-size:20px;
+            font-weight:700;
+        }
+
+        .risk-result-note{
+            margin-top:12px;
+            color:#94A3B8;
+            font-size:13px;
+            line-height:1.7;
+            max-width:520px;
+        }
+
+        .risk-breakdown{
+            display:grid;
+            grid-template-columns:repeat(3, 1fr);
+            gap:16px;
+            margin-bottom:24px;
+        }
+
+        .risk-breakdown-card{
+            background:#1B2434;
+            border:1px solid rgba(255,255,255,.06);
+            border-radius:16px;
+            padding:20px;
+        }
+
+        .risk-breakdown-card small{
+            display:block;
+            color:#64748B;
+            font-size:11px;
+            text-transform:uppercase;
+            letter-spacing:1.5px;
+            margin-bottom:8px;
+        }
+
+        .risk-breakdown-card strong{
+            display:block;
+            color:#FFFFFF;
+            font-size:22px;
+            font-weight:700;
+        }
+
+        .risk-breakdown-card strong.positive{ color:#3ED598; }
+        .risk-breakdown-card strong.negative{ color:#EF4444; }
+
+        .risk-rr-bar{
+            display:flex;
+            height:14px;
+            border-radius:999px;
+            overflow:hidden;
+            margin-top:14px;
+        }
+
+        .risk-rr-bar .rr-loss{
+            background:#EF4444;
+        }
+
+        .risk-rr-bar .rr-profit{
+            background:#3ED598;
+        }
+
+        .risk-warning{
+            display:flex;
+            align-items:flex-start;
+            gap:12px;
+            background:rgba(239,68,68,.08);
+            border:1px solid rgba(239,68,68,.25);
+            border-radius:14px;
+            padding:16px 18px;
+            color:#F8A8A8;
+            font-size:13px;
+            line-height:1.7;
+        }
+
+        .risk-warning i{
+            color:#EF4444;
+            font-size:16px;
+            margin-top:2px;
+        }
+
+        @media (max-width: 900px){
+
+            .risk-layout{
+                grid-template-columns: 1fr;
+            }
+
+            .risk-breakdown{
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .risk-result-value strong{
+                font-size:42px;
+            }
+        }
+
+        @media (max-width: 480px){
+
+            .risk-breakdown{
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="assets/images/logo/logo.png"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
+
+            <div>
+
+                <h2>Cyber Prosperity</h2>
+
+                <span>Social Trading Community</span>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="features.html">
+                <i class="fa-solid fa-star"></i>
+                <span>Features</span>
+            </a>
+
+            <a href="forum.html">
+                <i class="fa-solid fa-comments"></i>
+                <span>Forum</span>
+            </a>
+
+            <a href="journal.html">
+                <i class="fa-solid fa-book"></i>
+                <span>Journal</span>
+            </a>
+
+            <a href="broker.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Broker</span>
+            </a>
+
+            <a href="contact.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-bottom">
+
+            <a href="profile.html">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <!-- ==========================================
+             HEADER
+        =========================================== -->
+
+        <section class="forum-header">
+
+            <div class="forum-header-top">
+
+                <span class="forum-subtitle">
+                    Trading Tools
+                </span>
+
+                <h1>
+                    Gold Risk Calculator
+                </h1>
+
+                <p>
+                    Hitung lot size aman berdasarkan saldo, risiko, dan jarak stop loss XAUUSD Anda.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             LAYOUT: FORM + RESULT
+        =========================================== -->
+
+        <div class="risk-layout">
+
+            <!-- FORM -->
+
+            <div class="risk-form-card">
+
+                <div class="risk-field">
+                    <label for="rc-balance">Saldo Akun</label>
+                    <div class="risk-input-group">
+                        <input type="number" id="rc-balance" value="1000" min="0" step="1">
+                        <span class="risk-suffix">USD</span>
+                    </div>
+                </div>
+
+                <div class="risk-field">
+                    <label for="rc-risk">
+                        Risiko per Transaksi
+                        <span class="risk-hint">Persentase saldo yang siap Anda relakan jika Stop Loss kena.</span>
+                    </label>
+                    <div class="risk-slider-row">
+                        <input type="range" id="rc-risk" min="0.25" max="10" step="0.25" value="1">
+                        <span class="risk-slider-value" id="rc-risk-value">1%</span>
+                    </div>
+                </div>
+
+                <div class="risk-field">
+                    <label for="rc-entry">Harga Entry</label>
+                    <div class="risk-input-group">
+                        <input type="number" id="rc-entry" value="2650.00" min="0" step="0.01">
+                        <span class="risk-suffix">USD</span>
+                    </div>
+                </div>
+
+                <div class="risk-field">
+                    <label for="rc-sl">Harga Stop Loss</label>
+                    <div class="risk-input-group">
+                        <input type="number" id="rc-sl" value="2640.00" min="0" step="0.01">
+                        <span class="risk-suffix">USD</span>
+                    </div>
+                </div>
+
+                <div class="risk-field">
+                    <label for="rc-contract">
+                        Ukuran Kontrak
+                        <span class="risk-hint">Jumlah troy ounce per 1.0 lot standar di broker Anda (umumnya 100).</span>
+                    </label>
+                    <div class="risk-input-group">
+                        <input type="number" id="rc-contract" value="100" min="1" step="1">
+                        <span class="risk-suffix">oz / lot</span>
+                    </div>
+                </div>
+
+                <div class="risk-field" style="margin-bottom:0;">
+                    <label for="rc-rr">Risk : Reward Ratio</label>
+                    <div class="risk-slider-row">
+                        <input type="range" id="rc-rr" min="1" max="5" step="0.5" value="2">
+                        <span class="risk-slider-value" id="rc-rr-value">1:2</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RESULT -->
+
+            <div>
+
+                <div class="risk-result-hero">
+
+                    <div class="risk-result-label">Rekomendasi Lot Size</div>
+
+                    <div class="risk-result-value">
+                        <strong id="rc-lotsize">0.00</strong>
+                        <span>lot</span>
+                    </div>
+
+                    <p class="risk-result-note" id="rc-direction">
+                        Posisi terdeteksi sebagai <strong>BUY</strong> — Stop Loss di bawah harga Entry.
+                    </p>
+
+                </div>
+
+                <div class="risk-breakdown">
+
+                    <div class="risk-breakdown-card">
+                        <small>Risiko (USD)</small>
+                        <strong class="negative" id="rc-risk-amount">$0.00</strong>
+                    </div>
+
+                    <div class="risk-breakdown-card">
+                        <small>Jarak Stop Loss</small>
+                        <strong id="rc-sl-distance">$0.00</strong>
+                    </div>
+
+                    <div class="risk-breakdown-card">
+                        <small>Target Take Profit</small>
+                        <strong class="positive" id="rc-tp-price">$0.00</strong>
+                    </div>
+
+                </div>
+
+                <div class="risk-form-card">
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span style="color:#94A3B8; font-size:13px;">Potensi Rugi</span>
+                        <span style="color:#94A3B8; font-size:13px;">Potensi Profit</span>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <strong class="negative" id="rc-potential-loss" style="font-size:20px;">$0.00</strong>
+                        <strong class="positive" id="rc-potential-profit" style="font-size:20px;">$0.00</strong>
+                    </div>
+
+                    <div class="risk-rr-bar">
+                        <div class="rr-loss" id="rc-rr-loss-bar" style="width:33%;"></div>
+                        <div class="rr-profit" id="rc-rr-profit-bar" style="width:67%;"></div>
+                    </div>
+
+                </div>
+
+                <div class="risk-warning" style="margin-top:20px;" id="rc-warning" style="display:none;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span id="rc-warning-text"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    const balanceInput  = document.getElementById("rc-balance");
+    const riskInput      = document.getElementById("rc-risk");
+    const riskValueEl    = document.getElementById("rc-risk-value");
+    const entryInput     = document.getElementById("rc-entry");
+    const slInput        = document.getElementById("rc-sl");
+    const contractInput  = document.getElementById("rc-contract");
+    const rrInput        = document.getElementById("rc-rr");
+    const rrValueEl       = document.getElementById("rc-rr-value");
+
+    const lotSizeEl        = document.getElementById("rc-lotsize");
+    const directionEl      = document.getElementById("rc-direction");
+    const riskAmountEl     = document.getElementById("rc-risk-amount");
+    const slDistanceEl     = document.getElementById("rc-sl-distance");
+    const tpPriceEl        = document.getElementById("rc-tp-price");
+    const potentialLossEl  = document.getElementById("rc-potential-loss");
+    const potentialProfitEl = document.getElementById("rc-potential-profit");
+    const rrLossBar        = document.getElementById("rc-rr-loss-bar");
+    const rrProfitBar      = document.getElementById("rc-rr-profit-bar");
+    const warningBox       = document.getElementById("rc-warning");
+    const warningText      = document.getElementById("rc-warning-text");
+
+    function formatUSD(num) {
+        return "$" + num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculate() {
+        const balance   = parseFloat(balanceInput.value) || 0;
+        const riskPct   = parseFloat(riskInput.value) || 0;
+        const entry     = parseFloat(entryInput.value) || 0;
+        const sl        = parseFloat(slInput.value) || 0;
+        const contract  = parseFloat(contractInput.value) || 100;
+        const rr        = parseFloat(rrInput.value) || 1;
+
+        riskValueEl.textContent = riskPct + "%";
+        rrValueEl.textContent = "1:" + rr;
+
+        const slDistance = Math.abs(entry - sl);
+        const riskAmount = balance * (riskPct / 100);
+
+        let lotSize = 0;
+        if (slDistance > 0 && contract > 0) {
+            lotSize = riskAmount / (slDistance * contract);
+        }
+
+        const isBuy = sl < entry;
+        directionEl.innerHTML = slDistance === 0
+            ? "Masukkan harga Entry dan Stop Loss yang berbeda untuk melihat perhitungan."
+            : `Posisi terdeteksi sebagai <strong>${isBuy ? "BUY" : "SELL"}</strong> — Stop Loss di ${isBuy ? "bawah" : "atas"} harga Entry.`;
+
+        const tpDistance = slDistance * rr;
+        const tpPrice = isBuy ? entry + tpDistance : entry - tpDistance;
+        const potentialProfit = riskAmount * rr;
+
+        lotSizeEl.textContent = lotSize.toFixed(2);
+        riskAmountEl.textContent = formatUSD(riskAmount);
+        slDistanceEl.textContent = formatUSD(slDistance);
+        tpPriceEl.textContent = tpPrice > 0 ? "$" + tpPrice.toFixed(2) : "$0.00";
+        potentialLossEl.textContent = formatUSD(riskAmount);
+        potentialProfitEl.textContent = formatUSD(potentialProfit);
+
+        const total = riskAmount + potentialProfit;
+        const lossPct = total > 0 ? (riskAmount / total) * 100 : 33;
+        rrLossBar.style.width = lossPct + "%";
+        rrProfitBar.style.width = (100 - lossPct) + "%";
+
+        // Peringatan
+        if (lotSize > 0 && contract > 0) {
+            const notionalValue = lotSize * contract * entry;
+            if (notionalValue > balance * 50) {
+                warningBox.style.display = "flex";
+                warningText.textContent = "Lot size ini menghasilkan eksposur sangat besar dibanding saldo Anda — pastikan margin broker Anda mencukupi.";
+            } else if (riskPct > 5) {
+                warningBox.style.display = "flex";
+                warningText.textContent = "Risiko di atas 5% per transaksi tergolong agresif. Kebanyakan trader profesional menjaga risiko di 1-2% per transaksi.";
+            } else {
+                warningBox.style.display = "none";
+            }
+        } else {
+            warningBox.style.display = "none";
+        }
+    }
+
+    [balanceInput, riskInput, entryInput, slInput, contractInput, rrInput].forEach((el) => {
+        el.addEventListener("input", calculate);
+    });
+
+    calculate();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth-state.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
+
+</body>
+
+</html>

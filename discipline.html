@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Discipline Tracker | Cyber Prosperity</title>
+
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        .disc-layout{
+            display:grid;
+            grid-template-columns: 380px 1fr;
+            gap:28px;
+            align-items:start;
+        }
+
+        .disc-card{
+            background:#1B2434;
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:20px;
+            padding:26px;
+            margin-bottom:24px;
+        }
+
+        .disc-card h3{
+            margin:0 0 6px;
+            color:#FFFFFF;
+            font-size:18px;
+            font-weight:700;
+        }
+
+        .disc-card > p.disc-desc{
+            margin:0 0 20px;
+            color:#94A3B8;
+            font-size:13px;
+            line-height:1.6;
+        }
+
+        /* ==== RULES MANAGER ==== */
+
+        .disc-rule-add{
+            display:flex;
+            gap:10px;
+            margin-bottom:18px;
+        }
+
+        .disc-rule-add input{
+            flex:1;
+            padding:12px 14px;
+            border-radius:10px;
+            border:1px solid #2A3448;
+            background:#10151F;
+            color:#FFFFFF;
+            font-size:14px;
+            font-family:inherit;
+        }
+
+        .disc-rule-add input:focus{
+            outline:none;
+            border-color:#D4A64A;
+        }
+
+        .disc-rule-add button{
+            flex-shrink:0;
+            width:44px;
+            border-radius:10px;
+            border:none;
+            background:#D4A64A;
+            color:#111827;
+            font-size:16px;
+            cursor:pointer;
+            transition:.25s;
+        }
+
+        .disc-rule-add button:hover{
+            background:#E7C15B;
+        }
+
+        .disc-rule-list{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+
+        .disc-rule-item{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            padding:12px 14px;
+            background:#10151F;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,.04);
+        }
+
+        .disc-rule-item span{
+            color:#E2E8F0;
+            font-size:14px;
+        }
+
+        .disc-rule-item button{
+            background:none;
+            border:none;
+            color:#EF4444;
+            cursor:pointer;
+            font-size:13px;
+            opacity:.7;
+            transition:.2s;
+        }
+
+        .disc-rule-item button:hover{
+            opacity:1;
+        }
+
+        .disc-empty{
+            color:#64748B;
+            font-size:13px;
+            text-align:center;
+            padding:20px 0;
+        }
+
+        /* ==== CHECKLIST ==== */
+
+        .disc-checklist-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:18px;
+        }
+
+        .disc-checklist-header input[type="date"]{
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid #2A3448;
+            background:#10151F;
+            color:#FFFFFF;
+            font-family:inherit;
+            font-size:13px;
+        }
+
+        .disc-checklist-item{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            padding:14px 16px;
+            border-radius:12px;
+            background:#10151F;
+            margin-bottom:10px;
+            cursor:pointer;
+            transition:.2s;
+        }
+
+        .disc-checklist-item:hover{
+            background:#151C2C;
+        }
+
+        .disc-checklist-item input[type="checkbox"]{
+            width:20px;
+            height:20px;
+            accent-color:#3ED598;
+            flex-shrink:0;
+            cursor:pointer;
+        }
+
+        .disc-checklist-item span{
+            color:#E2E8F0;
+            font-size:14px;
+        }
+
+        .disc-checklist-item.checked span{
+            color:#3ED598;
+        }
+
+        /* ==== HERO INSIGHT ==== */
+
+        .disc-insight-hero{
+            position:relative;
+            overflow:hidden;
+            border-radius:22px;
+            padding:32px;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(212,166,74,.14), transparent 55%),
+                linear-gradient(160deg, #1B2740 0%, #10151F 100%);
+            border:1px solid rgba(212,166,74,.2);
+        }
+
+        .disc-insight-hero h3{
+            margin:0 0 4px;
+            color:#FFFFFF;
+            font-size:19px;
+        }
+
+        .disc-insight-hero > p{
+            color:#94A3B8;
+            font-size:13px;
+            margin:0 0 24px;
+        }
+
+        .disc-insight-compare{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+        }
+
+        .disc-insight-col{
+            padding:20px;
+            border-radius:16px;
+            background:rgba(255,255,255,.03);
+        }
+
+        .disc-insight-col small{
+            display:block;
+            color:#94A3B8;
+            font-size:12px;
+            margin-bottom:10px;
+        }
+
+        .disc-insight-col strong{
+            display:block;
+            font-family:"Sora", sans-serif;
+            font-size:30px;
+            font-weight:800;
+        }
+
+        .disc-insight-col.high strong{ color:#3ED598; }
+        .disc-insight-col.low strong{ color:#EF4444; }
+
+        .disc-insight-col .disc-days-count{
+            color:#64748B;
+            font-size:12px;
+            margin-top:6px;
+        }
+
+        .disc-insight-empty{
+            color:#64748B;
+            font-size:13px;
+            line-height:1.7;
+            text-align:center;
+            padding:20px 0;
+        }
+
+        /* ==== HISTORY TABLE ==== */
+
+        .disc-history-row{
+            display:grid;
+            grid-template-columns: 110px 1fr 90px 110px;
+            align-items:center;
+            gap:14px;
+            padding:12px 4px;
+            border-bottom:1px solid rgba(255,255,255,.05);
+            font-size:13px;
+        }
+
+        .disc-history-row:last-child{
+            border-bottom:none;
+        }
+
+        .disc-history-row.header{
+            color:#64748B;
+            font-size:11px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .disc-history-date{
+            color:#CBD5E1;
+        }
+
+        .disc-history-bar-wrap{
+            height:8px;
+            border-radius:999px;
+            background:rgba(255,255,255,.06);
+            overflow:hidden;
+        }
+
+        .disc-history-bar{
+            height:100%;
+            border-radius:999px;
+            background:#D4A64A;
+        }
+
+        .disc-history-pct{
+            color:#E2E8F0;
+            text-align:right;
+        }
+
+        .disc-history-pnl{
+            text-align:right;
+            font-weight:700;
+        }
+
+        .disc-history-pnl.positive{ color:#3ED598; }
+        .disc-history-pnl.negative{ color:#EF4444; }
+        .disc-history-pnl.neutral{ color:#64748B; font-weight:400; }
+
+        @media (max-width: 900px){
+
+            .disc-layout{
+                grid-template-columns: 1fr;
+            }
+
+            .disc-insight-compare{
+                grid-template-columns: 1fr;
+            }
+
+            .disc-history-row{
+                grid-template-columns: 90px 1fr 60px 90px;
+                font-size:12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="assets/images/logo/logo.png"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
+
+            <div>
+
+                <h2>Cyber Prosperity</h2>
+
+                <span>Social Trading Community</span>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="features.html">
+                <i class="fa-solid fa-star"></i>
+                <span>Features</span>
+            </a>
+
+            <a href="forum.html">
+                <i class="fa-solid fa-comments"></i>
+                <span>Forum</span>
+            </a>
+
+            <a href="journal.html">
+                <i class="fa-solid fa-book"></i>
+                <span>Journal</span>
+            </a>
+
+            <a href="broker.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Broker</span>
+            </a>
+
+            <a href="contact.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-bottom">
+
+            <a href="profile.html">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <section class="forum-header">
+
+            <div class="forum-header-top">
+
+                <span class="forum-subtitle">
+                    Trading Tools
+                </span>
+
+                <h1>
+                    Discipline Tracker
+                </h1>
+
+                <p>
+                    Checklist aturan trading pribadi, terhubung ke Journal, lihat dampaknya ke hasil trading.
+                </p>
+
+            </div>
+
+        </section>
+
+        <div class="disc-layout">
+
+            <!-- KIRI: RULES MANAGER -->
+
+            <div>
+
+                <div class="disc-card">
+
+                    <h3>Aturan Trading Saya</h3>
+                    <p class="disc-desc">Buat daftar aturan pribadi yang ingin Anda patuhi setiap hari.</p>
+
+                    <div class="disc-rule-add">
+                        <input type="text" id="disc-new-rule" placeholder="Contoh: Tidak revenge trading">
+                        <button id="disc-add-rule-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+
+                    <div class="disc-rule-list" id="disc-rule-list">
+                        <p class="disc-empty">Memuat...</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- KANAN: CHECKLIST + INSIGHT + HISTORY -->
+
+            <div>
+
+                <div class="disc-card">
+
+                    <div class="disc-checklist-header">
+                        <div>
+                            <h3 style="margin-bottom:2px;">Checklist Harian</h3>
+                            <p class="disc-desc" style="margin:0;">Centang aturan yang Anda patuhi hari ini.</p>
+                        </div>
+                        <input type="date" id="disc-date-picker">
+                    </div>
+
+                    <div id="disc-checklist-container">
+                        <p class="disc-empty">Memuat...</p>
+                    </div>
+
+                </div>
+
+                <div class="disc-insight-hero" style="margin-bottom:24px;">
+
+                    <h3>Dampak ke Hasil Trading</h3>
+                    <p>Perbandingan rata-rata profit/loss harian berdasarkan tingkat kepatuhan Anda (ambang batas 80%).</p>
+
+                    <div id="disc-insight-container">
+                        <p class="disc-insight-empty">Memuat data...</p>
+                    </div>
+
+                </div>
+
+                <div class="disc-card" style="margin-bottom:0;">
+
+                    <h3>Riwayat 30 Hari Terakhir</h3>
+                    <p class="disc-desc">Skor disiplin harian dibanding hasil trading hari itu.</p>
+
+                    <div class="disc-history-row header">
+                        <span>Tanggal</span>
+                        <span>Skor Disiplin</span>
+                        <span style="text-align:right;">%</span>
+                        <span style="text-align:right;">P/L</span>
+                    </div>
+
+                    <div id="disc-history-container">
+                        <p class="disc-empty">Memuat...</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth-state.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
+
+<script>
+
+    let currentUser = null;
+    let rules = [];               // [{id, rule_text, is_active}]
+    let selectedDate = new Date().toISOString().slice(0, 10);
+    let todayLogsMap = {};        // {rule_id: is_checked}
+
+    const ruleListEl        = document.getElementById("disc-rule-list");
+    const newRuleInput      = document.getElementById("disc-new-rule");
+    const addRuleBtn        = document.getElementById("disc-add-rule-btn");
+    const datePicker         = document.getElementById("disc-date-picker");
+    const checklistContainer = document.getElementById("disc-checklist-container");
+    const insightContainer   = document.getElementById("disc-insight-container");
+    const historyContainer   = document.getElementById("disc-history-container");
+
+    function formatUSD(num) {
+        const sign = num < 0 ? "-" : "";
+        return sign + "$" + Math.abs(num).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatDateLabel(dateStr) {
+        const d = new Date(dateStr + "T00:00:00");
+        return d.toLocaleDateString("id-ID", { day: "2-digit", month: "short" });
+    }
+
+    // ==========================================
+    // INIT
+    // ==========================================
+
+    async function init() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
+        currentUser = user;
+
+        datePicker.value = selectedDate;
+        datePicker.addEventListener("change", () => {
+            selectedDate = datePicker.value;
+            loadChecklist();
+        });
+
+        addRuleBtn.addEventListener("click", addRule);
+        newRuleInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") addRule();
+        });
+
+        await loadRules();
+        await loadChecklist();
+        await loadInsightAndHistory();
+    }
+
+    // ==========================================
+    // RULES MANAGER
+    // ==========================================
+
+    async function loadRules() {
+        const { data, error } = await supabaseClient
+            .from("discipline_rules")
+            .select("id, rule_text, is_active")
+            .eq("user_id", currentUser.id)
+            .eq("is_active", true)
+            .order("created_at", { ascending: true });
+
+        if (error) {
+            console.error("Gagal memuat aturan:", error.message);
+            return;
+        }
+
+        rules = data || [];
+        renderRuleList();
+    }
+
+    function renderRuleList() {
+        if (rules.length === 0) {
+            ruleListEl.innerHTML = '<p class="disc-empty">Belum ada aturan. Tambahkan aturan pertama Anda di atas.</p>';
+            return;
+        }
+
+        ruleListEl.innerHTML = "";
+        rules.forEach((rule) => {
+            const item = document.createElement("div");
+            item.className = "disc-rule-item";
+            item.innerHTML = `
+                <span></span>
+                <button title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            `;
+            item.querySelector("span").textContent = rule.rule_text;
+            item.querySelector("button").addEventListener("click", () => deleteRule(rule.id));
+            ruleListEl.appendChild(item);
+        });
+    }
+
+    async function addRule() {
+        const text = newRuleInput.value.trim();
+        if (!text) return;
+
+        const { error } = await supabaseClient
+            .from("discipline_rules")
+            .insert({ user_id: currentUser.id, rule_text: text });
+
+        if (error) {
+            alert("Gagal menambah aturan: " + error.message);
+            return;
+        }
+
+        newRuleInput.value = "";
+        await loadRules();
+        await loadChecklist();
+    }
+
+    async function deleteRule(ruleId) {
+        if (!confirm("Hapus aturan ini? Riwayat checklist sebelumnya tetap tersimpan.")) return;
+
+        const { error } = await supabaseClient
+            .from("discipline_rules")
+            .update({ is_active: false })
+            .eq("id", ruleId);
+
+        if (error) {
+            alert("Gagal menghapus aturan: " + error.message);
+            return;
+        }
+
+        await loadRules();
+        await loadChecklist();
+    }
+
+    // ==========================================
+    // CHECKLIST HARI TERPILIH
+    // ==========================================
+
+    async function loadChecklist() {
+        if (rules.length === 0) {
+            checklistContainer.innerHTML = '<p class="disc-empty">Tambahkan aturan terlebih dahulu untuk mulai checklist.</p>';
+            return;
+        }
+
+        const ruleIds = rules.map((r) => r.id);
+
+        const { data: logs, error } = await supabaseClient
+            .from("discipline_logs")
+            .select("rule_id, is_checked")
+            .eq("user_id", currentUser.id)
+            .eq("log_date", selectedDate)
+            .in("rule_id", ruleIds);
+
+        if (error) {
+            console.error("Gagal memuat checklist:", error.message);
+            return;
+        }
+
+        todayLogsMap = {};
+        (logs || []).forEach((log) => { todayLogsMap[log.rule_id] = log.is_checked; });
+
+        checklistContainer.innerHTML = "";
+        rules.forEach((rule) => {
+            const isChecked = !!todayLogsMap[rule.id];
+
+            const item = document.createElement("div");
+            item.className = "disc-checklist-item" + (isChecked ? " checked" : "");
+            item.innerHTML = `
+                <input type="checkbox" ${isChecked ? "checked" : ""}>
+                <span></span>
+            `;
+            item.querySelector("span").textContent = rule.rule_text;
+
+            const checkbox = item.querySelector("input");
+            checkbox.addEventListener("change", async () => {
+                await toggleLog(rule.id, checkbox.checked);
+                item.classList.toggle("checked", checkbox.checked);
+            });
+
+            item.addEventListener("click", (e) => {
+                if (e.target.tagName !== "INPUT") {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event("change"));
+                }
+            });
+
+            checklistContainer.appendChild(item);
+        });
+    }
+
+    async function toggleLog(ruleId, isChecked) {
+        const { error } = await supabaseClient
+            .from("discipline_logs")
+            .upsert(
+                {
+                    user_id: currentUser.id,
+                    rule_id: ruleId,
+                    log_date: selectedDate,
+                    is_checked: isChecked
+                },
+                { onConflict: "rule_id,log_date" }
+            );
+
+        if (error) {
+            alert("Gagal menyimpan checklist: " + error.message);
+            return;
+        }
+
+        todayLogsMap[ruleId] = isChecked;
+        await loadInsightAndHistory();
+    }
+
+    // ==========================================
+    // INSIGHT & RIWAYAT 30 HARI
+    // ==========================================
+
+    async function loadInsightAndHistory() {
+        const totalRules = rules.length;
+
+        if (totalRules === 0) {
+            insightContainer.innerHTML = '<p class="disc-insight-empty">Tambahkan aturan dan mulai checklist untuk melihat insight di sini.</p>';
+            historyContainer.innerHTML = '<p class="disc-empty">Belum ada data.</p>';
+            return;
+        }
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 29);
+        const startStr = startDate.toISOString().slice(0, 10);
+        const endStr = endDate.toISOString().slice(0, 10);
+
+        const ruleIds = rules.map((r) => r.id);
+
+        const [logsRes, journalRes] = await Promise.all([
+            supabaseClient
+                .from("discipline_logs")
+                .select("rule_id, log_date, is_checked")
+                .eq("user_id", currentUser.id)
+                .in("rule_id", ruleIds)
+                .gte("log_date", startStr)
+                .lte("log_date", endStr),
+            supabaseClient
+                .from("trading_journal")
+                .select("trade_date, profit_loss")
+                .eq("user_id", currentUser.id)
+                .gte("trade_date", startStr)
+                .lte("trade_date", endStr)
+        ]);
+
+        if (logsRes.error) { console.error(logsRes.error.message); return; }
+        if (journalRes.error) { console.error(journalRes.error.message); return; }
+
+        // Kelompokkan checklist per tanggal
+        const checklistByDate = {};
+        (logsRes.data || []).forEach((log) => {
+            if (!checklistByDate[log.log_date]) checklistByDate[log.log_date] = 0;
+            if (log.is_checked) checklistByDate[log.log_date] += 1;
+        });
+
+        // Kelompokkan P/L per tanggal
+        const pnlByDate = {};
+        (journalRes.data || []).forEach((trade) => {
+            const d = trade.trade_date;
+            pnlByDate[d] = (pnlByDate[d] || 0) + Number(trade.profit_loss);
+        });
+
+        // Susun daftar tanggal (yang punya checklist ATAU trading) - 30 hari terakhir
+        const allDates = new Set([...Object.keys(checklistByDate), ...Object.keys(pnlByDate)]);
+        const sortedDates = Array.from(allDates).sort((a, b) => (a < b ? 1 : -1));
+
+        // ---- RENDER HISTORY ----
+        if (sortedDates.length === 0) {
+            historyContainer.innerHTML = '<p class="disc-empty">Belum ada aktivitas checklist atau trading dalam 30 hari terakhir.</p>';
+        } else {
+            historyContainer.innerHTML = "";
+            sortedDates.slice(0, 30).forEach((date) => {
+                const checkedCount = checklistByDate[date] || 0;
+                const pct = totalRules > 0 ? Math.round((checkedCount / totalRules) * 100) : 0;
+                const hasTrade = pnlByDate.hasOwnProperty(date);
+                const pnl = pnlByDate[date] || 0;
+
+                const row = document.createElement("div");
+                row.className = "disc-history-row";
+                row.innerHTML = `
+                    <span class="disc-history-date">${formatDateLabel(date)}</span>
+                    <div class="disc-history-bar-wrap"><div class="disc-history-bar" style="width:${pct}%;"></div></div>
+                    <span class="disc-history-pct">${pct}%</span>
+                    <span class="disc-history-pnl ${!hasTrade ? "neutral" : (pnl >= 0 ? "positive" : "negative")}">
+                        ${hasTrade ? (pnl >= 0 ? "+" : "") + formatUSD(pnl) : "-"}
+                    </span>
+                `;
+                historyContainer.appendChild(row);
+            });
+        }
+
+        // ---- HITUNG INSIGHT: hanya hari yang ada checklist DAN ada trading ----
+        const activeDays = sortedDates.filter((d) => checklistByDate.hasOwnProperty(d) && pnlByDate.hasOwnProperty(d));
+
+        if (activeDays.length < 3) {
+            insightContainer.innerHTML = `
+                <p class="disc-insight-empty">
+                    Butuh minimal 3 hari data checklist + trading untuk menghitung insight yang bermakna.
+                    Saat ini baru ada ${activeDays.length} hari.
+                </p>
+            `;
+            return;
+        }
+
+        const highDays = [];
+        const lowDays = [];
+
+        activeDays.forEach((date) => {
+            const pct = (checklistByDate[date] / totalRules) * 100;
+            if (pct >= 80) highDays.push(pnlByDate[date]);
+            else lowDays.push(pnlByDate[date]);
+        });
+
+        const avg = (arr) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
+        const highAvg = avg(highDays);
+        const lowAvg = avg(lowDays);
+
+        insightContainer.innerHTML = `
+            <div class="disc-insight-compare">
+                <div class="disc-insight-col high">
+                    <small>Hari Disiplin Tinggi (&ge;80%)</small>
+                    <strong>${highAvg !== null ? (highAvg >= 0 ? "+" : "") + formatUSD(highAvg) : "-"}</strong>
+                    <div class="disc-days-count">${highDays.length} hari &bull; rata-rata P/L</div>
+                </div>
+                <div class="disc-insight-col low">
+                    <small>Hari Disiplin Rendah (&lt;80%)</small>
+                    <strong>${lowAvg !== null ? (lowAvg >= 0 ? "+" : "") + formatUSD(lowAvg) : "-"}</strong>
+                    <div class="disc-days-count">${lowDays.length} hari &bull; rata-rata P/L</div>
+                </div>
+            </div>
+        `;
+    }
+
+    init();
+
+</script>
+
+</body>
+
+</html>

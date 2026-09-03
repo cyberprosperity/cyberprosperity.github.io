@@ -2,101 +2,655 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markets | Cyber Prosperity</title>
+
+    <title>Performance Analytics | Cyber Prosperity</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+    /* =====================================================
+       PERFORMANCE ANALYTICS PAGE
+       CSS khusus halaman ini, prefix .analytics-* semua,
+       tidak menyentuh style.css
+    ===================================================== */
+
+    .analytics-topbar{
+        margin-bottom:30px;
+        padding-bottom:20px;
+        border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .analytics-topbar span{
+        display:inline-block;
+        color:#D4A64A;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:2px;
+        text-transform:uppercase;
+        margin-bottom:8px;
+    }
+
+    .analytics-topbar h1{
+        margin:0 0 6px;
+        font-family:"Sora", sans-serif;
+        font-size:30px;
+        font-weight:700;
+        color:#fff;
+    }
+
+    .analytics-topbar p{
+        margin:0;
+        color:#94A3B8;
+        font-size:14px;
+    }
+
+    .analytics-stat-grid{
+        display:grid;
+        grid-template-columns:repeat(4, 1fr);
+        gap:20px;
+        margin-bottom:24px;
+    }
+
+    .analytics-stat-card{
+        background:#1B2434;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:16px;
+        padding:22px;
+    }
+
+    .analytics-stat-card span{
+        display:block;
+        color:#94A3B8;
+        font-size:13px;
+        margin-bottom:10px;
+    }
+
+    .analytics-stat-card strong{
+        display:block;
+        font-size:26px;
+        font-weight:700;
+        font-family:"Sora", sans-serif;
+        color:#fff;
+    }
+
+    .analytics-stat-card small{
+        display:block;
+        margin-top:6px;
+        font-size:11px;
+        color:#94A3B8;
+    }
+
+    .analytics-stat-card.good strong{ color:#3ED598; }
+    .analytics-stat-card.bad strong{ color:#EF4444; }
+    .analytics-stat-card.gold strong{ color:#E7C15B; }
+
+    .analytics-row{
+        display:grid;
+        grid-template-columns:2fr 1fr;
+        gap:20px;
+        margin-bottom:24px;
+    }
+
+    .analytics-card{
+        background:#1B2434;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:18px;
+        padding:24px;
+    }
+
+    .analytics-card h3{
+        margin:0 0 20px;
+        font-size:14px;
+        font-weight:700;
+        color:#94A3B8;
+        letter-spacing:1px;
+        text-transform:uppercase;
+    }
+
+    .analytics-chart-wrap{
+        position:relative;
+        height:240px;
+    }
+
+    .analytics-rr-row{
+        display:flex;
+        align-items:center;
+        gap:24px;
+        flex-wrap:wrap;
+    }
+
+    .analytics-rr-circle{
+        width:110px;
+        height:110px;
+        border-radius:50%;
+        flex-shrink:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        border:6px solid #D4A64A;
+        background:#1F293D;
+    }
+
+    .analytics-rr-circle strong{
+        font-size:20px;
+        font-weight:800;
+        font-family:"Sora", sans-serif;
+        color:#fff;
+    }
+
+    .analytics-rr-circle span{
+        font-size:11px;
+        color:#94A3B8;
+    }
+
+    .analytics-rr-desc p{
+        margin:0 0 10px;
+        color:#94A3B8;
+        font-size:13px;
+        line-height:1.6;
+    }
+
+    .analytics-rr-desc strong{
+        color:#fff;
+    }
+
+    .analytics-pair-list{
+        display:flex;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .analytics-pair-item{
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+    }
+
+    .analytics-pair-item-top{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        font-size:13px;
+        color:#fff;
+    }
+
+    .analytics-pair-item-top strong{
+        font-weight:700;
+    }
+
+    .analytics-pl-value{
+        font-weight:700;
+    }
+
+    .analytics-pl-value.pos{ color:#3ED598; }
+    .analytics-pl-value.neg{ color:#EF4444; }
+
+    .analytics-pair-bar-track{
+        height:8px;
+        border-radius:4px;
+        background:#1F293D;
+        overflow:hidden;
+    }
+
+    .analytics-pair-bar-fill{
+        height:100%;
+        border-radius:4px;
+        background:linear-gradient(90deg, #D4A64A, #E7C15B);
+    }
+
+    .analytics-pair-bar-fill.neg{
+        background:linear-gradient(90deg, #EF4444, #f97373);
+    }
+
+    .analytics-pair-item-sub{
+        display:flex;
+        justify-content:space-between;
+        font-size:11px;
+        color:#94A3B8;
+    }
+
+    .analytics-empty{
+        text-align:center;
+        padding:60px 20px;
+        color:#94A3B8;
+    }
+
+    .analytics-empty i{
+        font-size:40px;
+        color:#3B465C;
+        margin-bottom:16px;
+        display:block;
+    }
+
+    .analytics-empty a{
+        color:#D4A64A;
+        font-weight:700;
+        text-decoration:none;
+    }
+
+    .analytics-loading{
+        text-align:center;
+        padding:60px 20px;
+        color:#94A3B8;
+        font-size:14px;
+    }
+
+    @media (max-width: 1100px){
+        .analytics-stat-grid{
+            grid-template-columns:repeat(2, 1fr);
+        }
+        .analytics-row{
+            grid-template-columns:1fr;
+        }
+    }
+
+    @media (max-width: 600px){
+        .analytics-stat-grid{
+            grid-template-columns:1fr;
+        }
+    }
+
+</style>
+
 </head>
 
 <body>
 
-<header class="dashboard-header">
+<div class="app-layout">
 
-    <div class="container">
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
 
-        <h2>Cyber Prosperity</h2>
+    <aside class="sidebar">
 
-        <a href="login.html" class="btn-primary">
-            Logout
-        </a>
+        <div class="sidebar-logo">
 
-    </div>
+            <img src="assets/images/logo/logo.png"
+                 alt="Cyber Prosperity Logo"
+                 class="sidebar-logo-img">
 
-</header>
+            <div>
+                <h2>Cyber Prosperity</h2>
+                <span>Social Trading Community</span>
+            </div>
 
-<section class="dashboard">
+        </div>
 
-    <div class="dashboard-layout">
+        <nav class="sidebar-menu">
 
-        <aside class="sidebar">
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
 
-            <h3>Menu</h3>
+            <a href="features.html">
+                <i class="fa-solid fa-star"></i>
+                <span>Features</span>
+            </a>
 
-            <ul>
+            <a href="forum.html">
+                <i class="fa-solid fa-comments"></i>
+                <span>Forum</span>
+            </a>
 
-                <li><a href="dashboard.html">🏠 Dashboard</a></li>
+            <a href="journal.html">
+                <i class="fa-solid fa-book"></i>
+                <span>Journal</span>
+            </a>
 
-                <li><a href="community.html">👥 Community</a></li>
+            <a href="broker.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Broker</span>
+            </a>
 
-                <li>
-    <a href="markets.html" class="active">
-        📈 Markets
-    </a>
-</li>
+            <a href="contact.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Contact</span>
+            </a>
 
-                <li><a href="journal.html">📒 Journal</a></li>
+        </nav>
 
-                <li><a href="broker.html">🏦 Broker</a></li>
+        <div class="sidebar-divider"></div>
 
-                <li><a href="education.html">🎓 Education</a></li>
+        <div class="sidebar-bottom">
 
-                <li><a href="profile.html">👤 Profile</a></li>
+            <a href="profile.html">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
 
-                <li><a href="settings.html">⚙ Settings</a></li>
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
 
-            </ul>
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
 
-        </aside>
+        </div>
 
-        <section class="dashboard-content">
+    </aside>
 
-            <h1>📈 Markets</h1>
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
 
-            <p>
-                Pantau perkembangan pasar keuangan secara real-time.
-            </p>
+    <main class="main-content">
 
-            <div class="dashboard-cards">
+        <div class="analytics-topbar">
+            <span>Trading Tools</span>
+            <h1>Performance Analytics</h1>
+            <p>Analisa otomatis dari Trading Journal Anda — tidak perlu input data lagi.</p>
+        </div>
 
-                <div class="dashboard-card">
-                    <h3>🥇 Gold</h3>
-                    <p>Analisa harga emas terbaru.</p>
+        <div id="analyticsLoading" class="analytics-loading">
+            Memuat data trading Anda...
+        </div>
+
+        <div id="analyticsEmpty" class="analytics-empty" style="display:none;">
+            <i class="fa-regular fa-chart-bar"></i>
+            <p>Belum ada data trading untuk dianalisa.</p>
+            <p>Mulai catat transaksi pertama Anda di <a href="journal.html">Trading Journal</a>.</p>
+        </div>
+
+        <div id="analyticsContent" style="display:none;">
+
+            <div class="analytics-stat-grid">
+
+                <div class="analytics-stat-card good" id="statWinRate">
+                    <span>Win Rate</span>
+                    <strong>-</strong>
+                    <small>-</small>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>💱 Forex</h3>
-                    <p>Pergerakan mata uang dunia.</p>
+                <div class="analytics-stat-card" id="statTotalTrade">
+                    <span>Total Trade</span>
+                    <strong>-</strong>
+                    <small>Seluruh riwayat</small>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>🪙 Crypto</h3>
-                    <p>Informasi pasar cryptocurrency.</p>
+                <div class="analytics-stat-card gold" id="statRR">
+                    <span>Avg Risk-Reward</span>
+                    <strong>-</strong>
+                    <small>Rata-rata profit vs loss</small>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>📊 Indices</h3>
-                    <p>Indeks saham global.</p>
+                <div class="analytics-stat-card" id="statTotalPL">
+                    <span>Total P/L</span>
+                    <strong>-</strong>
+                    <small>Seluruh riwayat</small>
                 </div>
 
             </div>
 
-        </section>
+            <div class="analytics-row">
 
-    </div>
+                <div class="analytics-card">
+                    <h3>Trend Profit / Loss Kumulatif</h3>
+                    <div class="analytics-chart-wrap">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
 
-</section>
+                <div class="analytics-card">
+                    <h3>Risk-Reward Ratio</h3>
+                    <div class="analytics-rr-row">
+                        <div class="analytics-rr-circle">
+                            <strong id="rrCircleValue">-</strong>
+                            <span>rata-rata</span>
+                        </div>
+                        <div class="analytics-rr-desc" id="rrDesc">
+                            <p>Menghitung...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="analytics-card">
+                <h3>Performa per Pair</h3>
+                <div class="analytics-pair-list" id="pairList"></div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth-state.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
+<script>
+
+/* =====================================================
+   PERFORMANCE ANALYTICS LOGIC
+   Semua dihitung dari tabel trading_journal user yang
+   sedang login. Tidak ada input tambahan dari user.
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const user = session.user;
+
+    const loadingEl = document.getElementById("analyticsLoading");
+    const emptyEl = document.getElementById("analyticsEmpty");
+    const contentEl = document.getElementById("analyticsContent");
+
+    const { data: trades, error } = await supabaseClient
+        .from("trading_journal")
+        .select("id, trade_date, pair, position_type, entry_price, exit_price, lot_size, profit_loss, created_at")
+        .eq("user_id", user.id)
+        .order("trade_date", { ascending: true });
+
+    loadingEl.style.display = "none";
+
+    if (error) {
+        loadingEl.style.display = "block";
+        loadingEl.textContent = "Gagal memuat data: " + error.message;
+        return;
+    }
+
+    if (!trades || trades.length === 0) {
+        emptyEl.style.display = "block";
+        return;
+    }
+
+    contentEl.style.display = "block";
+    renderAnalytics(trades);
+
+});
+
+function formatCurrency(value) {
+    const sign = value < 0 ? "-" : "+";
+    return sign + "$" + Math.abs(value).toFixed(2);
+}
+
+function renderAnalytics(trades) {
+
+    const totalTrades = trades.length;
+
+    const wins = trades.filter((t) => Number(t.profit_loss) > 0);
+    const losses = trades.filter((t) => Number(t.profit_loss) < 0);
+
+    const winRate = totalTrades > 0 ? (wins.length / totalTrades) * 100 : 0;
+
+    const totalPL = trades.reduce((sum, t) => sum + Number(t.profit_loss || 0), 0);
+
+    const avgWin = wins.length > 0
+        ? wins.reduce((s, t) => s + Number(t.profit_loss), 0) / wins.length
+        : 0;
+
+    const avgLossAbs = losses.length > 0
+        ? Math.abs(losses.reduce((s, t) => s + Number(t.profit_loss), 0) / losses.length)
+        : 0;
+
+    const rrRatio = avgLossAbs > 0 ? (avgWin / avgLossAbs) : null;
+
+    /* ---- STAT CARDS ---- */
+
+    const winRateCard = document.getElementById("statWinRate");
+    winRateCard.querySelector("strong").textContent = winRate.toFixed(0) + "%";
+    winRateCard.querySelector("small").textContent = `${wins.length} profit dari ${totalTrades} trade`;
+    winRateCard.className = "analytics-stat-card " + (winRate >= 50 ? "good" : "bad");
+
+    const totalTradeCard = document.getElementById("statTotalTrade");
+    totalTradeCard.querySelector("strong").textContent = totalTrades;
+
+    const rrCard = document.getElementById("statRR");
+    rrCard.querySelector("strong").textContent = rrRatio !== null ? `1 : ${rrRatio.toFixed(1)}` : "-";
+
+    const totalPLCard = document.getElementById("statTotalPL");
+    totalPLCard.querySelector("strong").textContent = formatCurrency(totalPL);
+    totalPLCard.className = "analytics-stat-card " + (totalPL >= 0 ? "good" : "bad");
+
+    /* ---- RR PANEL ---- */
+
+    document.getElementById("rrCircleValue").textContent = rrRatio !== null ? `1:${rrRatio.toFixed(1)}` : "-";
+
+    const rrDesc = document.getElementById("rrDesc");
+    if (rrRatio !== null) {
+        rrDesc.innerHTML = `
+            <p>Rata-rata Anda mengambil risiko <strong>$1</strong> untuk potensi profit <strong>$${rrRatio.toFixed(2)}</strong> (dihitung dari rata-rata profit trade menang dibanding rata-rata loss trade kalah).</p>
+            <p>${rrRatio >= 1.5 ? "Ratio ini cukup sehat untuk profitabilitas jangka panjang." : "Coba tingkatkan ratio ini dengan menahan profit lebih lama atau memotong loss lebih cepat."}</p>
+        `;
+    } else {
+        rrDesc.innerHTML = `<p>Belum cukup data trade kalah/menang untuk menghitung ratio ini.</p>`;
+    }
+
+    /* ---- TREND CHART (kumulatif P/L per tanggal) ---- */
+
+    const sortedTrades = [...trades].sort((a, b) => new Date(a.trade_date) - new Date(b.trade_date));
+
+    let cumulative = 0;
+    const labels = [];
+    const dataPoints = [];
+
+    sortedTrades.forEach((t) => {
+        cumulative += Number(t.profit_loss || 0);
+        labels.push(new Date(t.trade_date).toLocaleDateString("id-ID", { day: "2-digit", month: "short" }));
+        dataPoints.push(Number(cumulative.toFixed(2)));
+    });
+
+    const ctx = document.getElementById("trendChart").getContext("2d");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Kumulatif P/L",
+                data: dataPoints,
+                borderColor: "#D4A64A",
+                backgroundColor: "rgba(212,166,74,0.1)",
+                borderWidth: 3,
+                pointRadius: 3,
+                pointBackgroundColor: "#D4A64A",
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => formatCurrency(ctx.parsed.y)
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: "rgba(255,255,255,.05)" },
+                    ticks: { color: "#94A3B8", font: { size: 11 } }
+                },
+                y: {
+                    grid: { color: "rgba(255,255,255,.05)" },
+                    ticks: {
+                        color: "#94A3B8",
+                        font: { size: 11 },
+                        callback: (value) => formatCurrency(value)
+                    }
+                }
+            }
+        }
+    });
+
+    /* ---- PERFORMA PER PAIR ---- */
+
+    const pairMap = {};
+
+    trades.forEach((t) => {
+        const pair = t.pair || "Lainnya";
+        if (!pairMap[pair]) {
+            pairMap[pair] = { total: 0, count: 0, wins: 0 };
+        }
+        pairMap[pair].total += Number(t.profit_loss || 0);
+        pairMap[pair].count += 1;
+        if (Number(t.profit_loss) > 0) pairMap[pair].wins += 1;
+    });
+
+    const pairArray = Object.keys(pairMap).map((pair) => ({
+        pair,
+        total: pairMap[pair].total,
+        count: pairMap[pair].count,
+        winRate: (pairMap[pair].wins / pairMap[pair].count) * 100
+    }));
+
+    pairArray.sort((a, b) => Math.abs(b.total) - Math.abs(a.total));
+
+    const maxAbs = Math.max(...pairArray.map((p) => Math.abs(p.total)), 1);
+
+    const pairListEl = document.getElementById("pairList");
+    pairListEl.innerHTML = "";
+
+    pairArray.forEach((p) => {
+        const widthPct = Math.max(6, (Math.abs(p.total) / maxAbs) * 100);
+        const isNeg = p.total < 0;
+
+        const item = document.createElement("div");
+        item.className = "analytics-pair-item";
+        item.innerHTML = `
+            <div class="analytics-pair-item-top">
+                <strong>${p.pair}</strong>
+                <span class="analytics-pl-value ${isNeg ? "neg" : "pos"}">${formatCurrency(p.total)}</span>
+            </div>
+            <div class="analytics-pair-bar-track">
+                <div class="analytics-pair-bar-fill ${isNeg ? "neg" : ""}" style="width:${widthPct}%;"></div>
+            </div>
+            <div class="analytics-pair-item-sub">
+                <span>${p.count} trade</span>
+                <span>Win rate ${p.winRate.toFixed(0)}%</span>
+            </div>
+        `;
+        pairListEl.appendChild(item);
+    });
+
+}
+
+</script>
 
 </body>
 
