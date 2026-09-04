@@ -1,11 +1,5 @@
 // ==========================================
 // Trading Journal - CRUD via Supabase
-// Tabel: trading_journal
-// Kolom yang dipakai: id, user_id, trade_date, pair,
-//   position_type (buy/sell), entry_price, exit_price,
-//   lot_size, profit_loss, notes, created_at
-// CATATAN: sesuaikan nama kolom di bawah ini kalau nama
-// kolom di file SQL migrasi kamu berbeda.
 // ==========================================
 
 const journalFeed        = document.getElementById("journalFeed");
@@ -16,13 +10,18 @@ const journalAddBtn      = document.getElementById("journalAddBtn");
 const journalCancelBtn   = document.getElementById("journalCancelBtn");
 const journalSubmitBtn   = document.getElementById("journalSubmitBtn");
 const journalEditId      = document.getElementById("journalEditId");
+const journalPLInput     = document.getElementById("journalPL");
 
 const statTotalTrades = document.getElementById("statTotalTrades");
 const statTotalProfit = document.getElementById("statTotalProfit");
 const statTotalLoss   = document.getElementById("statTotalLoss");
 const statWinRate     = document.getElementById("statWinRate");
 
+const journalSortSelect  = document.getElementById("journalSortSelect");
+const journalMonthFilter = document.getElementById("journalMonthFilter");
+
 let currentUserId = null;
+let allTrades = [];   // cache seluruh data dari Supabase (belum difilter/disortir)
 
 // ==========================================
 // INIT
@@ -37,28 +36,103 @@ async function initJournal() {
     }
 
     currentUserId = user.id;
+
+    journalSortSelect.addEventListener("change", applyFilterAndSort);
+    journalMonthFilter.addEventListener("change", applyFilterAndSort);
+
     await loadJournal();
 }
 
 // ==========================================
-// LOAD & RENDER
+// LOAD (fetch mentah dari Supabase, sekali saja)
 // ==========================================
 
 async function loadJournal() {
     const { data, error } = await supabaseClient
         .from("trading_journal")
         .select("*")
-        .eq("user_id", currentUserId)
-        .order("trade_date", { ascending: false });
+        .eq("user_id", currentUserId);
 
     if (error) {
         console.error("Gagal memuat journal:", error.message);
         return;
     }
 
-    renderFeed(data || []);
-    renderStats(data || []);
+    allTrades = data || [];
+
+    // Statistik SELALU dari seluruh data (tidak ikut filter bulan),
+    // supaya angka total tetap mencerminkan keseluruhan riwayat.
+    renderStats(allTrades);
+
+    populateMonthFilter(allTrades);
+    applyFilterAndSort();
 }
+
+// ==========================================
+// FILTER BULAN & SORTIR (di sisi client)
+// ==========================================
+
+function populateMonthFilter(rows) {
+    const monthSet = new Set();
+
+    rows.forEach((row) => {
+        if (!row.trade_date) return;
+        monthSet.add(row.trade_date.slice(0, 7)); // "YYYY-MM"
+    });
+
+    const sortedMonths = Array.from(monthSet).sort((a, b) => (a < b ? 1 : -1));
+    const previousValue = journalMonthFilter.value || "all";
+
+    journalMonthFilter.innerHTML = '<option value="all">Semua Bulan</option>';
+
+    sortedMonths.forEach((ym) => {
+        const label = new Date(`${ym}-01T00:00:00`).toLocaleDateString("id-ID", {
+            month: "long",
+            year: "numeric"
+        });
+        const opt = document.createElement("option");
+        opt.value = ym;
+        opt.textContent = label;
+        journalMonthFilter.appendChild(opt);
+    });
+
+    if (Array.from(journalMonthFilter.options).some((o) => o.value === previousValue)) {
+        journalMonthFilter.value = previousValue;
+    }
+}
+
+function applyFilterAndSort() {
+    const selectedMonth = journalMonthFilter.value;
+    const sortMode = journalSortSelect.value;
+
+    let rows = [...allTrades];
+
+    if (selectedMonth !== "all") {
+        rows = rows.filter((row) => row.trade_date && row.trade_date.slice(0, 7) === selectedMonth);
+    }
+
+    switch (sortMode) {
+        case "date-asc":
+            rows.sort((a, b) => new Date(a.trade_date) - new Date(b.trade_date));
+            break;
+        case "profit-desc":
+            rows.sort((a, b) => Number(b.profit_loss) - Number(a.profit_loss));
+            break;
+        case "loss-desc":
+            rows.sort((a, b) => Number(a.profit_loss) - Number(b.profit_loss));
+            break;
+        case "date-desc":
+        default:
+            rows.sort((a, b) => new Date(b.trade_date) - new Date(a.trade_date));
+            break;
+    }
+
+    renderFeed(rows);
+}
+
+// ==========================================
+// RENDER FEED
+// ==========================================
 
 function renderFeed(rows) {
     journalFeed.innerHTML = "";
@@ -73,6 +147,8 @@ function renderFeed(rows) {
     rows.forEach((row) => {
         const isPositive = Number(row.profit_loss) >= 0;
         const isBuy = row.position_type === "buy";
+        const swap = Number(row.swap) || 0;
+        const tax = Number(row.tax) || 0;
 
         const card = document.createElement("article");
         card.className = "journal-card";
@@ -107,6 +183,8 @@ function renderFeed(rows) {
                     <span>Entry ${row.entry_price ?? "-"}</span>
                     <span>Exit ${row.exit_price ?? "-"}</span>
                     <span>Lot ${row.lot_size ?? "-"}</span>
+                    ${swap !== 0 ? `<span class="swap-chip">Swap ${swap >= 0 ? "+" : ""}$${swap.toFixed(2)}</span>` : ""}
+                    ${tax !== 0 ? `<span class="tax-chip">Tax -$${tax.toFixed(2)}</span>` : ""}
                 </div>
 
                 ${row.notes ? `<p class="journal-card-notes">${escapeHtml(row.notes)}</p>` : ""}
@@ -146,6 +224,82 @@ function renderStats(rows) {
 }
 
 // ==========================================
+// KALKULASI OTOMATIS PROFIT/LOSS (NET: termasuk Swap & Tax)
+// ==========================================
+
+// Menentukan "contract size" (nilai 1 lot) berdasarkan nama pair.
+// XAU (gold)  -> 100 oz per lot
+// XAG (silver)-> 5000 oz per lot
+// Pair lain (dianggap forex mayor, quote dalam USD) -> 100.000 unit per lot
+function detectContractSize(pairRaw) {
+    const p = (pairRaw || "").toUpperCase().replace(/[^A-Z]/g, "");
+    if (p.includes("XAU")) return 100;
+    if (p.includes("XAG")) return 5000;
+    return 100000;
+}
+
+function computeProfitLoss(pairRaw, type, entry, exit_, lot, swap, tax) {
+    if (entry === null || exit_ === null || !lot || lot <= 0) return null;
+
+    const contractSize = detectContractSize(pairRaw);
+    let diff = exit_ - entry;
+
+    if (type === "sell") diff = -diff;
+
+    const gross = diff * lot * contractSize;
+    const swapVal = Number(swap) || 0;
+    const taxVal  = Number(tax) || 0;
+
+    return gross + swapVal - taxVal;
+}
+
+// Dipanggil setiap kali Pair/Tipe/Entry/Exit/Lot/Swap/Tax berubah
+// di modal. Field Profit/Loss otomatis diisi ulang - kecuali user
+// sudah membuka kunci manual (double-click field Profit/Loss).
+let plRecalcLocked = false;
+
+function recalculatePL() {
+    if (plRecalcLocked) return;
+
+    const pair  = document.getElementById("journalPair").value;
+    const type  = document.getElementById("journalType").value;
+    const entry = parseDecimal(document.getElementById("journalEntry").value);
+    const exit_ = parseDecimal(document.getElementById("journalExit").value);
+    const lot   = Number(document.getElementById("journalLot").value);
+    const swap  = document.getElementById("journalSwap").value;
+    const tax   = document.getElementById("journalTax").value;
+
+    const pl = computeProfitLoss(pair, type, entry, exit_, lot, swap, tax);
+
+    if (pl !== null) {
+        journalPLInput.value = pl.toFixed(2);
+    }
+}
+
+function bindAutoCalc() {
+    ["journalPair", "journalType", "journalEntry", "journalExit", "journalLot", "journalSwap", "journalTax"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", recalculatePL);
+        el.addEventListener("change", recalculatePL);
+    });
+
+    // Double-click pada field Profit/Loss untuk membuka kunci
+    // (override manual, misalnya ada penyesuaian khusus dari broker).
+    journalPLInput.addEventListener("dblclick", () => {
+        plRecalcLocked = true;
+        journalPLInput.readOnly = false;
+        journalPLInput.classList.remove("journal-pl-readonly");
+        journalPLInput.focus();
+    });
+}
+
+function lockPLField() {
+    plRecalcLocked = false;
+    journalPLInput.readOnly = true;
+    journalPLInput.classList.add("journal-pl-readonly");
+}
+
+// ==========================================
 // MODAL: ADD / EDIT
 // ==========================================
 
@@ -169,8 +323,11 @@ function clearForm() {
     document.getElementById("journalLot").value = "";
     document.getElementById("journalEntry").value = "";
     document.getElementById("journalExit").value = "";
-    document.getElementById("journalPL").value = "";
+    document.getElementById("journalSwap").value = "";
+    document.getElementById("journalTax").value = "";
+    journalPLInput.value = "";
     document.getElementById("journalNotes").value = "";
+    lockPLField();
 }
 
 function openEditModal(row) {
@@ -183,8 +340,17 @@ function openEditModal(row) {
     document.getElementById("journalLot").value   = row.lot_size;
     document.getElementById("journalEntry").value = row.entry_price;
     document.getElementById("journalExit").value  = row.exit_price;
-    document.getElementById("journalPL").value    = row.profit_loss;
+    document.getElementById("journalSwap").value  = row.swap ?? 0;
+    document.getElementById("journalTax").value   = row.tax ?? 0;
+    journalPLInput.value = row.profit_loss;
     document.getElementById("journalNotes").value = row.notes || "";
+
+    // Nilai Profit/Loss yang sudah tersimpan dianggap "terkunci" -
+    // tidak langsung ditimpa saat modal edit dibuka. Baru dihitung
+    // ulang otomatis kalau user mengubah Entry/Exit/Lot/Tipe/Pair/Swap/Tax.
+    plRecalcLocked = true;
+    journalPLInput.readOnly = true;
+    journalPLInput.classList.add("journal-pl-readonly");
 
     journalModal.style.display = "flex";
 }
@@ -200,7 +366,9 @@ journalSubmitBtn.addEventListener("click", async () => {
     const lot    = document.getElementById("journalLot").value;
     const entry  = document.getElementById("journalEntry").value;
     const exit_  = document.getElementById("journalExit").value;
-    const pl     = document.getElementById("journalPL").value;
+    const swap   = document.getElementById("journalSwap").value;
+    const tax    = document.getElementById("journalTax").value;
+    const pl     = journalPLInput.value;
     const notes  = document.getElementById("journalNotes").value.trim();
 
     if (!date || !pair || pl === "") {
@@ -216,6 +384,8 @@ journalSubmitBtn.addEventListener("click", async () => {
         lot_size: lot ? Number(lot) : null,
         entry_price: parseDecimal(entry),
         exit_price: parseDecimal(exit_),
+        swap: swap ? Number(swap) : 0,
+        tax: tax ? Number(tax) : 0,
         profit_loss: Number(pl),
         notes: notes || null,
     };
@@ -318,4 +488,6 @@ function escapeHtml(str) {
 // START
 // ==========================================
 
+bindAutoCalc();
+lockPLField();
 initJournal();

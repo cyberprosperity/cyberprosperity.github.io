@@ -49,6 +49,43 @@
         .journal-stat-card strong.positive{ color:#3ED598; }
         .journal-stat-card strong.negative{ color:#EF4444; }
 
+        .journal-toolbar{
+            display:flex;
+            flex-wrap:wrap;
+            gap:16px;
+            margin-bottom:22px;
+        }
+
+        .journal-toolbar-field{
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+        }
+
+        .journal-toolbar-field label{
+            color:#64748B;
+            font-size:11px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .journal-toolbar-field select{
+            min-width:180px;
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid #2A3448;
+            background:#1B2434;
+            color:#FFFFFF;
+            font-family:inherit;
+            font-size:13px;
+            cursor:pointer;
+        }
+
+        .journal-toolbar-field select:focus{
+            outline:none;
+            border-color:#D4A64A;
+        }
+
         .journal-feed{
             display:flex;
             flex-direction:column;
@@ -178,6 +215,16 @@
             font-weight:600;
         }
 
+        .journal-card-meta span.swap-chip{
+            color:#60A5FA;
+            border-color:rgba(96,165,250,.25);
+        }
+
+        .journal-card-meta span.tax-chip{
+            color:#EF4444;
+            border-color:rgba(239,68,68,.25);
+        }
+
         .journal-card-notes{
             color:#94A3B8;
             font-size:14px;
@@ -238,6 +285,19 @@
             gap:14px;
         }
 
+        .journal-pl-readonly{
+            background:#10151F !important;
+            color:#94A3B8 !important;
+            cursor:not-allowed;
+        }
+
+        .journal-pl-hint{
+            display:block;
+            color:#64748B;
+            font-size:11px;
+            margin-top:6px;
+        }
+
         
     @media (max-width: 768px){
 
@@ -252,6 +312,11 @@
 
         .journal-stat-card strong{
             font-size:15px;
+        }
+
+        .journal-toolbar-field select{
+            min-width:0;
+            width:100%;
         }
 
         .journal-card{
@@ -446,6 +511,31 @@
         </section>
 
         <!-- ==========================================
+             SORT & FILTER TOOLBAR
+        =========================================== -->
+
+        <div class="journal-toolbar">
+
+            <div class="journal-toolbar-field">
+                <label for="journalSortSelect">Urutkan</label>
+                <select id="journalSortSelect">
+                    <option value="date-desc">Tanggal Terbaru</option>
+                    <option value="date-asc">Tanggal Terlama</option>
+                    <option value="profit-desc">Profit Tertinggi</option>
+                    <option value="loss-desc">Rugi Terbesar</option>
+                </select>
+            </div>
+
+            <div class="journal-toolbar-field">
+                <label for="journalMonthFilter">Bulan</label>
+                <select id="journalMonthFilter">
+                    <option value="all">Semua Bulan</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- ==========================================
              FEED / CARD LIST
         =========================================== -->
 
@@ -517,9 +607,27 @@
 
         </div>
 
+        <div class="journal-modal-grid">
+
+            <div class="journal-modal-field">
+                <label>Swap</label>
+                <input type="number" step="0.01" id="journalSwap" placeholder="0.00 (boleh negatif)">
+            </div>
+
+            <div class="journal-modal-field">
+                <label>Tax / Fee</label>
+                <input type="number" step="0.01" min="0" id="journalTax" placeholder="0.00">
+            </div>
+
+        </div>
+
         <div class="journal-modal-field">
-            <label>Profit / Loss ($)</label>
-            <input type="number" step="0.01" id="journalPL" placeholder="120.00 (isi negatif jika loss)">
+            <label>Profit / Loss ($) — otomatis dihitung</label>
+            <input type="number" step="0.01" id="journalPL" class="journal-pl-readonly" placeholder="0.00" readonly>
+            <span class="journal-pl-hint">
+                Dihitung dari (Exit − Entry) × Lot × Contract Size + Swap − Tax.
+                Klik dua kali untuk mengunci &amp; edit manual bila perlu.
+            </span>
         </div>
 
         <div class="journal-modal-field">
