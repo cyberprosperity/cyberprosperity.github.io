@@ -2,10 +2,6 @@
 // AUTH STATE CHECKER
 // Dipasang di SEMUA halaman yang punya navbar
 // (index, forum, profile, dll)
-// Alur: Cek sesi login -> ambil nama dari tabel "profiles"
-//       (bukan user_metadata, supaya selalu sinkron dengan
-//       perubahan nama di Settings) -> ganti tombol
-//       Sign In/Join jadi nama user + Logout
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -82,7 +78,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             }
         });
+
+    } else {
+        // ---- USER BELUM LOGIN ----
+
+        const sidebarBottom = document.querySelector(".sidebar-bottom");
+        if (sidebarBottom) {
+            sidebarBottom.innerHTML = `
+                <a href="register.html">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="login.html">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Log In</span>
+                </a>
+            `;
+        }
+
     }
-    // Kalau tidak ada sesi, biarkan tombol Sign In & Join / Profile seperti semula
 
 });
