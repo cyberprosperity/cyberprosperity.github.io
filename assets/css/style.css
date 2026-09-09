@@ -3551,3 +3551,456 @@ a {
         font-size: 32px;
     }
 }
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+ 
+.cp-footer {
+    width: 100%;
+    background: #080c13;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+ 
+.cp-footer-inner {
+    width: min(100% - 60px, 1280px);
+    margin: 0 auto;
+    padding: 56px 0 0;
+}
+ 
+.cp-footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+ 
+/* --- kolom brand --- */
+ 
+.cp-footer-brand .cp-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+ 
+.cp-footer-brand p {
+    max-width: 320px;
+    margin: 0;
+    color: #69778c;
+    font-size: 13px;
+    line-height: 1.8;
+}
+ 
+/* --- heading kolom (Quick Links / Follow Us) --- */
+ 
+.cp-footer-heading {
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+ 
+/* --- kolom quick links --- */
+ 
+.cp-footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+ 
+.cp-footer-links a {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+}
+ 
+.cp-footer-links a:hover {
+    color: var(--cp-gold-light);
+}
+ 
+/* --- kolom social --- */
+ 
+.cp-footer-social-icons {
+    display: flex;
+    gap: 12px;
+}
+ 
+.cp-footer-social-icons a {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: #ffffff;
+    font-size: 17px;
+    text-decoration: none;
+    transition: .25s;
+}
+ 
+.cp-footer-social-icons a:hover {
+    transform: translateY(-3px);
+    border-color: transparent;
+    color: #ffffff;
+}
+ 
+.cp-footer-social-icons a.fb:hover { background: #1877f2; }
+.cp-footer-social-icons a.tiktok:hover { background: #000000; }
+.cp-footer-social-icons a.ig:hover {
+    background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7);
+}
+ 
+.cp-footer-social p {
+    margin: 16px 0 0;
+    color: #69778c;
+    font-size: 13px;
+    line-height: 1.7;
+}
+ 
+/* --- disclaimer risiko --- */
+ 
+.cp-footer-disclaimer {
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    padding: 24px 0;
+}
+ 
+.cp-footer-disclaimer-box {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, .06);
+    border: 1px solid rgba(239, 68, 68, .18);
+}
+ 
+.cp-footer-disclaimer-box i {
+    flex-shrink: 0;
+    color: #f87171;
+    font-size: 16px;
+    margin-top: 3px;
+}
+ 
+.cp-footer-disclaimer-box p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 12px;
+    line-height: 1.8;
+}
+ 
+.cp-footer-disclaimer-box strong {
+    color: #cbd5e1;
+}
+ 
+/* --- bottom bar (copyright) --- */
+ 
+.cp-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    padding: 18px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+ 
+.cp-footer-bottom p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+ 
+/* ==========================================
+   RESPONSIVE FOOTER
+========================================== */
+ 
+@media (max-width: 800px) {
+ 
+    .cp-footer-top {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+ 
+    .cp-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =========================================================
+   COMPACT SCALE
+========================================================= */
+/* ==========================================
+   NAVBAR — lebih ramping
+========================================== */
+
+.cp-nav{
+    height: 68px;
+}
+
+.cp-nav-inner{
+    padding: 0 48px;
+    gap: 24px;
+}
+
+.cp-brand-logo{
+    width: 36px;
+    height: 36px;
+}
+
+.cp-logo-img{
+    width: 36px;
+    height: 36px;
+}
+
+.cp-brand span{
+    font-size: 15px;
+}
+
+.cp-links{
+    gap: 32px;
+}
+
+.cp-links a{
+    font-size: 14px;
+}
+
+.cp-signin,
+.cp-join{
+    min-height: 38px;
+    font-size: 13px;
+}
+
+/* ==========================================
+   HERO — lebih pendek & headline lebih wajar
+========================================== */
+
+.home-hero,
+.home-slide{
+    min-height: 480px;
+}
+
+.home-hero-copy{
+    min-height: 480px;
+    padding: 56px 0 70px;
+}
+
+.home-eyebrow{
+    min-height: 28px;
+    font-size: 10px;
+    padding: 5px 12px;
+    margin-bottom: 16px;
+}
+
+.home-title{
+    max-width: 620px;
+    font-size: clamp(30px, 3.4vw, 46px);
+    margin-bottom: 18px;
+}
+
+.home-hero-copy > p{
+    max-width: 520px;
+    font-size: 14px;
+    margin-bottom: 26px;
+}
+
+.home-hero-buttons a{
+    min-height: 42px;
+    padding: 0 20px;
+    font-size: 13px;
+}
+
+.home-dots{
+    bottom: 22px;
+}
+
+/* ==========================================
+   GENERAL SECTION — padding lebih rapat
+========================================== */
+
+.cp-section{
+    padding: 72px 30px;
+}
+
+.cp-section-heading{
+    margin-bottom: 40px;
+}
+
+.cp-section-label{
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+.cp-section-heading h2{
+    font-size: clamp(24px, 2.8vw, 36px);
+    margin-bottom: 14px;
+}
+
+.cp-section-heading p{
+    font-size: 14px;
+}
+
+/* ==========================================
+   FEATURE GRID (Why Cyber Prosperity)
+========================================== */
+
+.cp-feature-grid{
+    gap: 18px;
+}
+
+.cp-feature-card{
+    min-height: auto;
+    padding: 22px;
+}
+
+.cp-feature-icon{
+    width: 42px;
+    height: 42px;
+    margin-bottom: 18px;
+    font-size: 16px;
+    border-radius: 12px;
+}
+
+.cp-feature-card h3{
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.cp-feature-card p{
+    font-size: 13px;
+}
+
+/* ==========================================
+   STATISTICS
+========================================== */
+
+.cp-stats-grid{
+    gap: 16px;
+}
+
+.cp-stat-card{
+    padding: 24px 16px;
+}
+
+.cp-stat-card h3{
+    font-size: 26px;
+}
+
+.cp-stat-card p{
+    font-size: 12px;
+}
+
+/* ==========================================
+   CALL TO ACTION
+========================================== */
+
+.cp-cta{
+    padding: 72px 30px;
+}
+
+.cp-cta h2{
+    font-size: clamp(24px, 2.8vw, 36px);
+    margin-bottom: 14px;
+}
+
+.cp-cta p{
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.cp-btn-primary{
+    min-height: 44px;
+    padding: 0 22px;
+    font-size: 13px;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.cp-footer-inner{
+    padding: 40px 0 0;
+}
+
+.cp-footer-top{
+    gap: 28px;
+    padding-bottom: 28px;
+}
+
+.cp-footer-brand .cp-brand span{
+    font-size: 15px;
+}
+
+.cp-footer-brand p{
+    font-size: 12px;
+}
+
+.cp-footer-heading{
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.cp-footer-links a{
+    font-size: 13px;
+}
+
+.cp-footer-social-icons a{
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+}
+
+.cp-footer-disclaimer-box{
+    padding: 14px 16px;
+}
+
+.cp-footer-disclaimer-box p{
+    font-size: 11px;
+}
+
+.cp-footer-bottom{
+    padding: 14px 0;
+}
+
+.cp-footer-bottom p{
+    font-size: 11px;
+}
+
+/* ==========================================
+   RESPONSIVE (tetap turunkan sedikit lagi di mobile)
+========================================== */
+
+@media (max-width: 768px){
+
+    .home-hero,
+    .home-slide{
+        min-height: 520px;
+    }
+
+    .home-hero-copy{
+        min-height: 520px;
+        padding: 44px 0 60px;
+    }
+
+    .home-title{
+        font-size: 30px;
+    }
+
+    .cp-section{
+        padding: 56px 20px;
+    }
+
+    .cp-cta{
+        padding: 56px 20px;
+    }
+}
