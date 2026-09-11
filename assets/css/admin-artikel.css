@@ -1,0 +1,415 @@
+/* ==========================================
+   ADMIN — KELOLA ARTIKEL
+   Memakai variabel warna (--cp-gold, --cp-bg, dst)
+   dan class layout dashboard (.app-layout, .sidebar,
+   .main-content, .topbar) yang sudah ada di style.css.
+   File ini hanya menambahkan bagian yang belum ada:
+   form, daftar artikel, dan toast notifikasi.
+========================================== */
+
+/* ---------- Gate pemeriksaan akses ---------- */
+
+.admin-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cp-bg);
+}
+
+.admin-gate-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--cp-muted);
+    font-size: 14px;
+}
+
+.admin-spinner {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid rgba(212, 166, 74, 0.2);
+    border-top-color: var(--cp-gold);
+    animation: admin-spin 0.8s linear infinite;
+}
+
+@keyframes admin-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- Sidebar logo (pakai foto asli, bukan huruf) ---------- */
+
+.sidebar-logo-img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+
+/* ---------- Tombol admin ---------- */
+
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 10px;
+    font-family: "Sora", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-btn-gold {
+    color: #17130b;
+    background: var(--cp-gold);
+    box-shadow: 0 8px 20px rgba(212, 166, 74, 0.18);
+}
+
+.admin-btn-gold:hover {
+    background: var(--cp-gold-light);
+    transform: translateY(-2px);
+}
+
+.admin-btn-gold:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-btn-outline {
+    color: var(--cp-text);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.admin-btn-outline:hover {
+    border-color: var(--cp-gold);
+    background: rgba(212, 166, 74, 0.08);
+}
+
+.admin-btn-ghost {
+    color: var(--cp-muted);
+    background: transparent;
+}
+
+.admin-btn-ghost:hover {
+    color: var(--cp-text);
+}
+
+.admin-btn-danger {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.admin-btn-danger:hover {
+    background: rgba(239, 68, 68, 0.16);
+}
+
+/* ---------- Panel (form + daftar) ---------- */
+
+.admin-panel {
+    background: #1B2434;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 26px;
+    margin-bottom: 24px;
+}
+
+.admin-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-panel-head h2 {
+    margin: 0;
+    color: #fff;
+    font-family: "Sora", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.admin-count {
+    color: var(--cp-muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+/* ---------- Form ---------- */
+
+.admin-form-group {
+    margin-bottom: 20px;
+}
+
+.admin-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.admin-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #f1f5f9;
+    font-family: "Sora", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-form-group input[type="text"],
+.admin-form-group textarea,
+.admin-form-group select {
+    width: 100%;
+    padding: 13px 16px;
+    background: #101827;
+    border: 1px solid #2a3448;
+    border-radius: 10px;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-form-group input[type="text"]:focus,
+.admin-form-group textarea:focus,
+.admin-form-group select:focus {
+    outline: none;
+    border-color: var(--cp-gold);
+    box-shadow: 0 0 0 3px rgba(212, 166, 74, 0.15);
+}
+
+.admin-form-group textarea {
+    resize: vertical;
+    font-family: "Inter", sans-serif;
+    line-height: 1.6;
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- Upload gambar sampul ---------- */
+
+.admin-cover-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.admin-cover-preview {
+    width: 220px;
+    height: 140px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #2a3448;
+    border-radius: 12px;
+    background: #101827;
+    overflow: hidden;
+    color: var(--cp-dim, #64748b);
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-cover-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-cover-actions {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.admin-cover-hint {
+    margin: 4px 0 0;
+    color: var(--cp-muted);
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+}
+
+.admin-upload-status {
+    margin: 0;
+    color: var(--cp-gold-light);
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    min-height: 16px;
+}
+
+/* ---------- Daftar artikel ---------- */
+
+.admin-empty {
+    padding: 30px;
+    text-align: center;
+    color: var(--cp-muted);
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+}
+
+.admin-article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-article-row {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    background: #10151F;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+
+.admin-article-thumb {
+    width: 64px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #263b59, #101925);
+    flex-shrink: 0;
+}
+
+.admin-article-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.admin-article-info h3 {
+    margin: 0 0 4px;
+    color: #fff;
+    font-family: "Sora", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--cp-muted);
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-badge-published {
+    color: #86efac;
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.admin-badge-draft {
+    color: #fcd34d;
+    background: rgba(234, 179, 8, 0.12);
+}
+
+.admin-article-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.admin-article-actions button {
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
+}
+
+/* ---------- Toast ---------- */
+
+.admin-toast {
+    position: fixed;
+    z-index: 300;
+    right: 22px;
+    bottom: 22px;
+    max-width: 340px;
+    padding: 0;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(8px);
+}
+
+.admin-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    padding: 14px 18px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.admin-toast.success {
+    color: #d1fae5;
+    background: #14532d;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.admin-toast.error {
+    color: #fee2e2;
+    background: #4c1d1d;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+    .admin-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-article-row {
+        grid-template-columns: 48px 1fr;
+    }
+
+    .admin-article-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+}

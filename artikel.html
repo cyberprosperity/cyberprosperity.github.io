@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Artikel, edukasi trading, market insight, dan kabar komunitas Cyber Prosperity.">
+  <title>Artikel | Cyber Prosperity</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Stylesheet global (sama seperti index.html, about.html, dll) -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Stylesheet khusus halaman Artikel (hero, grid artikel, sidebar) -->
+  <link rel="stylesheet" href="assets/css/artikel.css">
+</head>
+
+<body>
+<div class="cp-page">
+
+  <!-- ==========================================
+       NAVBAR
+  =========================================== -->
+  <header class="cp-nav">
+    <div class="cp-nav-inner">
+
+      <a href="index.html" class="cp-brand">
+        <div class="cp-brand-logo">
+          <img src="assets/images/logo/logo.webp" alt="Cyber Prosperity" class="cp-logo-img">
+        </div>
+        <span>Cyber Prosperity</span>
+      </a>
+
+      <nav class="cp-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="features.html">Features</a>
+        <a href="forum.html">Forum</a>
+        <a href="broker.html">Broker</a>
+        <a href="artikel.html" class="active">Artikel</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="cp-nav-right">
+        <a href="login.html" class="cp-signin">Sign In</a>
+        <a href="register.html" class="cp-join">Join</a>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ==========================================
+         HERO ARTIKEL
+    =========================================== -->
+    <section class="news-hero" id="top">
+
+      <div class="news-hero-bg">
+        <img src="assets/images/hero/contact-banner2.webp" alt="Cyber Prosperity Newsroom" onerror="this.style.display='none'">
+      </div>
+
+      <span class="chart-line" aria-hidden="true"></span>
+      <span class="chart-bars" aria-hidden="true"></span>
+
+      <div class="cp-container news-hero-inner">
+        <div class="news-hero-copy">
+          <div class="cp-breadcrumb">
+            <a href="index.html">Home</a><span>/</span><strong>Artikel</strong>
+          </div>
+
+          <span class="cp-eyebrow">✦ Cyber Prosperity Newsroom</span>
+          <h1>Insight pasar,<br><em>edukasi,</em> dan kabar terbaru.</h1>
+          <p>Kurasi informasi trading yang membantu Anda membaca konteks, membangun disiplin, dan berkembang bersama komunitas.</p>
+
+          <div class="news-hero-actions">
+            <a class="cp-btn cp-btn-gold" href="#latest">Jelajahi Artikel</a>
+            <a class="cp-btn cp-btn-outline" href="#newsletter">Ikuti Update</a>
+          </div>
+        </div>
+
+      <div class="cp-scroll-note"><i></i> Scroll to explore</div>
+    </section>
+
+    <!-- ==========================================
+         FEATURED STORY
+    =========================================== -->
+    <section class="cp-container news-section news-featured" id="featured">
+      <div class="news-section-heading">
+        <div>
+          <span class="cp-section-label">Featured story</span>
+          <h2>Yang sedang <em>dibicarakan</em></h2>
+        </div>
+        <p>Insight terpilih untuk membantu Anda memperlambat keputusan dan memperkuat proses.</p>
+      </div>
+
+      <article class="featured-story">
+        <div class="featured-visual">
+          <span class="featured-badge">Editor's pick</span>
+          <img src="assets/images/news/cardeditor.webp" alt="Cara Membangun Trading Journal yang Konsisten" class="featured-img" onerror="this.style.display='none'">
+        </div>
+
+        <div class="featured-copy">
+          <div class="article-meta">
+            <span class="meta-dot"></span>Edukasi <i></i> 09 Sep 2026 <i></i> 6 menit baca
+          </div>
+          <h3>Cara Membangun Trading Journal yang Konsisten</h3>
+          <p>Jurnal trading bukan hanya tempat mencatat posisi. Dengan proses review yang konsisten, Anda dapat menemukan pola keputusan dan meningkatkan kualitas eksekusi dari waktu ke waktu.</p>
+
+          <div class="featured-bottom">
+            <div class="author"><b>CP</b><span><strong>CP Editorial</strong><small>Cyber Prosperity</small></span></div>
+            <button class="cp-text-link" data-action="Baca artikel">Baca Artikel</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==========================================
+         LATEST + SIDEBAR
+    =========================================== -->
+    <section class="cp-container news-section news-latest" id="latest">
+      <div class="news-section-heading">
+        <div>
+          <span class="cp-section-label">Latest updates</span>
+          <h2>Artikel <em>terbaru</em></h2>
+        </div>
+        <p>Temukan ide baru, perspektif pasar, dan aktivitas komunitas dalam satu tempat.</p>
+      </div>
+
+      <div class="news-toolbar">
+        <div class="news-tabs" id="categoryTabs" role="tablist"></div>
+        <label class="news-search">⌕<input id="searchInput" type="search" placeholder="Cari artikel..." aria-label="Cari artikel"></label>
+      </div>
+
+      <div class="news-layout">
+        <div class="news-grid" id="articleGrid"></div>
+        <aside class="news-sidebar">
+          <div class="news-panel popular-panel">
+            <div class="panel-title">Most read</div>
+
+            <button data-action="Artikel populer">
+              <b>01</b><span>Memahami risiko trading sebelum memulai<small>8 menit baca</small></span>
+            </button>
+
+            <button data-action="Artikel populer">
+              <b>02</b><span>Panduan membuat trading journal<small>6 menit baca</small></span>
+            </button>
+
+            <button data-action="Artikel populer">
+              <b>03</b><span>Cara menggunakan Gold Risk Calculator<small>4 menit baca</small></span>
+            </button>
+
+          </div>
+
+          <div class="news-panel newsletter-panel" id="newsletter">
+            <span class="cp-section-label">The weekly brief</span>
+            <h3>Insight yang layak dibaca</h3>
+            <p>Ringkasan artikel, edukasi, dan kabar komunitas langsung ke inbox Anda.</p>
+            <form id="newsletterForm">
+              <label class="sr-only" for="email">Alamat email</label>
+              <input id="email" type="email" placeholder="Alamat email Anda" required>
+              <button class="cp-btn cp-btn-gold" type="submit">Berlangganan</button>
+            </form>
+            <small>✓ Tanpa spam. Berhenti kapan saja.</small>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         COMMUNITY CTA
+    =========================================== -->
+    <section class="cp-container news-community">
+      <div class="community-icon">♧</div>
+      <div>
+        <span class="cp-section-label">Keep the conversation going</span>
+        <h2>Insight lebih berarti<br><em>ketika dibagikan</em></h2>
+      </div>
+      <div class="community-copy">
+        <p>Bergabung dengan komunitas Cyber Prosperity untuk bertukar perspektif dan berkembang bersama trader lainnya.</p>
+        <a class="cp-btn cp-btn-gold" href="forum.html">Kunjungi Forum</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER (struktur sama persis dengan index.html)
+  =========================================== -->
+  <footer class="cp-footer">
+    <div class="cp-footer-inner">
+
+      <div class="cp-footer-top">
+
+        <div class="cp-footer-brand">
+          <div class="cp-brand">
+            <div class="cp-brand-logo">
+              <img src="assets/images/logo/logo.webp" alt="Cyber Prosperity" class="cp-logo-img">
+            </div>
+            <span>Cyber Prosperity</span>
+          </div>
+          <p>Komunitas sosial trading global yang menghubungkan trader, investor, dan edukasi dalam satu ekosistem profesional.</p>
+        </div>
+
+        <div class="cp-footer-quicklinks">
+          <h4 class="cp-footer-heading">Pintasan Cepat</h4>
+          <ul class="cp-footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="artikel.html">Artikel</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="journal.html">Trading Journal</a></li>
+            <li><a href="analytics.html">Performance Analytics</a></li>
+            <li><a href="discipline.html">Discipline Tracker</a></li>
+            <li><a href="calculator.html">Gold Risk Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="cp-footer-social">
+          <h4 class="cp-footer-heading">Ikuti kami</h4>
+          <div class="cp-footer-social-icons">
+            <a href="https://www.facebook.com/groups/cyber.prosperity" target="_blank" rel="noopener noreferrer" class="fb" aria-label="Facebook Group"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@cyber.prosperity7" target="_blank" rel="noopener noreferrer" class="tiktok" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/cfx.properity7/" target="_blank" rel="noopener noreferrer" class="ig" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <p>Ikuti analisa terbaru, promo broker, dan diskusi komunitas.</p>
+        </div>
+
+      </div>
+
+      <div class="cp-footer-disclaimer">
+        <div class="cp-footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p>
+            <strong>Peringatan Risiko:</strong> Trading forex, emas, dan instrumen
+            keuangan lainnya melibatkan risiko tinggi dan mungkin tidak cocok untuk
+            semua investor. Nilai investasi dapat naik maupun turun, dan Anda
+            berpotensi kehilangan sebagian atau seluruh modal yang diinvestasikan.
+            Cyber Prosperity adalah platform edukasi dan komunitas sosial trading,
+            bukan penasihat keuangan berlisensi. Segala keputusan trading sepenuhnya
+            menjadi tanggung jawab pengguna.
+          </p>
+        </div>
+      </div>
+
+      <div class="cp-footer-bottom">
+        <p>© 2026 Cyber Prosperity. All rights reserved.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <div id="toast" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-state.js"></script>
+  <script src="assets/js/artikel.js"></script>
+</div>
+</body>
+</html>

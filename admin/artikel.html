@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Kelola Artikel | Cyber Prosperity Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin-artikel.css">
+</head>
+<body>
+
+  <!-- Ditampilkan selagi mengecek status login & role.
+       Mencegah halaman admin "kedip" sebelum redirect. -->
+  <div id="gate" class="admin-gate">
+    <div class="admin-gate-box">
+      <div class="admin-spinner"></div>
+      <p>Memeriksa akses admin...</p>
+    </div>
+  </div>
+
+  <div class="app-layout" id="appLayout" hidden>
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="../assets/images/logo/logo.webp" alt="Cyber Prosperity" class="sidebar-logo-img">
+        <h2>Cyber Prosperity</h2>
+        <span>Admin Panel</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="artikel.html" class="active"><i class="fa-solid fa-newspaper"></i><span>Kelola Artikel</span></a>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-bottom">
+        <a href="../artikel.html"><i class="fa-solid fa-arrow-left"></i><span>Lihat Halaman Artikel</span></a>
+        <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1>Kelola Artikel</h1>
+          <p id="adminGreeting">Tambah, edit, atau hapus artikel di sini — tidak perlu VS Code.</p>
+        </div>
+        <div class="topbar-right">
+          <button class="admin-btn admin-btn-gold" id="newArticleBtn" type="button">
+            <i class="fa-solid fa-plus"></i> Tulis Artikel Baru
+          </button>
+        </div>
+      </div>
+
+      <!-- ============ FORM (tersembunyi sampai "Tulis Artikel Baru" / "Edit" diklik) ============ -->
+      <section class="admin-panel" id="formPanel" hidden>
+        <div class="admin-panel-head">
+          <h2 id="formTitle">Artikel Baru</h2>
+          <button class="admin-btn admin-btn-ghost" id="cancelFormBtn" type="button">Batal</button>
+        </div>
+
+        <form id="articleForm">
+          <input type="hidden" id="articleId">
+
+          <div class="admin-form-group">
+            <label for="fTitle">Judul artikel</label>
+            <input type="text" id="fTitle" required placeholder="Contoh: Cara Membaca Candlestick untuk Pemula">
+          </div>
+
+          <div class="admin-form-group">
+            <label for="fSlug">Slug (bagian URL, otomatis dari judul — boleh diubah)</label>
+            <input type="text" id="fSlug" required placeholder="cara-membaca-candlestick-untuk-pemula">
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="fCategory">Kategori</label>
+              <select id="fCategory">
+                <option>Market Insight</option>
+                <option>Edukasi</option>
+                <option>Komunitas</option>
+                <option>Broker</option>
+                <option>Pengumuman</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="fStatus">Status</label>
+              <select id="fStatus">
+                <option value="draft">Draft (belum tampil ke publik)</option>
+                <option value="published">Published (tampil di halaman Artikel)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="fExcerpt">Ringkasan singkat (tampil di kartu artikel)</label>
+            <textarea id="fExcerpt" rows="2" maxlength="200" required placeholder="1-2 kalimat singkat tentang isi artikel"></textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="fContent">Isi artikel lengkap</label>
+            <textarea id="fContent" rows="10" placeholder="Tulis isi artikel di sini..."></textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label>Gambar sampul</label>
+            <div class="admin-cover-row">
+              <div class="admin-cover-preview" id="coverPreview">
+                <span>Belum ada gambar</span>
+              </div>
+              <div class="admin-cover-actions">
+                <input type="file" id="fCoverFile" accept="image/*" hidden>
+                <button type="button" class="admin-btn admin-btn-outline" id="chooseCoverBtn">Pilih Gambar</button>
+                <button type="button" class="admin-btn admin-btn-ghost" id="removeCoverBtn" hidden>Hapus Gambar</button>
+                <p class="admin-cover-hint">JPG/PNG/WebP, maks 5MB. Disarankan sekitar 1200×900px.</p>
+                <p class="admin-upload-status" id="uploadStatus"></p>
+              </div>
+            </div>
+            <input type="hidden" id="fCoverUrl">
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-gold" id="saveBtn">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Artikel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ DAFTAR ARTIKEL ============ -->
+      <section class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Semua Artikel</h2>
+          <span class="admin-count" id="articleCount">0 artikel</span>
+        </div>
+
+        <div id="articleListState" class="admin-empty">Memuat artikel...</div>
+        <div class="admin-article-list" id="articleList"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="admin-toast" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-client.js"></script>
+  <script src="../assets/js/admin-artikel.js"></script>
+</body>
+</html>
