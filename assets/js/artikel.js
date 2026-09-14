@@ -136,7 +136,7 @@
 
         grid.querySelectorAll("[data-slug]").forEach((button) => {
             button.addEventListener("click", () => {
-                showToast(`Halaman detail untuk "${button.dataset.title}" belum dibuat — artikel penuhnya sudah tersimpan di database, tinggal halaman /artikel/[slug].html yang menyusul.`);
+                window.location.href = "artikel-detail.html?slug=" + encodeURIComponent(button.dataset.slug);
             });
         });
     }

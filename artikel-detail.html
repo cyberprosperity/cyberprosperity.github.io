@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Artikel Cyber Prosperity.">
+  <title id="pageTitle">Artikel | Cyber Prosperity</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/artikel.css">
+  <link rel="stylesheet" href="assets/css/artikel-detail.css">
+</head>
+
+<body>
+<div class="cp-page">
+
+  <header class="cp-nav">
+    <div class="cp-nav-inner">
+      <a href="index.html" class="cp-brand">
+        <div class="cp-brand-logo">
+          <img src="assets/images/logo/logo.webp" alt="Cyber Prosperity" class="cp-logo-img">
+        </div>
+        <span>Cyber Prosperity</span>
+      </a>
+
+      <nav class="cp-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="features.html">Features</a>
+        <a href="artikel.html" class="active">Artikel</a>
+        <a href="forum.html">Forum</a>
+        <a href="broker.html">Broker</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="cp-nav-right">
+        <a href="login.html" class="cp-signin">Sign In</a>
+        <a href="register.html" class="cp-join">Join</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Ditampilkan selagi artikel dimuat -->
+    <div id="loadingState" class="detail-state">
+      <div class="detail-spinner"></div>
+      <p>Memuat artikel...</p>
+    </div>
+
+    <!-- Ditampilkan kalau slug tidak ketemu / artikel belum published -->
+    <div id="notFoundState" class="detail-state" hidden>
+      <p>⚠ Artikel tidak ditemukan, sudah dihapus, atau belum dipublish.</p>
+      <a class="cp-btn cp-btn-gold" href="artikel.html">← Kembali ke Artikel</a>
+    </div>
+
+    <!-- Konten artikel sebenarnya -->
+    <article id="articleContent" class="cp-container article-detail" hidden>
+
+      <div class="cp-breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="artikel.html">Artikel</a><span>/</span>
+        <strong id="breadcrumbTitle">...</strong>
+      </div>
+
+      <div class="article-detail-meta">
+        <span class="cp-section-label" id="articleCategory">Kategori</span>
+        <span id="articleDate">Tanggal</span>
+        <span>·</span>
+        <span id="articleReadTime">Waktu baca</span>
+      </div>
+
+      <h1 id="articleTitle">Judul artikel</h1>
+
+      <div class="article-detail-author">
+        <b>CP</b>
+        <span><strong>CP Editorial</strong><small>Cyber Prosperity</small></span>
+      </div>
+
+      <div class="article-detail-cover" id="articleCoverWrap">
+        <img id="articleCover" src="" alt="">
+      </div>
+
+      <div class="article-detail-body" id="articleBody">
+        <!-- isi artikel dirender di sini oleh JS -->
+      </div>
+
+      <div class="article-detail-footer">
+        <a class="cp-btn cp-btn-outline" href="artikel.html">← Kembali ke semua artikel</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="cp-footer">
+    <div class="cp-footer-inner">
+      <div class="cp-footer-top">
+        <div class="cp-footer-brand">
+          <div class="cp-brand">
+            <div class="cp-brand-logo">
+              <img src="assets/images/logo/logo.webp" alt="Cyber Prosperity" class="cp-logo-img">
+            </div>
+            <span>Cyber Prosperity</span>
+          </div>
+          <p>Komunitas sosial trading global yang menghubungkan trader, investor, dan edukasi dalam satu ekosistem profesional.</p>
+        </div>
+
+        <div class="cp-footer-quicklinks">
+          <h4 class="cp-footer-heading">Pintasan Cepat</h4>
+          <ul class="cp-footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="artikel.html">Artikel</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="journal.html">Trading Journal</a></li>
+            <li><a href="analytics.html">Performance Analytics</a></li>
+            <li><a href="discipline.html">Discipline Tracker</a></li>
+            <li><a href="calculator.html">Gold Risk Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="cp-footer-social">
+          <h4 class="cp-footer-heading">Ikuti kami</h4>
+          <div class="cp-footer-social-icons">
+            <a href="https://www.facebook.com/groups/cyber.prosperity" target="_blank" rel="noopener noreferrer" class="fb" aria-label="Facebook Group"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@cyber.prosperity7" target="_blank" rel="noopener noreferrer" class="tiktok" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/cfx.properity7/" target="_blank" rel="noopener noreferrer" class="ig" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <p>Ikuti analisa terbaru, promo broker, dan diskusi komunitas.</p>
+        </div>
+      </div>
+
+      <div class="cp-footer-disclaimer">
+        <div class="cp-footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p>
+            <strong>Peringatan Risiko:</strong> Trading forex, emas, dan instrumen
+            keuangan lainnya melibatkan risiko tinggi dan mungkin tidak cocok untuk
+            semua investor. Nilai investasi dapat naik maupun turun, dan Anda
+            berpotensi kehilangan sebagian atau seluruh modal yang diinvestasikan.
+            Cyber Prosperity adalah platform edukasi dan komunitas sosial trading,
+            bukan penasihat keuangan berlisensi. Segala keputusan trading sepenuhnya
+            menjadi tanggung jawab pengguna.
+          </p>
+        </div>
+      </div>
+
+      <div class="cp-footer-bottom">
+        <p>© 2026 Cyber Prosperity. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-state.js"></script>
+  <script src="assets/js/artikel-detail.js"></script>
+</div>
+</body>
+</html>
