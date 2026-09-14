@@ -14,6 +14,10 @@
     text-align: center;
 }
 
+.detail-state[hidden] {
+    display: none;
+}
+
 .detail-spinner {
     width: 34px;
     height: 34px;
