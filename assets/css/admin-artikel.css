@@ -19,6 +19,15 @@
     background: var(--cp-bg);
 }
 
+/* PENTING: tanpa baris ini, atribut "hidden" yang di-set lewat
+   JavaScript (byId("gate").hidden = true) tidak akan berefek,
+   karena "display: flex" di atas menimpa aturan bawaan browser
+   untuk atribut hidden. Inilah yang bikin layar loading nyangkut
+   terus meskipun proses pengecekan di baliknya sudah selesai. */
+.admin-gate[hidden] {
+    display: none;
+}
+
 .admin-gate-box {
     display: flex;
     flex-direction: column;
