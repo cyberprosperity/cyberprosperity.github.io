@@ -139,7 +139,7 @@ async function loadArticles() {
 
     const { data, error } = await supabaseClient
         .from("articles")
-        .select("id, title, category, status, cover_image, created_at")
+        .select("id, title, category, status, cover_image, created_at, is_featured")
         .order("created_at", { ascending: false });
 
     if (error) {
@@ -162,6 +162,9 @@ async function loadArticles() {
         });
         const badgeClass = article.status === "published" ? "admin-badge-published" : "admin-badge-draft";
         const badgeText = article.status === "published" ? "Published" : "Draft";
+        const featuredBadge = article.is_featured
+            ? `<span class="admin-badge admin-badge-featured">★ Editor's Pick</span>`
+            : "";
         const thumb = article.cover_image
             ? `<img src="${article.cover_image}" alt="">`
             : "";
@@ -173,6 +176,7 @@ async function loadArticles() {
                     <h3>${article.title}</h3>
                     <div class="admin-article-meta">
                         <span class="admin-badge ${badgeClass}">${badgeText}</span>
+                        ${featuredBadge}
                         <span>${article.category}</span>
                         <span>${date}</span>
                     </div>
@@ -204,6 +208,7 @@ function resetForm() {
     byId("articleForm").reset();
     byId("articleId").value = "";
     byId("fCoverUrl").value = "";
+    byId("fFeatured").checked = false;
     byId("formTitle").textContent = "Artikel Baru";
     renderCoverPreview(null);
 }
@@ -238,6 +243,7 @@ async function openEditForm(id) {
     byId("fExcerpt").value = article.excerpt || "";
     byId("fContent").value = article.content || "";
     byId("fCoverUrl").value = article.cover_image || "";
+    byId("fFeatured").checked = !!article.is_featured;
     renderCoverPreview(article.cover_image);
 
     byId("formPanel").hidden = false;
@@ -300,6 +306,8 @@ async function handleSubmit(event) {
     try {
         const coverUrl = await uploadCoverIfNeeded();
 
+        const isFeatured = byId("fFeatured").checked;
+
         const payload = {
             title: byId("fTitle").value.trim(),
             slug: slugify(byId("fSlug").value.trim() || byId("fTitle").value),
@@ -307,8 +315,19 @@ async function handleSubmit(event) {
             status: byId("fStatus").value,
             excerpt: byId("fExcerpt").value.trim(),
             content: byId("fContent").value.trim(),
-            cover_image: coverUrl
+            cover_image: coverUrl,
+            is_featured: isFeatured
         };
+
+        // Hanya boleh ada satu Editor's Pick aktif. Kalau artikel ini
+        // ditandai featured, lepas status featured dari artikel lain dulu.
+        if (isFeatured) {
+            const dummyId = "00000000-0000-0000-0000-000000000000";
+            await supabaseClient
+                .from("articles")
+                .update({ is_featured: false })
+                .neq("id", editingId || dummyId);
+        }
 
         if (editingId) {
             const { error } = await supabaseClient

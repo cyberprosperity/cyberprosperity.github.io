@@ -48,7 +48,7 @@
 
         const { data, error } = await supabaseClient
             .from("articles")
-            .select("id, title, slug, excerpt, content, category, cover_image, created_at")
+            .select("id, title, slug, excerpt, content, category, cover_image, created_at, is_featured")
             .eq("status", "published")
             .order("created_at", { ascending: false });
 
@@ -65,8 +65,51 @@
             dateLabel: formatDate(a.created_at)
         }));
 
+        renderFeatured();
         renderCategories();
         renderArticles();
+    }
+
+    // ============================================
+    // FEATURED STORY (Editor's Pick)
+    // Pakai artikel yang ditandai is_featured=true dari admin.
+    // Kalau tidak ada yang ditandai, otomatis fallback ke
+    // artikel published paling baru. Kalau tidak ada artikel
+    // sama sekali, section ini disembunyikan.
+    // ============================================
+
+    function renderFeatured() {
+        const section = byId("featured");
+        if (!section) return;
+
+        if (articles.length === 0) {
+            section.hidden = true;
+            return;
+        }
+
+        const featured = articles.find((a) => a.is_featured) || articles[0];
+        section.hidden = false;
+
+        const img = featured.cover_image
+            ? `<img src="${featured.cover_image}" alt="${featured.title}" class="featured-img" onerror="this.style.display='none'">`
+            : "";
+
+        const visual = byId("featuredVisual");
+        const badge = byId("featuredBadge");
+        const meta = byId("featuredMeta");
+        const title = byId("featuredTitle");
+        const excerpt = byId("featuredExcerpt");
+        const link = byId("featuredLink");
+
+        if (visual) visual.innerHTML = `<span class="featured-badge" id="featuredBadge">Editor's pick</span>${img}`;
+        if (meta) meta.innerHTML = `<span class="meta-dot"></span>${featured.category} <i></i> ${featured.dateLabel} <i></i> ${featured.readTime}`;
+        if (title) title.textContent = featured.title;
+        if (excerpt) excerpt.textContent = featured.excerpt || "";
+        if (link) {
+            link.onclick = () => {
+                window.location.href = "artikel-detail.html?slug=" + encodeURIComponent(featured.slug);
+            };
+        }
     }
 
     function renderCategories() {
