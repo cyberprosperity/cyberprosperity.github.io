@@ -1,67 +1,12 @@
 (() => {
     "use strict";
 
-    // Setiap artikel punya field "image" — inilah yang bisa Anda ganti
-    // kapan saja. Cukup taruh file foto Anda di assets/images/news/
-    // dengan nama yang sama (atau ubah path-nya di sini).
-    const articles = [
-        {
-            category: "Edukasi",
-            date: "08 Sep 2026",
-            readTime: "5 menit",
-            title: "5 Kesalahan yang Sering Terjadi Saat Menentukan Ukuran Lot",
-            excerpt: "Bangun proses risk management yang lebih konsisten sebelum menekan tombol entry.",
-            visual: "gold",
-            image: "assets/images/news/card-1.webp"
-        },
-        {
-            category: "Komunitas",
-            date: "06 Sep 2026",
-            readTime: "4 menit",
-            title: "Mengapa Insight Trading Tumbuh Lebih Baik di Dalam Komunitas",
-            excerpt: "Perspektif yang beragam membantu trader melihat konteks, bukan sekadar sinyal.",
-            visual: "blue",
-            image: "assets/images/news/card-2.webp"
-        },
-        {
-            category: "Market Insight",
-            date: "04 Sep 2026",
-            readTime: "7 menit",
-            title: "Membaca Momentum Pasar Tanpa Terjebak FOMO",
-            excerpt: "Gunakan struktur pasar dan rencana yang jelas untuk menjaga keputusan tetap rasional.",
-            visual: "blue",
-            image: "assets/images/news/card-3.webp"
-        },
-        {
-            category: "Edukasi",
-            date: "01 Sep 2026",
-            readTime: "6 menit",
-            title: "Trading Journal: Catatan Kecil untuk Performa yang Lebih Besar",
-            excerpt: "Temukan pola dari keputusan Anda sendiri dengan rutinitas review yang sederhana.",
-            visual: "journal",
-            image: "assets/images/news/card-4.webp"
-        },
-        {
-            category: "Broker",
-            date: "29 Agu 2026",
-            readTime: "3 menit",
-            title: "Spread, Komisi, dan Swap: Apa Bedanya untuk Trader?",
-            excerpt: "Kenali biaya trading agar Anda dapat membandingkan kondisi broker secara lebih objektif.",
-            visual: "gold",
-            image: "assets/images/news/card-5.webp"
-        },
-        {
-            category: "Pengumuman",
-            date: "27 Agu 2026",
-            readTime: "2 menit",
-            title: "Cyber Prosperity Membuka Kelas Trading untuk Member Baru",
-            excerpt: "Mulai perjalanan belajar Anda bersama mentor dan trader lain dalam sesi komunitas.",
-            visual: "blue",
-            image: "assets/images/news/card-6.webp"
-        }
-    ];
-
+    // Kategori tab tetap statis (harus sama dengan pilihan
+    // kategori di form admin). Daftar artikelnya sendiri
+    // sekarang diambil dari Supabase, bukan ditulis manual.
     const categories = ["Semua", "Market Insight", "Edukasi", "Komunitas", "Broker", "Pengumuman"];
+
+    let articles = [];
     let activeCategory = "Semua";
     let toastTimer;
 
@@ -79,6 +24,49 @@
             toast.textContent = "";
             toast.className = "";
         }, 2600);
+    }
+
+    function formatDate(iso) {
+        return new Date(iso).toLocaleDateString("id-ID", {
+            day: "2-digit", month: "short", year: "numeric"
+        });
+    }
+
+    function estimateReadTime(content) {
+        const words = (content || "").trim().split(/\s+/).filter(Boolean).length;
+        const minutes = Math.max(1, Math.round(words / 200));
+        return `${minutes} menit`;
+    }
+
+    // ============================================
+    // AMBIL ARTIKEL DARI SUPABASE (hanya yang published)
+    // ============================================
+
+    async function fetchArticles() {
+        const grid = byId("articleGrid");
+        if (grid) grid.innerHTML = `<div class="cp-empty"><h3>Memuat artikel...</h3></div>`;
+
+        const { data, error } = await supabaseClient
+            .from("articles")
+            .select("id, title, slug, excerpt, content, category, cover_image, created_at")
+            .eq("status", "published")
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            if (grid) {
+                grid.innerHTML = `<div class="cp-empty"><h3>Gagal memuat artikel</h3><p>${error.message}</p></div>`;
+            }
+            return;
+        }
+
+        articles = (data || []).map((a) => ({
+            ...a,
+            readTime: estimateReadTime(a.content),
+            dateLabel: formatDate(a.created_at)
+        }));
+
+        renderCategories();
+        renderArticles();
     }
 
     function renderCategories() {
@@ -107,38 +95,49 @@
         const query = search.value.trim().toLowerCase();
         const filtered = articles.filter((article) => {
             const categoryMatch = activeCategory === "Semua" || article.category === activeCategory;
-            const text = `${article.title} ${article.excerpt} ${article.category}`.toLowerCase();
+            const text = `${article.title} ${article.excerpt || ""} ${article.category}`.toLowerCase();
             return categoryMatch && (!query || text.includes(query));
         });
 
         if (filtered.length === 0) {
-            grid.innerHTML = `<div class="cp-empty"><h3>Artikel tidak ditemukan</h3><p>Coba gunakan kata kunci lain atau pilih kategori berbeda.</p><button class="cp-btn cp-btn-outline" id="resetFilter" type="button">Reset filter</button></div>`;
-            byId("resetFilter").addEventListener("click", () => {
-                activeCategory = "Semua";
-                search.value = "";
-                renderCategories();
-                renderArticles();
-            });
+            const message = articles.length === 0
+                ? `<h3>Belum ada artikel</h3><p>Artikel yang kamu publish dari halaman admin akan muncul di sini.</p>`
+                : `<h3>Artikel tidak ditemukan</h3><p>Coba gunakan kata kunci lain atau pilih kategori berbeda.</p><button class="cp-btn cp-btn-outline" id="resetFilter" type="button">Reset filter</button>`;
+            grid.innerHTML = `<div class="cp-empty">${message}</div>`;
+            const resetBtn = byId("resetFilter");
+            if (resetBtn) {
+                resetBtn.addEventListener("click", () => {
+                    activeCategory = "Semua";
+                    search.value = "";
+                    renderCategories();
+                    renderArticles();
+                });
+            }
             return;
         }
 
-        grid.innerHTML = filtered.map((article) => `
-            <article class="news-card">
-                <button class="news-card-hit" type="button" data-article="${article.title}" aria-label="Baca ${article.title}"></button>
-                <div class="card-visual ${article.visual}">
-                    <img src="${article.image}" alt="${article.title}" loading="lazy" onerror="this.remove()">
-                </div>
-                <div class="news-card-body">
-                    <div class="card-topline"><span>${article.category}</span><small>${article.readTime}</small></div>
-                    <h3>${article.title}</h3>
-                    <p>${article.excerpt}</p>
-                    <div class="card-footer"><span>${article.date}</span><b>↗</b></div>
-                </div>
-            </article>
-        `).join("");
+        grid.innerHTML = filtered.map((article) => {
+            const img = article.cover_image
+                ? `<img src="${article.cover_image}" alt="${article.title}" loading="lazy" onerror="this.remove()">`
+                : "";
+            return `
+                <article class="news-card">
+                    <button class="news-card-hit" type="button" data-slug="${article.slug}" data-title="${article.title}" aria-label="Baca ${article.title}"></button>
+                    <div class="card-visual">${img}</div>
+                    <div class="news-card-body">
+                        <div class="card-topline"><span>${article.category}</span><small>${article.readTime}</small></div>
+                        <h3>${article.title}</h3>
+                        <p>${article.excerpt || ""}</p>
+                        <div class="card-footer"><span>${article.dateLabel}</span><b>↗</b></div>
+                    </div>
+                </article>
+            `;
+        }).join("");
 
-        grid.querySelectorAll("[data-article]").forEach((button) => {
-            button.addEventListener("click", () => showToast(`${button.dataset.article} akan terhubung setelah konten production siap.`));
+        grid.querySelectorAll("[data-slug]").forEach((button) => {
+            button.addEventListener("click", () => {
+                showToast(`Halaman detail untuk "${button.dataset.title}" belum dibuat — artikel penuhnya sudah tersimpan di database, tinggal halaman /artikel/[slug].html yang menyusul.`);
+            });
         });
     }
 
@@ -166,12 +165,11 @@
     }
 
     function init() {
-        renderCategories();
-        renderArticles();
         setupNewsletter();
         setupPlaceholderActions();
         const search = byId("searchInput");
         if (search) search.addEventListener("input", renderArticles);
+        fetchArticles();
     }
 
     if (document.readyState === "loading") {
