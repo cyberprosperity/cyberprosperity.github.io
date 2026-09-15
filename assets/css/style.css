@@ -1,7 +1,9 @@
 ﻿/* ==========================================
    Cyber Prosperity
    Sprint 1 - Landing Page
-   Base Styles
+   Base Styles (konsolidasi final - compact scale
+   sudah dilebur langsung ke aturan aslinya, tidak
+   ada lagi override tersembunyi di akhir file)
 ========================================== */
 
 :root {
@@ -51,7 +53,7 @@ a {
 .cp-nav {
     position: relative;
     width: 100%;
-    height: 82px;
+    height: 68px;
     background: rgba(11, 15, 24, .96);
     border-bottom: 1px solid rgba(255,255,255,.06);
     z-index: 1000;
@@ -60,12 +62,12 @@ a {
 .cp-nav-inner {
     width: 100%;
     height: 100%;
-    padding: 0 80px;
+    padding: 0 48px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
+    gap: 24px;
     flex-wrap: nowrap;
 }
 
@@ -83,8 +85,8 @@ a {
 }
 
 .cp-brand-logo {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,6 +94,7 @@ a {
     background: linear-gradient(
         135deg,
         var(--cp-gold-light),
+        var(--cp-gold)
     );
     color: #111827;
     font-family: "Sora", sans-serif;
@@ -103,8 +106,8 @@ a {
 }
 
 .cp-logo-img {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
     display: block;
 }
@@ -112,7 +115,7 @@ a {
 .cp-brand span {
     color: var(--cp-white);
 
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: -.02em;
 }
@@ -123,7 +126,7 @@ a {
 .cp-links {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 32px;
     flex-wrap: nowrap;
 }
 
@@ -132,6 +135,7 @@ a {
     text-decoration: none;
     transition: color .3s;
     font-family: "Inter", sans-serif;
+    font-size: 14px;
     white-space: nowrap;
 }
 
@@ -156,12 +160,12 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
+    min-height: 38px;
     padding: 0 17px;
     color: #dbe3ef;
     text-decoration: none;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     transition: .25s ease;
     white-space: nowrap;
@@ -179,13 +183,13 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
+    min-height: 38px;
     padding: 0 20px;
     border-radius: 10px;
     background: var(--cp-gold);
     color: #111827;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     box-shadow:0 8px 22px rgba(212,166,74,.18);
     white-space: nowrap;
@@ -213,7 +217,7 @@ a {
 .home-hero {
     position: relative;
     width: 100%;
-    min-height: 650px;
+    min-height: 480px;
     overflow: hidden;
     background: #080c14;
 }
@@ -226,7 +230,7 @@ a {
     position: absolute;
     inset: 0;
     width: 100%;
-    min-height: 650px;
+    min-height: 480px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -294,38 +298,38 @@ a {
     position: relative;
     z-index: 5;
     width: min(100% - 60px, var(--cp-max-width));
-    min-height: 650px;
+    min-height: 480px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 80px 0 110px;
+    padding: 56px 0 70px;
 }
 
 .home-eyebrow {
     display: inline-flex;
     align-items: center;
-    min-height: 32px;
-    margin-bottom: 20px;
-    padding: 6px 13px;
+    min-height: 28px;
+    margin-bottom: 16px;
+    padding: 5px 12px;
     border: 1px solid rgba(212,166,74,.35);
     border-radius: 999px;
     background: rgba(212,166,74,.08);
     color: var(--cp-gold-light);
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: .08em;
     text-transform: uppercase;
 }
 
 .home-title {
-    max-width: 780px;
-    margin: 0 0 24px;
+    max-width: 620px;
+    margin: 0 0 18px;
     color: var(--cp-white);
     font-family: "Sora", sans-serif;
-    font-size: clamp(42px, 5.2vw, 72px);
+    font-size: clamp(30px, 3.4vw, 46px);
     font-weight: 800;
     line-height: 1.08;
     letter-spacing: -.045em;
@@ -336,11 +340,11 @@ a {
 }
 
 .home-hero-copy > p {
-    max-width: 650px;
-    margin: 0 0 34px;
+    max-width: 520px;
+    margin: 0 0 26px;
     color: #c1cad8;
     font-family: "Sora", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.8;
 }
 
@@ -364,15 +368,15 @@ a {
     align-items: center;
     justify-content: center;
 
-    min-height: 50px;
+    min-height: 42px;
 
-    padding: 0 24px;
+    padding: 0 20px;
 
     border-radius: 11px;
 
     text-decoration: none;
 
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
 
     transition:
@@ -426,7 +430,7 @@ a {
 
     left: 50%;
 
-    bottom: 30px;
+    bottom: 22px;
 
     z-index: 20;
 
@@ -474,7 +478,7 @@ a {
 
     width: 100%;
 
-    padding: 110px 30px;
+    padding: 72px 30px;
 
     background: var(--cp-bg);
 }
@@ -486,7 +490,7 @@ a {
 .cp-section-heading {
     width: min(100%, 760px);
 
-    margin: 0 auto 55px;
+    margin: 0 auto 40px;
 
     text-align: center;
 }
@@ -494,13 +498,13 @@ a {
 .cp-section-label {
     display: inline-block;
 
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 
     color: var(--cp-gold);
 
     font-family: "JetBrains Mono", monospace;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
 
     letter-spacing: .16em;
@@ -509,13 +513,13 @@ a {
 }
 
 .cp-section-heading h2 {
-    margin: 0 0 18px;
+    margin: 0 0 14px;
 
     color: var(--cp-white);
 
     font-family: "Sora", sans-serif;
 
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(24px, 2.8vw, 36px);
 
     font-weight: 800;
 
@@ -535,7 +539,7 @@ a {
 
     color: var(--cp-muted);
 
-    font-size: 15px;
+    font-size: 14px;
 
     line-height: 1.8;
 }
@@ -554,15 +558,15 @@ a {
 
     grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    gap: 24px;
+    gap: 18px;
 }
 
 .cp-feature-card {
     position: relative;
 
-    min-height: 250px;
+    min-height: auto;
 
-    padding: 30px;
+    padding: 22px;
 
     background: linear-gradient(
         145deg,
@@ -593,17 +597,17 @@ a {
 }
 
 .cp-feature-icon {
-    width: 52px;
-    height: 52px;
+    width: 42px;
+    height: 42px;
 
-    margin-bottom: 24px;
+    margin-bottom: 18px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    border-radius: 15px;
+    border-radius: 12px;
 
     background: rgba(212,166,74,.12);
 
@@ -611,15 +615,15 @@ a {
 
     color: var(--cp-gold-light);
 
-    font-size: 19px;
+    font-size: 16px;
 }
 
 .cp-feature-card h3 {
-    margin: 0 0 12px;
+    margin: 0 0 8px;
 
     color: var(--cp-white);
 
-    font-size: 19px;
+    font-size: 16px;
 
     font-weight: 700;
 }
@@ -629,7 +633,7 @@ a {
 
     color: var(--cp-muted);
 
-    font-size: 14px;
+    font-size: 13px;
 
     line-height: 1.8;
 }
@@ -652,13 +656,13 @@ a {
 
     grid-template-columns: repeat(4, minmax(0, 1fr));
 
-    gap: 20px;
+    gap: 16px;
 
     text-align: center;
 }
 
 .cp-stat-card {
-    padding: 34px 20px;
+    padding: 24px 16px;
 
     background: linear-gradient(
         145deg,
@@ -691,7 +695,7 @@ a {
 
     font-family: "Sora", sans-serif;
 
-    font-size: 36px;
+    font-size: 26px;
 
     font-weight: 800;
 
@@ -703,7 +707,7 @@ a {
 
     color: var(--cp-muted);
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
@@ -714,7 +718,7 @@ a {
 .cp-cta {
     position: relative;
 
-    padding: 110px 30px;
+    padding: 72px 30px;
 
     overflow: hidden;
 
@@ -744,11 +748,11 @@ a {
 }
 
 .cp-cta h2 {
-    margin: 0 0 18px;
+    margin: 0 0 14px;
 
     color: var(--cp-white);
 
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(24px, 2.8vw, 36px);
 
     font-weight: 800;
 
@@ -764,11 +768,11 @@ a {
 .cp-cta p {
     max-width: 650px;
 
-    margin: 0 auto 32px;
+    margin: 0 auto 24px;
 
     color: var(--cp-muted);
 
-    font-size: 15px;
+    font-size: 14px;
 
     line-height: 1.8;
 }
@@ -781,9 +785,9 @@ a {
 
     gap: 10px;
 
-    min-height: 52px;
+    min-height: 44px;
 
-    padding: 0 26px;
+    padding: 0 22px;
 
     background: var(--cp-gold);
 
@@ -793,7 +797,7 @@ a {
 
     text-decoration: none;
 
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
 
     box-shadow:
@@ -813,49 +817,6 @@ a {
     box-shadow:
         0 16px 34px rgba(212,166,74,.30);
 }
-
-/* ==========================================
-   FOOTER
-========================================== */
-
-.cp-footer {
-    width: 100%;
-    background: #080c13;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.cp-footer-inner {
-    width: min(100% - 60px, 1280px);
-    min-height: auto;
-    margin: 0 auto;
-    padding: 14px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-}
-
-.cp-footer-brand .cp-brand {
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.cp-footer-brand p {
-    max-width: 300px;
-    margin: 0;
-    color: #69778c;
-    font-size: 12px;
-    line-height: 1.7;
-}
-
-.cp-footer-copy {
-    color: #64748b;
-    font-size: 12px;
-    text-align: right;
-}
-
 
 /* ==========================================
    LOGIN PAGE
@@ -2907,6 +2868,194 @@ a {
     font-size: 1rem;
 }
 
+/* ==========================================
+   FOOTER
+========================================== */
+
+.cp-footer {
+    width: 100%;
+    background: #080c13;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cp-footer-inner {
+    width: min(100% - 60px, 1280px);
+    margin: 0 auto;
+    padding: 40px 0 0;
+}
+
+.cp-footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 28px;
+    padding-bottom: 28px;
+}
+
+/* --- kolom brand --- */
+
+.cp-footer-brand .cp-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.cp-footer-brand .cp-brand span {
+    font-size: 15px;
+}
+
+.cp-footer-brand p {
+    max-width: 320px;
+    margin: 0;
+    color: #69778c;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* --- heading kolom (Quick Links / Follow Us) --- */
+
+.cp-footer-heading {
+    margin: 0 0 14px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* --- kolom quick links --- */
+
+.cp-footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cp-footer-links a {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.cp-footer-links a:hover {
+    color: var(--cp-gold-light);
+}
+
+/* --- kolom social --- */
+
+.cp-footer-social-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.cp-footer-social-icons a {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: #ffffff;
+    font-size: 15px;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.cp-footer-social-icons a:hover {
+    transform: translateY(-3px);
+    border-color: transparent;
+    color: #ffffff;
+}
+
+.cp-footer-social-icons a.fb:hover { background: #1877f2; }
+.cp-footer-social-icons a.tiktok:hover { background: #000000; }
+.cp-footer-social-icons a.ig:hover {
+    background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7);
+}
+
+.cp-footer-social p {
+    margin: 16px 0 0;
+    color: #69778c;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* --- disclaimer risiko --- */
+
+.cp-footer-disclaimer {
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    padding: 24px 0;
+}
+
+.cp-footer-disclaimer-box {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, .06);
+    border: 1px solid rgba(239, 68, 68, .18);
+}
+
+.cp-footer-disclaimer-box i {
+    flex-shrink: 0;
+    color: #f87171;
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.cp-footer-disclaimer-box p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.cp-footer-disclaimer-box strong {
+    color: #cbd5e1;
+}
+
+/* --- bottom bar (copyright) --- */
+
+.cp-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    padding: 14px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cp-footer-bottom p {
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* ==========================================
+   RESPONSIVE FOOTER
+========================================== */
+
+@media (max-width: 800px) {
+
+    .cp-footer-top {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .cp-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 /* =========================================================
    RESPONSIVE TABLET
 ========================================================= */
@@ -2948,19 +3097,24 @@ a {
 
     /* ==========================
        NAVBAR — versi .cp-nav (Home, dll)
+       Menu digeser horizontal, dengan gradient fade di
+       tepi kanan sebagai petunjuk visual masih ada menu
+       lain, dan berhenti rapi di tiap item (scroll-snap).
     ========================== */
 
     .cp-nav {
         height: auto;
         min-height: 72px;
+        overflow: visible;
     }
 
     .cp-nav-inner {
-    width: calc(100% - 40px);
-    min-height: 72px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    padding: 12px 0;
+        width: 100%;
+        min-height: 72px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        gap: 12px;
     }
 
     .cp-brand span {
@@ -2974,14 +3128,23 @@ a {
     }
 
     .cp-links {
+        position: relative;
         order: 3;
         width: 100%;
         margin: 0;
-        padding: 5px 0 2px;
+        padding: 6px 0 4px;
         justify-content: flex-start;
-        gap: 20px;
+        gap: 22px;
+        flex-wrap: nowrap;
         overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
         scrollbar-width: none;
+
+        /* memudar di ujung kanan = tanda "bisa digeser" */
+        -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent 100%);
+        mask-image: linear-gradient(90deg, #000 88%, transparent 100%);
     }
 
     .cp-links::-webkit-scrollbar {
@@ -2991,11 +3154,19 @@ a {
     .cp-links a {
         flex-shrink: 0;
         padding: 8px 0;
-        font-size: 12px;
+        font-size: 13px;
+        scroll-snap-align: start;
     }
 
     .cp-links a::after {
         bottom: 1px;
+    }
+
+    /* ruang napas supaya item terakhir tidak mepet tepi
+       layar saat digeser habis */
+    .cp-links::after {
+        content: "";
+        flex: 0 0 16px;
     }
 
     .cp-nav-right {
@@ -3003,15 +3174,11 @@ a {
     }
 
     .cp-signin {
-        min-height: 38px;
         padding: 0 10px;
-        font-size: 12px;
     }
 
     .cp-join {
-        min-height: 38px;
         padding: 0 13px;
-        font-size: 12px;
     }
 
     /* ==========================
@@ -3062,19 +3229,16 @@ a {
        HERO
     ========================== */
 
-    .home-hero {
-        min-height: 650px;
-    }
-
+    .home-hero,
     .home-slide {
-        min-height: 650px;
+        min-height: 520px;
     }
 
     .home-hero-copy {
     width: calc(100% - 40px);
-    min-height: 650px;
+    min-height: 520px;
     margin: 0 12px 0 28px;
-    padding: 60px 0 90px;
+    padding: 44px 0 60px;
     }
 
     .home-hero-bg img {
@@ -3098,7 +3262,7 @@ a {
 
     .home-title {
         max-width: 100%;
-        font-size: 39px;
+        font-size: 30px;
         line-height: 1.1;
     }
 
@@ -3127,7 +3291,7 @@ a {
     ========================== */
 
     .cp-section {
-        padding: 75px 20px;
+        padding: 56px 20px;
     }
 
     .cp-section-heading {
@@ -3202,7 +3366,7 @@ a {
     ========================== */
 
     .cp-cta {
-        padding: 75px 20px;
+        padding: 56px 20px;
     }
 
     .cp-cta h2 {
@@ -3211,21 +3375,6 @@ a {
 
     .cp-cta p {
         font-size: 14px;
-    }
-
-    /* ==========================
-       FOOTER
-    ========================== */
-
-    .cp-footer-inner {
-        width: calc(100% - 40px);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 35px 0;
-    }
-
-    .cp-footer-copy {
-        text-align: left;
     }
 
     /* ==========================
@@ -3523,8 +3672,21 @@ a {
 
 @media (max-width: 430px) {
 
+    .cp-nav-inner {
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
     .cp-brand span {
         font-size: 14px;
+    }
+
+    .cp-links {
+        gap: 18px;
+    }
+
+    .cp-links a {
+        font-size: 12px;
     }
 
     .cp-nav-right {
@@ -3549,458 +3711,5 @@ a {
 
     .cp-stat-card h3 {
         font-size: 32px;
-    }
-}
-
-
-/* ==========================================
-   FOOTER
-========================================== */
- 
-.cp-footer {
-    width: 100%;
-    background: #080c13;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
- 
-.cp-footer-inner {
-    width: min(100% - 60px, 1280px);
-    margin: 0 auto;
-    padding: 56px 0 0;
-}
- 
-.cp-footer-top {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 40px;
-    padding-bottom: 40px;
-}
- 
-/* --- kolom brand --- */
- 
-.cp-footer-brand .cp-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-}
- 
-.cp-footer-brand p {
-    max-width: 320px;
-    margin: 0;
-    color: #69778c;
-    font-size: 13px;
-    line-height: 1.8;
-}
- 
-/* --- heading kolom (Quick Links / Follow Us) --- */
- 
-.cp-footer-heading {
-    margin: 0 0 18px;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
- 
-/* --- kolom quick links --- */
- 
-.cp-footer-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
- 
-.cp-footer-links a {
-    color: #94A3B8;
-    text-decoration: none;
-    font-size: 14px;
-    transition: .2s;
-}
- 
-.cp-footer-links a:hover {
-    color: var(--cp-gold-light);
-}
- 
-/* --- kolom social --- */
- 
-.cp-footer-social-icons {
-    display: flex;
-    gap: 12px;
-}
- 
-.cp-footer-social-icons a {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, .05);
-    border: 1px solid rgba(255, 255, 255, .1);
-    color: #ffffff;
-    font-size: 17px;
-    text-decoration: none;
-    transition: .25s;
-}
- 
-.cp-footer-social-icons a:hover {
-    transform: translateY(-3px);
-    border-color: transparent;
-    color: #ffffff;
-}
- 
-.cp-footer-social-icons a.fb:hover { background: #1877f2; }
-.cp-footer-social-icons a.tiktok:hover { background: #000000; }
-.cp-footer-social-icons a.ig:hover {
-    background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7);
-}
- 
-.cp-footer-social p {
-    margin: 16px 0 0;
-    color: #69778c;
-    font-size: 13px;
-    line-height: 1.7;
-}
- 
-/* --- disclaimer risiko --- */
- 
-.cp-footer-disclaimer {
-    border-top: 1px solid rgba(255, 255, 255, .06);
-    padding: 24px 0;
-}
- 
-.cp-footer-disclaimer-box {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 16px 18px;
-    border-radius: 12px;
-    background: rgba(239, 68, 68, .06);
-    border: 1px solid rgba(239, 68, 68, .18);
-}
- 
-.cp-footer-disclaimer-box i {
-    flex-shrink: 0;
-    color: #f87171;
-    font-size: 16px;
-    margin-top: 3px;
-}
- 
-.cp-footer-disclaimer-box p {
-    margin: 0;
-    color: #94A3B8;
-    font-size: 12px;
-    line-height: 1.8;
-}
- 
-.cp-footer-disclaimer-box strong {
-    color: #cbd5e1;
-}
- 
-/* --- bottom bar (copyright) --- */
- 
-.cp-footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, .06);
-    padding: 18px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
- 
-.cp-footer-bottom p {
-    margin: 0;
-    color: #64748b;
-    font-size: 12px;
-}
- 
-/* ==========================================
-   RESPONSIVE FOOTER
-========================================== */
- 
-@media (max-width: 800px) {
- 
-    .cp-footer-top {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
- 
-    .cp-footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-/* =========================================================
-   COMPACT SCALE
-========================================================= */
-/* ==========================================
-   NAVBAR — lebih ramping
-========================================== */
-
-.cp-nav{
-    height: 68px;
-}
-
-.cp-nav-inner{
-    padding: 0 48px;
-    gap: 24px;
-}
-
-.cp-brand-logo{
-    width: 36px;
-    height: 36px;
-}
-
-.cp-logo-img{
-    width: 36px;
-    height: 36px;
-}
-
-.cp-brand span{
-    font-size: 15px;
-}
-
-.cp-links{
-    gap: 32px;
-}
-
-.cp-links a{
-    font-size: 14px;
-}
-
-.cp-signin,
-.cp-join{
-    min-height: 38px;
-    font-size: 13px;
-}
-
-/* ==========================================
-   HERO — lebih pendek & headline lebih wajar
-========================================== */
-
-.home-hero,
-.home-slide{
-    min-height: 480px;
-}
-
-.home-hero-copy{
-    min-height: 480px;
-    padding: 56px 0 70px;
-}
-
-.home-eyebrow{
-    min-height: 28px;
-    font-size: 10px;
-    padding: 5px 12px;
-    margin-bottom: 16px;
-}
-
-.home-title{
-    max-width: 620px;
-    font-size: clamp(30px, 3.4vw, 46px);
-    margin-bottom: 18px;
-}
-
-.home-hero-copy > p{
-    max-width: 520px;
-    font-size: 14px;
-    margin-bottom: 26px;
-}
-
-.home-hero-buttons a{
-    min-height: 42px;
-    padding: 0 20px;
-    font-size: 13px;
-}
-
-.home-dots{
-    bottom: 22px;
-}
-
-/* ==========================================
-   GENERAL SECTION — padding lebih rapat
-========================================== */
-
-.cp-section{
-    padding: 72px 30px;
-}
-
-.cp-section-heading{
-    margin-bottom: 40px;
-}
-
-.cp-section-label{
-    font-size: 10px;
-    margin-bottom: 10px;
-}
-
-.cp-section-heading h2{
-    font-size: clamp(24px, 2.8vw, 36px);
-    margin-bottom: 14px;
-}
-
-.cp-section-heading p{
-    font-size: 14px;
-}
-
-/* ==========================================
-   FEATURE GRID (Why Cyber Prosperity)
-========================================== */
-
-.cp-feature-grid{
-    gap: 18px;
-}
-
-.cp-feature-card{
-    min-height: auto;
-    padding: 22px;
-}
-
-.cp-feature-icon{
-    width: 42px;
-    height: 42px;
-    margin-bottom: 18px;
-    font-size: 16px;
-    border-radius: 12px;
-}
-
-.cp-feature-card h3{
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.cp-feature-card p{
-    font-size: 13px;
-}
-
-/* ==========================================
-   STATISTICS
-========================================== */
-
-.cp-stats-grid{
-    gap: 16px;
-}
-
-.cp-stat-card{
-    padding: 24px 16px;
-}
-
-.cp-stat-card h3{
-    font-size: 26px;
-}
-
-.cp-stat-card p{
-    font-size: 12px;
-}
-
-/* ==========================================
-   CALL TO ACTION
-========================================== */
-
-.cp-cta{
-    padding: 72px 30px;
-}
-
-.cp-cta h2{
-    font-size: clamp(24px, 2.8vw, 36px);
-    margin-bottom: 14px;
-}
-
-.cp-cta p{
-    font-size: 14px;
-    margin-bottom: 24px;
-}
-
-.cp-btn-primary{
-    min-height: 44px;
-    padding: 0 22px;
-    font-size: 13px;
-}
-
-/* ==========================================
-   FOOTER
-========================================== */
-
-.cp-footer-inner{
-    padding: 40px 0 0;
-}
-
-.cp-footer-top{
-    gap: 28px;
-    padding-bottom: 28px;
-}
-
-.cp-footer-brand .cp-brand span{
-    font-size: 15px;
-}
-
-.cp-footer-brand p{
-    font-size: 12px;
-}
-
-.cp-footer-heading{
-    font-size: 12px;
-    margin-bottom: 14px;
-}
-
-.cp-footer-links a{
-    font-size: 13px;
-}
-
-.cp-footer-social-icons a{
-    width: 38px;
-    height: 38px;
-    font-size: 15px;
-}
-
-.cp-footer-disclaimer-box{
-    padding: 14px 16px;
-}
-
-.cp-footer-disclaimer-box p{
-    font-size: 11px;
-}
-
-.cp-footer-bottom{
-    padding: 14px 0;
-}
-
-.cp-footer-bottom p{
-    font-size: 11px;
-}
-
-/* ==========================================
-   RESPONSIVE (tetap turunkan sedikit lagi di mobile)
-========================================== */
-
-@media (max-width: 768px){
-
-    .home-hero,
-    .home-slide{
-        min-height: 520px;
-    }
-
-    .home-hero-copy{
-        min-height: 520px;
-        padding: 44px 0 60px;
-    }
-
-    .home-title{
-        font-size: 30px;
-    }
-
-    .cp-section{
-        padding: 56px 20px;
-    }
-
-    .cp-cta{
-        padding: 56px 20px;
     }
 }
