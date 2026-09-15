@@ -17,13 +17,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         // ---- USER SUDAH LOGIN ----
         const user = session.user;
 
-        // Ambil nama terbaru dari tabel "profiles" - ini sumber yang sama
+        // Ambil nama terbaru + role dari tabel "profiles" - ini sumber yang sama
         // dipakai Settings & Forum, supaya nama selalu sinkron di semua halaman.
         const { data: profileData } = await supabaseClient
             .from("profiles")
-            .select("full_name, username")
+            .select("full_name, username, role")
             .eq("id", user.id)
             .maybeSingle();
+
+        const isAdmin = profileData?.role === "admin";
 
         const displayName =
             profileData?.full_name ||
@@ -57,27 +59,47 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // --- Struktur 2: Sidebar halaman internal (profile, features, forum, dll) ---
-        // Cari link "Profile" di sidebar-bottom, ganti teksnya jadi nama user
-        const sidebarLinks = document.querySelectorAll(".sidebar-bottom a");
-        sidebarLinks.forEach((link) => {
-            const span = link.querySelector("span");
-            if (!span) return;
+        const sidebarBottom = document.querySelector(".sidebar-bottom");
 
-            const label = span.textContent.trim();
+        if (sidebarBottom) {
+            // Cari link "Profile" di sidebar-bottom, ganti teksnya jadi nama user
+            const sidebarLinks = sidebarBottom.querySelectorAll("a");
+            let logoutLink = null;
 
-            if (label === "Profile") {
-                span.textContent = shortDisplayName;
-                span.title = displayName;
+            sidebarLinks.forEach((link) => {
+                const span = link.querySelector("span");
+                if (!span) return;
+
+                const label = span.textContent.trim();
+
+                if (label === "Profile") {
+                    span.textContent = shortDisplayName;
+                    span.title = displayName;
+                }
+
+                if (label === "Logout") {
+                    logoutLink = link;
+                    link.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        await supabaseClient.auth.signOut();
+                        window.location.href = "index.html";
+                    });
+                }
+            });
+
+            // Kalau akun ini admin, sisipkan link "Kelola Artikel" tepat
+            // sebelum tombol Logout. User biasa tidak akan lihat link ini
+            // sama sekali (bukan cuma disembunyikan CSS, memang tidak
+            // pernah ditambahkan ke halaman untuk role selain admin).
+            if (isAdmin && logoutLink && !sidebarBottom.querySelector('[data-admin-link]')) {
+                logoutLink.insertAdjacentHTML("beforebegin", `
+                    <a href="admin/artikel.html" data-admin-link>
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Kelola Artikel</span>
+                    </a>
+                `);
             }
-
-            if (label === "Logout") {
-                link.addEventListener("click", async (e) => {
-                    e.preventDefault();
-                    await supabaseClient.auth.signOut();
-                    window.location.href = "index.html";
-                });
-            }
-        });
+        }
 
     } else {
         // ---- USER BELUM LOGIN ----
