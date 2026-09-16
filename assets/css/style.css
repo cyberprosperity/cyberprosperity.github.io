@@ -90,9 +90,9 @@ a {
 }
 
 .cp-logo-img {
-    height: 94px;
+    height: 125px;
     width: auto;
-    max-width: 220px;
+    max-width: 275px;
     object-fit: contain;
     display: block;
 }
