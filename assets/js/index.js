@@ -1,11 +1,12 @@
 /* ==========================================
    CYBER PROSPERITY - HERO SLIDER
-   Auto-rotate 5 detik + dot navigasi
+   Background statis, hanya teks promo yang
+   bergilir. Auto-rotate 5 detik + dot navigasi.
 ========================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const slides = document.querySelectorAll('.home-slide');
+    const slides = document.querySelectorAll('.home-hero-copy');
     const dotsWrap = document.getElementById('heroDots');
 
     let current = 0;
