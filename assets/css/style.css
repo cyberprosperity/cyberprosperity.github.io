@@ -290,6 +290,51 @@ a {
     z-index: 6;
 }
 
+.home-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    margin-bottom: 12px;
+    padding: 5px 12px;
+    border: 1px solid rgba(212,166,74,.35);
+    border-radius: 999px;
+    background: rgba(212,166,74,.08);
+    color: var(--cp-gold-light);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.home-title {
+    max-width: 620px;
+    margin: 0 0 12px;
+    color: var(--cp-white);
+    font-family: "Sora", sans-serif;
+    font-size: clamp(30px, 3.4vw, 46px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.045em;
+}
+
+.home-accent {
+    color: var(--cp-gold-light);
+}
+
+.home-hero-copy > p {
+    max-width: 520px;
+    margin: 0 0 8px;
+    color: #c1cad8;
+    font-family: "Sora", sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.home-hero-copy > p:last-of-type {
+    margin-bottom: 20px;
+}
+
 /* =========================================================
    HERO BUTTONS
 ========================================================= */
@@ -3642,5 +3687,39 @@ a {
 
     .cp-stat-card h3 {
         font-size: 32px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE WIDE DESKTOP / HIGH ZOOM
+   Menjaga proporsi navbar & hero tetap enak dilihat saat
+   viewport efektif menyempit (misal browser di-zoom in)
+========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1600px) {
+
+    .cp-logo-img {
+        height: 90px;
+        max-width: 200px;
+    }
+
+    .cp-nav-inner {
+        padding: 10px 40px;
+    }
+
+    .cp-links {
+        gap: 26px;
+    }
+
+    .cp-links a {
+        font-size: 13px;
+    }
+
+    .home-title {
+        font-size: clamp(26px, 3vw, 40px);
+    }
+
+    .home-hero-copy > p {
+        font-size: 13px;
     }
 }
