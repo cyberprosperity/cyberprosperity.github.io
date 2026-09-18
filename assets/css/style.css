@@ -3015,39 +3015,101 @@ a {
     line-height: 1.7;
 }
 
-/* --- disclaimer risiko --- */
+/* --- waspada penipuan --- */
 
 .cp-footer-disclaimer {
     border-top: 1px solid rgba(255, 255, 255, .06);
     padding: 24px 0;
 }
 
-.cp-footer-disclaimer-box {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 14px 16px;
-    border-radius: 12px;
-    background: rgba(239, 68, 68, .06);
-    border: 1px solid rgba(239, 68, 68, .18);
+.cp-scam-warning{
+    display:flex;
+    gap:32px;
+    align-items:flex-start;
+    padding:22px 26px;
+    border-radius:14px;
+    background:rgba(239,68,68,.06);
+    border:1px solid rgba(239,68,68,.35);
+    box-shadow:0 0 24px rgba(239,68,68,.08);
 }
 
-.cp-footer-disclaimer-box i {
-    flex-shrink: 0;
-    color: #f87171;
-    font-size: 16px;
-    margin-top: 3px;
+.cp-scam-warning-left{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    flex:1.4;
 }
 
-.cp-footer-disclaimer-box p {
-    margin: 0;
-    color: #94A3B8;
-    font-size: 11px;
-    line-height: 1.8;
+.cp-scam-warning-icon{
+    flex-shrink:0;
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    border:2px solid #f87171;
+    color:#f87171;
+    font-size:16px;
 }
 
-.cp-footer-disclaimer-box strong {
-    color: #cbd5e1;
+.cp-scam-warning-left h4{
+    margin:0 0 8px;
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:.02em;
+}
+
+.cp-scam-warning-left h4 strong{
+    color:#ffffff;
+}
+
+.cp-scam-warning-left h4 span{
+    color:#f87171;
+}
+
+.cp-scam-warning-left p{
+    margin:0;
+    color:#94A3B8;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.cp-scam-warning-left p strong{
+    color:#e2e8f0;
+}
+
+.cp-scam-warning-list{
+    flex:1;
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.cp-scam-warning-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    color:#CBD5E1;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.cp-scam-warning-list li i{
+    flex-shrink:0;
+    margin-top:2px;
+    color:#f87171;
+    font-size:13px;
+}
+
+@media (max-width:800px){
+    .cp-scam-warning{
+        flex-direction:column;
+        gap:20px;
+    }
 }
 
 /* --- bottom bar (copyright) --- */
