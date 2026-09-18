@@ -456,6 +456,95 @@ FLOATING CARD (widget chat "Adinda")
 }
 
 /* ==========================================
+SCAM WARNING BOX (footer)
+========================================== */
+
+.cp-scam-warning{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:28px;
+    padding:24px 28px;
+    border-radius:16px;
+    background:rgba(239,68,68,.06);
+    border:1px solid rgba(239,68,68,.18);
+}
+
+.cp-scam-warning-left{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    flex:1 1 380px;
+}
+
+.cp-scam-warning-icon{
+    flex-shrink:0;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(239,68,68,.15);
+    border:1px solid rgba(239,68,68,.35);
+    color:#f87171;
+    font-size:18px;
+}
+
+.cp-scam-warning-left h4{
+    margin:0 0 8px;
+    font-size:16px;
+    font-weight:700;
+    color:#F8FAFC;
+}
+
+.cp-scam-warning-left h4 span{
+    color:#f87171;
+}
+
+.cp-scam-warning-left p{
+    margin:0;
+    color:#94A3B8;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.cp-scam-warning-left p strong{
+    color:#CBD5E1;
+}
+
+.cp-scam-warning-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    flex:1 1 300px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.cp-scam-warning-list li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#94A3B8;
+    font-size:13px;
+}
+
+.cp-scam-warning-list li i{
+    flex-shrink:0;
+    color:#f87171;
+    font-size:13px;
+}
+
+@media (max-width:700px){
+    .cp-scam-warning{
+        flex-direction:column;
+    }
+}
+
+/* ==========================================
 RESPONSIVE
 ========================================== */
 
