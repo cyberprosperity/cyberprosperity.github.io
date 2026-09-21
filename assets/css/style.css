@@ -51,7 +51,8 @@ a {
 ========================================================= */
 
 .cp-nav {
-    position: relative;
+    position: sticky;
+    top: 0;
     width: 100%;
     height: 68px;
     background: rgba(11, 15, 24, .96);
@@ -116,12 +117,21 @@ a {
 }
 
 .cp-links a {
+    display: inline-block;
     color: #CBD5E1;
     text-decoration: none;
     transition: color .3s;
     font-family: "Inter", sans-serif;
     font-size: 14px;
     white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.cp-links a:active,
+.cp-signin:active,
+.cp-join:active {
+    transform: none;
 }
 
 .cp-links a:hover,
@@ -157,6 +167,8 @@ a {
     max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
 }
 
 .cp-signin:hover {
@@ -181,16 +193,16 @@ a {
     max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
 
     transition:
-        transform .25s ease,
         background .25s ease,
         box-shadow .25s ease;
 }
 
 .cp-join:hover {
     background: var(--cp-gold-light);
-    transform: translateY(-2px);
 
     box-shadow: 0 12px 28px rgba(212,166,74,.28);
 }
@@ -3800,7 +3812,7 @@ a {
    viewport efektif menyempit (misal browser di-zoom in)
 ========================================================= */
 
-@media (min-width: 1200px) and (max-width: 1600px) {
+@media (min-width: 1200px) and (max-width: 1900px) {
 
     .cp-logo-img {
         height: 90px;
