@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title id="bd-page-title">Detail Broker | Cyber Prosperity</title>
+
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="assets/css/broker.css">
+
+    <link rel="stylesheet"
+          href="assets/css/broker-detail.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="assets/images/logo/logo5.webp"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="features.html">
+                <i class="fa-solid fa-star"></i>
+                <span>Features</span>
+            </a>
+
+            <a href="forum.html">
+                <i class="fa-solid fa-comments"></i>
+                <span>Forum</span>
+            </a>
+
+            <a href="broker.html" class="active">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Broker</span>
+            </a>
+
+            <a href="artikel.html">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Artikel</span>
+            </a>
+
+            <a href="contact.html">
+                <i class="fa-solid fa-phone"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-bottom">
+
+            <a href="profile.html">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <!-- MARKET TICKER -->
+        <div class="market-ticker" id="tv-ticker-slot"></div>
+
+        <!-- BREADCRUMB + BACK LINK -->
+        <a href="broker.html" class="bd-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Kembali ke Daftar Broker
+        </a>
+
+        <div class="breadcrumb">
+            <a href="broker.html">Broker</a> / <span id="bd-breadcrumb-name">...</span>
+        </div>
+
+        <!-- ==========================================
+             HERO DETAIL BROKER (diisi otomatis via JS)
+        ========================================== -->
+
+        <section class="bd-hero" id="bd-hero">
+
+            <div class="bd-logo" id="bd-logo-wrap">
+                <img src="assets/images/brokers/cfforex.png" alt="CFForex">
+            </div>
+
+            <div class="bd-hero-info">
+
+                <h1 id="bd-name">Cyber Futures</h1>
+                <p id="bd-license"></p>
+
+                <div class="bd-badges" id="bd-badges"></div>
+            
+
+                <div class="bd-cta-row">
+                    <a href="https://clientarea.cfforex.com/auth/register/cypros7" class="btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Daftar Sekarang
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             GRID: KONTEN KIRI + PANEL KANAN
+        ========================================== -->
+
+        <div class="bd-grid">
+
+            <!-- KOLOM KIRI -->
+            <div>
+
+                <div class="bd-card">
+                    <h2><i class="fa-solid fa-circle-info"></i> Tentang <span id="bd-about-name"></span></h2>
+                    <p id="bd-about-text">Memuat deskripsi...</p>
+                </div>
+
+                <div class="bd-card">
+                    <h2><i class="fa-solid fa-chart-simple"></i> Kondisi Trading</h2>
+                    <table class="bd-table" id="bd-table">
+                        <!-- baris diisi otomatis via JS -->
+                    </table>
+                </div>
+
+                <div class="bd-card">
+                    <h2><i class="fa-solid fa-scale-balanced"></i> Kelebihan &amp; Pertimbangan</h2>
+                    <div class="bd-pros-cons">
+                        <div class="bd-pros">
+                            <h3>Kelebihan</h3>
+                            <ul id="bd-pros-list"></ul>
+                        </div>
+                        <div class="bd-cons">
+                            <h3>Pertimbangan</h3>
+                            <ul id="bd-cons-list"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- KOLOM KANAN -->
+            <aside>
+
+                <div class="bd-side-card">
+                    <h4>Ringkasan Cepat</h4>
+                    <div id="bd-summary"></div>
+                </div>
+
+                <div class="bd-side-card">
+                    <h4>Siap Bergabung?</h4>
+                    <p>Daftar lewat CFX Pros untuk mendapatkan cashback rutin di setiap transaksi.</p>
+                    <a href="https://clientarea.cfforex.com/auth/register/cypros7" class="btn-primary bd-btn-full" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Daftar via CFX Pros
+                    </a>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth-state.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
+<script src="assets/js/market-ticker-loader.js"></script>
+<script src="assets/js/broker-detail.js"></script>
+
+</body>
+
+</html>

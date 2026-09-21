@@ -1,0 +1,305 @@
+/* =========================================================
+   CYBER PROSPERITY
+   BROKER DETAIL PAGE
+   File CSS khusus halaman Broker Detail (broker-detail.html)
+   Dependency: style.css, broker.css (variabel --cp-gold,
+   --cp-blue, class .btn-primary / .btn-outline)
+========================================================= */
+
+/* --- BACK LINK & BREADCRUMB --- */
+
+.bd-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cp-gold-light, #E7C15B);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 18px;
+    transition: gap .25s ease;
+}
+
+.bd-back:hover {
+    gap: 12px;
+}
+
+.breadcrumb {
+    font-size: 12px;
+    color: #94A3B8;
+    margin-bottom: 24px;
+}
+
+.breadcrumb a {
+    color: var(--cp-gold-light, #E7C15B);
+    text-decoration: none;
+}
+
+/* --- HERO DETAIL --- */
+
+.bd-hero {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 32px;
+    border-radius: 22px;
+    margin-bottom: 32px;
+
+    background:
+        radial-gradient(circle at 10% 0%, rgba(212,166,74,.12), transparent 55%),
+        linear-gradient(165deg, #1B2740 0%, #131C2E 100%);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.bd-hero.bd-theme--blue {
+    background:
+        radial-gradient(circle at 10% 0%, rgba(59,130,246,.16), transparent 55%),
+        linear-gradient(165deg, #1B2740 0%, #131C2E 100%);
+}
+
+.bd-logo {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    background: #FFFFFF;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    box-sizing: border-box;
+}
+
+.bd-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.bd-hero-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.bd-hero-info h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.bd-hero-info > p {
+    margin: 0 0 16px;
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.bd-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.bd-badges span {
+    background: #10151F;
+    color: var(--cp-gold-light, #E7C15B);
+    border: 1px solid rgba(212,166,74,.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bd-theme--blue .bd-badges span {
+    color: var(--cp-blue-light, #60a5fa);
+    border-color: rgba(59,130,246,.3);
+}
+
+.bd-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.bd-cta-row .btn-primary,
+.bd-cta-row .btn-outline {
+    width: auto;
+}
+
+/* --- GRID 2 KOLOM --- */
+
+.bd-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    align-items: start;
+}
+
+.bd-card {
+    background: linear-gradient(165deg, #1B2740 0%, #131C2E 100%);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 20px;
+    padding: 26px;
+    margin-bottom: 24px;
+}
+
+.bd-card h2 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    color: #FFFFFF;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bd-card h2 i {
+    color: var(--cp-gold-light, #E7C15B);
+}
+
+.bd-card p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+
+/* --- TABEL KONDISI TRADING --- */
+
+.bd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.bd-table tr {
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.bd-table tr:last-child {
+    border-bottom: none;
+}
+
+.bd-table td {
+    padding: 12px 6px;
+    color: #94A3B8;
+}
+
+.bd-table td:last-child {
+    text-align: right;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+/* --- KELEBIHAN / PERTIMBANGAN --- */
+
+.bd-pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.bd-pros h3,
+.bd-cons h3 {
+    font-size: 13px;
+    margin: 0 0 10px;
+    color: #FFFFFF;
+}
+
+.bd-pros ul,
+.bd-cons ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.bd-pros li::marker {
+    color: #4ade80;
+}
+
+.bd-cons li::marker {
+    color: #f87171;
+}
+
+/* --- SIDE PANEL --- */
+
+.bd-side-card {
+    background:
+        radial-gradient(circle at 30% 15%, rgba(212,166,74,.12), transparent 55%),
+        linear-gradient(160deg, #16213A 0%, #0E1626 100%);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.bd-side-card h4 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.bd-side-card p {
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0 0 16px;
+}
+
+.bd-side-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    font-size: 13px;
+}
+
+.bd-side-item:last-child {
+    border-bottom: none;
+}
+
+.bd-side-item span:first-child {
+    color: #94A3B8;
+}
+
+.bd-side-item span:last-child {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.bd-btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+    .bd-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .bd-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+    }
+
+    .bd-cta-row {
+        justify-content: center;
+    }
+
+    .bd-pros-cons {
+        grid-template-columns: 1fr;
+    }
+}
