@@ -64,15 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 { label: "Minimum Deposit", value: "$30" },
                 { label: "Fee per Lot", value: "$0" },
                 { label: "Spread Mulai", value: "0.0 Pips" },
-                { label: "Leverage", value: "Hingga 1:500" },
-                { label: "Tipe Akun", value: "Standard, Pro" },
-                { label: "Platform", value: "MetaTrader 4 / 5" }
+                { label: "Leverage", value: "Hingga 1:1000" },
+                { label: "Tipe Akun", value: "Standard, micro, premium" },
+                { label: "Platform", value: "MetaTrader 5" }
             ],
             pros: [
                 "Minimum deposit rendah, mulai $30",
                 "Zero fee per lot",
                 "Mendukung trading Forex, Gold, dan Crypto",
-                "Leverage tinggi hingga 1:500"
+                "Leverage tinggi hingga 1:1000"
             ],
             cons: [
                 "Regulasi bersifat internasional, bukan lokal Indonesia",
