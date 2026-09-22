@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Leverage tinggi hingga 1:1000"
             ],
             cons: [
-                "Regulasi bersifat internasional, bukan lokal Indonesia",
+                "Regulasi bersifat internasional (SIPC), bukan lokal Indonesia (BAPPEBTI, OJK, KBI)",
                 "Waktu respons support bisa lebih lama di jam sibuk"
             ],
             summary: [
