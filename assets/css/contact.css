@@ -633,21 +633,6 @@ RESPONSIVE
         line-height: 1.7;
     }
 
-    /* Widget Adinda menjadi card normal */
-
-    .cp-float {
-        position: relative;
-        top: auto;
-        right: auto;
-        left: auto;
-        transform: none;
-        width: 100%;
-        max-width: none;
-        margin: 0;
-        padding: 22px;
-        border-radius: 18px;
-    }
-
     /* ==========================================
        CONTACT CONTENT
     ========================================== */
