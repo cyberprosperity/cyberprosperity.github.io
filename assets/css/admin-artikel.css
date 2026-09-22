@@ -53,10 +53,10 @@
 /* ---------- Sidebar logo (pakai foto asli, bukan huruf) ---------- */
 
 .sidebar-logo-img {
-    width: 64px;
-    height: 64px;
+    width: 180px;
+    height: auto;
     object-fit: contain;
-    border-radius: 14px;
+    border-radius: 0;
     margin-bottom: 10px;
 }
 
