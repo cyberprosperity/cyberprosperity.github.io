@@ -288,50 +288,68 @@
             height: 46px;
         }
 
-        /* =====================================================
-           XAU/USD REAL-TIME (index.html)
-        ===================================================== */
+    /* =====================================================
+    MARKET CARDS GRID (index.html)
+    ===================================================== */
 
-        .cal-wrap{
-            width: min(100%, 960px);
-            margin: 0 auto;
-            border-radius: 18px;
-            overflow: hidden;
-            overflow: clip;
-            background: #FFFFFF;
-            border: 1px solid rgba(212,166,74,.35);
-            box-shadow: 0 20px 50px rgba(16,26,46,.12);
-        }
+.market-grid{
+    width: min(100%, 1100px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
 
-        .cal-note{
-            width: min(100%, 960px);
-            margin: 14px auto 0;
-            color: #64748B;
-            font-size: 14px;
-            line-height: 1.6;
-            text-align: center;
-        }
+.market-card{
+    background: #FFFFFF;
+    border: 1px solid rgba(212,166,74,.2);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(16,26,46,.06);
+}
 
-        .cal-wrap::before{
-            content: "";
-            display: block;
-            height: 3px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                #d4a64a 30%,
-                #e7c15b 50%,
-                #d4a64a 70%,
-                transparent
-            );
-        }
+.market-card-icon{
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(212,166,74,.12);
+    color: var(--cp-gold);
+    font-size: 16px;
+    margin-bottom: 14px;
+}
 
-        @media (max-width: 700px){
+.market-card h3{
+    margin: 0 0 6px;
+    color: #101827;
+    font-size: 16px;
+    font-weight: 700;
+}
 
-            .cal-wrap{
-                border-radius: 14px;
-            }
-        }
+.market-card p{
+    margin: 0 0 16px;
+    color: #64748B;
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+.market-card-widget{
+    height: 280px;
+}
+
+@media (max-width: 900px){
+    .market-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px){
+    .market-grid{
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
 
     </style>
 
@@ -659,9 +677,9 @@
 
         </section>
 
-       <!-- ======================================
-     XAU/USD REAL-TIME
-======================================= -->
+    <!-- ======================================
+     PERGERAKAN PASAR REAL-TIME
+    ======================================= -->
 
 <section
     class="cp-section"
@@ -670,67 +688,248 @@
     <div class="cp-section-heading">
 
         <span class="cp-section-label">
-            PERGERAKAN HARGA EMAS
+            PERGERAKAN PASAR
         </span>
 
         <h2>
-            Pantau XAU/USD
+            Pantau Market
             <span>
                 Secara Real-Time
             </span>
         </h2>
 
         <p>
-            Ikuti pergerakan harga emas (XAU/USD) langsung dari TradingView,
-            lengkap dengan grafik dan persentase perubahan hari ini.
+            Diversifikasi lintas valuta, logam mulia, indeks, dan kripto —
+            dipantau langsung dari TradingView.
         </p>
 
     </div>
 
-    <div class="cal-wrap">
+    <div class="market-grid">
 
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript"
-                    src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
-                    async>
-            {
-                "symbols": [["OANDA:XAUUSD|1D"]],
-                "chartOnly": false,
-                "width": "100%",
-                "height": "500",
-                "locale": "id",
-                "colorTheme": "light",
-                "autosize": true,
-                "showVolume": false,
-                "showMA": false,
-                "hideDateRanges": false,
-                "hideMarketStatus": false,
-                "hideSymbolLogo": false,
-                "scalePosition": "right",
-                "scaleMode": "Normal",
-                "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-                "fontSize": "10",
-                "noTimeScale": false,
-                "valuesTracking": "1",
-                "changeMode": "price-and-percent",
-                "chartType": "area",
-                "maLineColor": "#2962FF",
-                "maLineWidth": 1,
-                "maLength": 9,
-                "headerFontSize": "medium",
-                "lineWidth": 2,
-                "lineType": 0,
-                "dateRanges": [
-                    "1d|1",
-                    "1m|30",
-                    "3m|60",
-                    "12m|1D",
-                    "60m|1W",
-                    "all|1M"
-                ]
-            }
-            </script>
+        <!-- EMAS -->
+        <div class="market-card">
+            <div class="market-card-icon"><i class="fa-solid fa-coins"></i></div>
+            <h3>Emas Loco London</h3>
+            <p>Logam mulia paling likuid di dunia, mengacu pasar spot London.</p>
+            <div class="market-card-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                            async>
+                    {
+                        "symbols": [["XAU/USD", "OANDA:XAUUSD|1D"]],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "id",
+                        "colorTheme": "light",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": true,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "headerFontSize": "medium",
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOREX -->
+        <div class="market-card">
+            <div class="market-card-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>Forex</h3>
+            <p>Pasangan mata uang mayor & minor dengan spread kompetitif.</p>
+            <div class="market-card-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                            async>
+                    {
+                        "symbols": [["EUR/USD", "FX:EURUSD|1D"]],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "id",
+                        "colorTheme": "light",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": true,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "headerFontSize": "medium",
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- HANG SENG INDEX -->
+        <div class="market-card">
+            <div class="market-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>Hang Seng Index</h3>
+            <p>Ekspos ke saham unggulan Hong Kong sepanjang sesi Asia.</p>
+            <div class="market-card-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                            async>
+                    {
+                        "symbols": [["Hang Seng Index", "TVC:HSI|1D"]],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "id",
+                        "colorTheme": "light",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": true,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "headerFontSize": "medium",
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRYPTO -->
+        <div class="market-card">
+            <div class="market-card-icon"><i class="fa-brands fa-bitcoin"></i></div>
+            <h3>Crypto</h3>
+            <p>Pergerakan Bitcoin, aset kripto paling likuid dan banyak diperdagangkan.</p>
+            <div class="market-card-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                            async>
+                    {
+                        "symbols": [["BTC/USD", "BITSTAMP:BTCUSD|1D"]],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "id",
+                        "colorTheme": "light",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": true,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "headerFontSize": "medium",
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAHAM GLOBAL -->
+        <div class="market-card">
+            <div class="market-card-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Saham Global</h3>
+            <p>Saham blue-chip dunia seperti Apple, Microsoft & Tesla, dari satu akun.</p>
+            <div class="market-card-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript"
+                            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                            async>
+                    {
+                        "symbols": [["Apple", "NASDAQ:AAPL|1D"]],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "id",
+                        "colorTheme": "light",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": true,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "headerFontSize": "medium",
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
+                    }
+                    </script>
+                </div>
+            </div>
         </div>
 
     </div>
