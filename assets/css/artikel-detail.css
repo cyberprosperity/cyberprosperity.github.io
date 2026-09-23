@@ -1,6 +1,16 @@
 /* ==========================================
    ARTIKEL DETAIL
+   Background: putih dengan rona navy tipis — scoped di file
+   ini saja, tidak menyentuh style.css global.
 ========================================== */
+
+body {
+    background: #F5F7FB;
+    background-image:
+        radial-gradient(1100px 460px at 88% -8%, rgba(16, 26, 46, 0.08), transparent 60%),
+        radial-gradient(900px 380px at -8% 0%, rgba(199, 154, 61, 0.05), transparent 55%);
+    background-repeat: no-repeat;
+}
 
 .detail-state {
     display: flex;
@@ -8,7 +18,7 @@
     align-items: center;
     gap: 16px;
     padding: 140px 20px;
-    color: var(--muted);
+    color: #6C7488;
     font-family: "Inter", sans-serif;
     font-size: 14px;
     text-align: center;
@@ -42,9 +52,15 @@
     align-items: center;
     gap: 10px;
     margin: 22px 0 14px;
-    color: var(--muted);
+    color: #6C7488;
     font-family: "Inter", sans-serif;
     font-size: 12px;
+}
+
+.article-detail-meta .cp-section-label {
+    background: rgba(199, 154, 61, 0.12);
+    color: #8C6A20;
+    border: 1px solid rgba(199, 154, 61, 0.35);
 }
 
 .article-detail h1 {
@@ -54,7 +70,7 @@
     font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.03em;
-    color: var(--text);
+    color: #101A2E;
 }
 
 .article-detail-author {
@@ -63,7 +79,7 @@
     gap: 10px;
     margin-bottom: 30px;
     padding-bottom: 26px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid #DFE4EE;
 }
 
 .article-detail-author > b {
@@ -86,11 +102,11 @@
 .article-detail-author strong {
     font-family: "Inter", sans-serif;
     font-size: 12px;
-    color: var(--text);
+    color: #232A3B;
 }
 
 .article-detail-author small {
-    color: var(--dim);
+    color: #94A0B5;
     font-size: 10px;
 }
 
@@ -98,8 +114,9 @@
     margin-bottom: 36px;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid var(--line);
-    background: var(--card);
+    border: 1px solid #DFE4EE;
+    background: #FFFFFF;
+    box-shadow: 0 20px 44px -24px rgba(16, 26, 46, 0.28);
 }
 
 .article-detail-cover img {
@@ -109,25 +126,111 @@
     display: block;
 }
 
+/* ---------- BODY TEKS ARTIKEL ---------- */
 .article-detail-body {
-    color: #dbe2ec;
+    color: #3A4152;
     font-family: "Inter", sans-serif;
-    font-size: 16px;
-    line-height: 1.9;
+    font-size: 17px;
+    line-height: 1.85;
+    max-width: 68ch;
+    letter-spacing: 0.1px;
 }
 
 .article-detail-body p {
-    margin: 0 0 22px;
+    margin: 0 0 26px;
 }
 
+.article-detail-body p:first-of-type::first-letter {
+    font-family: "Sora", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--gold);
+    float: left;
+    line-height: 0.85;
+    padding-right: 8px;
+    padding-top: 6px;
+}
+
+/* Paragraf terakhir biasanya disclaimer/catatan penutup ->
+   dibedakan dari body text supaya tidak terbaca sebagai
+   kalimat penutup artikel biasa */
 .article-detail-body p:last-child {
+    margin-top: 34px;
     margin-bottom: 0;
+    padding-top: 22px;
+    border-top: 1px solid #DFE4EE;
+    font-size: 14px;
+    font-style: italic;
+    color: #6C7488;
+    max-width: 60ch;
 }
 
 .article-detail-footer {
     margin-top: 50px;
     padding-top: 26px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid #DFE4EE;
+}
+
+/* Fix: tombol "Kembali ke semua artikel" tidak kelihatan karena
+   .cp-btn-outline di style.css lama didesain untuk tema gelap.
+   Override khusus di halaman artikel ini saja. */
+.article-detail-footer .cp-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid #DFE4EE;
+    background: #FFFFFF;
+    color: #101A2E;
+    transition: all 0.15s ease;
+}
+
+.article-detail-footer .cp-btn-outline:hover {
+    border-color: var(--gold);
+    color: #8C6A20;
+}
+
+/* ---------- AD RAILS (khusus desktop lebar) ---------- */
+/* position:fixed supaya tidak mengubah lebar/struktur .article-detail.
+   Default hidden; baru muncul di layar >=1440px, jadi otomatis
+   tidak pernah tampil di tablet maupun ponsel. */
+.ad-rail {
+    position: fixed;
+    top: 120px;
+    width: 160px;
+    z-index: 20;
+    display: none;
+}
+
+.ad-rail.ad-left { left: 28px; }
+.ad-rail.ad-right { right: 28px; }
+
+.ad-slot {
+    height: 600px;
+    border-radius: 10px;
+    border: 1px dashed #C3CAD9;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #94A0B5;
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 0.3px;
+}
+
+.ad-slot span {
+    font-size: 10px;
+    color: #B4BCCC;
+}
+
+@media (min-width: 1440px) {
+    .ad-rail { display: block; }
 }
 
 @media (max-width: 560px) {
@@ -141,5 +244,9 @@
 
     .article-detail-body {
         font-size: 15px;
+    }
+
+    .article-detail-body p:last-child {
+        font-size: 13px;
     }
 }

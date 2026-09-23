@@ -69,10 +69,31 @@
         <form id="articleForm">
           <input type="hidden" id="articleId">
 
-          <div class="admin-form-group">
-            <label for="fTitle">Judul artikel</label>
-            <input type="text" id="fTitle" required placeholder="Contoh: Cara Membaca Candlestick untuk Pemula">
-          </div>
+        <div class="admin-form-group">
+  <label for="fContent">Isi artikel lengkap</label>
+
+  <div class="admin-editor-toolbar" id="editorToolbar">
+    <button type="button" data-cmd="bold" title="Tebal"><i class="fa-solid fa-bold"></i></button>
+    <button type="button" data-cmd="italic" title="Miring"><i class="fa-solid fa-italic"></i></button>
+    <span class="admin-toolbar-sep"></span>
+    <button type="button" data-cmd="heading" title="Sub judul"><i class="fa-solid fa-heading"></i></button>
+    <button type="button" data-cmd="paragraph" title="Paragraf biasa"><i class="fa-solid fa-paragraph"></i></button>
+    <button type="button" data-cmd="list" title="Daftar poin"><i class="fa-solid fa-list-ul"></i></button>
+    <span class="admin-toolbar-sep"></span>
+    <button type="button" data-cmd="pullquote" title="Jadikan kutipan sorot"><i class="fa-solid fa-quote-left"></i> Quote</button>
+    <button type="button" data-cmd="disclaimer" title="Jadikan catatan/disclaimer"><i class="fa-solid fa-triangle-exclamation"></i> Catatan</button>
+    <span class="admin-toolbar-sep"></span>
+    <select id="fContentImagePos" title="Posisi gambar berikutnya">
+      <option value="center">Gambar: Tengah</option>
+      <option value="left">Gambar: Kiri</option>
+      <option value="right">Gambar: Kanan</option>
+    </select>
+    <button type="button" id="insertImageBtn" title="Sisipkan gambar"><i class="fa-solid fa-image"></i> Sisipkan</button>
+  </div>
+
+  <div id="fContent" class="admin-editor-body" contenteditable="true" data-placeholder="Tulis isi artikel di sini..."></div>
+  <input type="file" id="fContentImageFile" accept="image/*" hidden>
+</div>
 
           <div class="admin-form-group">
             <label for="fSlug">Slug (bagian URL, otomatis dari judul — boleh diubah)</label>

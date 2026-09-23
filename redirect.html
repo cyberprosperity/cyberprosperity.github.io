@@ -1,229 +1,380 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="id">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Artikel CFX Pros.">
+  <title id="pageTitle">Artikel | CFX Pros</title>
 
-<meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+  <!--
+    CATATAN PREVIEW (versi fungsional):
+    - File ini HARUS ditaruh di root project (sejajar dengan folder assets/),
+      supaya assets/js/supabase-client.js & assets/js/artikel-detail.js kebaca.
+    - Buka lewat Live Server dengan query slug, contoh:
+      http://127.0.0.1:5500/preview.html?slug=trading-journal-catatan-kecil-untuk-performa-yang-lebih-besar
+    - CSS desain baru ditaruh inline di bawah (belum dipindah ke artikel-detail.css).
+      Begitu sudah fix, pindahkan blok <style> ini ke style.css / artikel-detail.css asli,
+      lalu balik pakai artikel-detail.html production seperti biasa.
+  -->
+  <style>
+    :root{
+      --bg: #F5F7FB;          /* putih dengan rona navy tipis */
+      --card: #FFFFFF;
+      --navy: #101A2E;
+      --navy-soft: #1C2A47;
+      --gold: #C79A3D;
+      --gold-soft: #E8C976;
+      --text: #232A3B;
+      --muted: #6C7488;
+      --dim: #94A0B5;
+      --line: #DFE4EE;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{
+      background:var(--bg);
+      background-image:
+        radial-gradient(1100px 460px at 88% -8%, rgba(16,26,46,0.08), transparent 60%),
+        radial-gradient(900px 380px at -8% 0%, rgba(199,154,61,0.05), transparent 55%);
+      background-repeat:no-repeat;
+      color:var(--text);
+      font-family:"Inter", sans-serif;
+      line-height:1.6;
+    }
+    a{color:inherit; text-decoration:none;}
+    .cp-container{max-width:1140px; margin:0 auto; padding:0 24px;}
 
-<title>Leaving CFX Pros</title>
+    /* ---------- NAVBAR ---------- */
+    .cp-nav{background:var(--navy); position:sticky; top:0; z-index:50;}
+    .cp-nav-inner{
+      max-width:1140px; margin:0 auto; padding:16px 24px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .cp-brand{display:flex; align-items:center; gap:10px;}
+    .cp-brand-logo{
+      width:34px; height:34px; border-radius:8px;
+      background:linear-gradient(135deg, var(--gold-soft), var(--gold));
+      display:flex; align-items:center; justify-content:center;
+      font-family:"Sora", sans-serif; font-weight:700; color:var(--navy); font-size:15px;
+    }
+    .cp-brand-name{color:#fff; font-family:"Sora", sans-serif; font-weight:700; font-size:16px;}
+    .cp-links{display:flex; gap:26px;}
+    .cp-links a{color:#B9C1D4; font-size:14px; font-weight:500; transition:color .15s ease;}
+    .cp-links a:hover, .cp-links a.active{color:var(--gold-soft);}
+    .cp-nav-right{display:flex; align-items:center; gap:14px;}
+    .cp-signin{color:#B9C1D4; font-size:14px; font-weight:500;}
+    .cp-signin:hover{color:#fff;}
+    .cp-join{
+      background:var(--gold); color:var(--navy); font-weight:700; font-size:13.5px;
+      padding:9px 18px; border-radius:7px;
+    }
 
-<style>
+    /* ---------- STATES ---------- */
+    .detail-state{
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      padding:140px 20px; color:var(--muted); font-size:14px; text-align:center;
+    }
+    .detail-state[hidden]{display:none;}
+    .detail-spinner{
+      width:34px; height:34px; border-radius:50%;
+      border:3px solid rgba(199,154,61,0.2); border-top-color:var(--gold);
+      animation:detail-spin .8s linear infinite;
+    }
+    @keyframes detail-spin{to{transform:rotate(360deg);}}
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    /* ---------- ARTICLE ---------- */
+    .article-detail{padding:56px 0 110px; max-width:820px;}
 
-body{
+    .cp-breadcrumb{font-size:13px; color:var(--muted); margin-bottom:6px;}
+    .cp-breadcrumb a:hover{color:var(--navy);}
+    .cp-breadcrumb span{margin:0 6px; color:var(--dim);}
+    .cp-breadcrumb strong{color:var(--text); font-weight:600;}
 
-background:#070707;
+    .article-detail-meta{
+      display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+      margin:22px 0 14px; color:var(--muted); font-size:12px;
+    }
+    .cp-section-label{
+      background:rgba(199,154,61,0.12); color:#8C6A20;
+      border:1px solid rgba(199,154,61,0.35);
+      font-size:11px; font-weight:700; letter-spacing:0.4px;
+      padding:5px 10px; border-radius:5px;
+    }
 
-font-family:Arial,Helvetica,sans-serif;
+    .article-detail h1{
+      margin:0 0 22px;
+      font-family:"Sora", sans-serif;
+      font-size:clamp(28px, 4.5vw, 42px);
+      font-weight:700; line-height:1.18; letter-spacing:-0.02em;
+      color:var(--navy);
+    }
 
-display:flex;
+    .article-detail-author{
+      display:flex; align-items:center; gap:10px;
+      margin-bottom:30px; padding-bottom:26px;
+      border-bottom:1px solid var(--line);
+    }
+    .article-detail-author > b{
+      width:34px; height:34px; display:grid; place-items:center;
+      border:1px solid rgba(199,154,61,0.5); border-radius:50%;
+      color:var(--gold); font-family:"JetBrains Mono", monospace; font-size:11px;
+    }
+    .article-detail-author span{display:grid; gap:2px;}
+    .article-detail-author strong{font-size:13px; color:var(--text);}
+    .article-detail-author small{color:var(--dim); font-size:11px;}
 
-justify-content:center;
+    .article-detail-cover{
+      margin-bottom:36px; border-radius:16px; overflow:hidden;
+      border:1px solid var(--line); background:var(--card);
+      box-shadow:0 20px 44px -24px rgba(16,26,46,0.28);
+    }
+    .article-detail-cover img{width:100%; max-height:480px; object-fit:cover; display:block;}
 
-align-items:center;
+    .article-detail-body{
+      color:#3A4152; font-size:17px; line-height:1.85;
+      max-width:68ch; letter-spacing:0.1px;
+    }
+    .article-detail-body p{margin:0 0 26px;}
+    .article-detail-body p:last-child{margin-bottom:0;}
+    .article-detail-body p:first-of-type::first-letter{
+      font-family:"Sora", sans-serif; font-size:50px; font-weight:700;
+      color:var(--gold); float:left; line-height:0.85; padding-right:8px; padding-top:6px;
+    }
+    /* Paragraf terakhir biasanya disclaimer/catatan penutup -> dibedakan
+       dari body text supaya tidak terbaca sebagai kalimat penutup artikel biasa */
+    .article-detail-body p:last-child{
+      margin-top:34px; padding-top:22px; border-top:1px solid var(--line);
+      font-size:14px; font-style:italic; color:var(--muted); max-width:60ch;
+    }
 
-height:100vh;
+    .article-detail-footer{margin-top:50px; padding-top:26px; border-top:1px solid var(--line);}
+    .cp-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:14px; font-weight:600; padding:10px 18px; border-radius:8px;
+      transition:all .15s ease;
+    }
+    .cp-btn-outline{border:1px solid var(--line); background:var(--card); color:var(--navy);}
+    .cp-btn-outline:hover{border-color:var(--gold); color:#8C6A20;}
+    .cp-btn-gold{background:var(--gold); color:var(--navy); border:1px solid var(--gold);}
 
-color:white;
+    @media (max-width:560px){
+      .cp-links{display:none;}
+      .article-detail{padding:40px 0 70px;}
+      .article-detail-cover img{max-height:260px;}
+      .article-detail-body{font-size:15px;}
+    }
 
-}
+    /* ---------- FOOTER ---------- */
+    .cp-footer{background:var(--navy); color:#AEB4C2; padding:56px 0 26px; margin-top:60px;}
+    .cp-footer-inner{max-width:1140px; margin:0 auto; padding:0 24px;}
+    .cp-footer-top{
+      display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px;
+      padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .cp-footer-brand p{font-size:13px; line-height:1.7; color:#8E95A6; margin-top:12px;}
+    .cp-footer-heading{color:#fff; font-size:13px; letter-spacing:0.4px; margin-bottom:16px;}
+    .cp-footer-links{list-style:none;}
+    .cp-footer-links li{margin-bottom:10px; font-size:13.5px;}
+    .cp-footer-links a:hover{color:var(--gold-soft);}
+    .cp-footer-social-icons{display:flex; gap:10px; margin-bottom:14px;}
+    .cp-footer-social-icons a{
+      width:32px; height:32px; border-radius:50%;
+      background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center;
+      color:#C7CDDA; font-size:13px;
+    }
+    .cp-footer-social-icons a:hover{background:var(--gold); color:var(--navy);}
+    .cp-footer-social p{font-size:13px; color:#8E95A6;}
+    .cp-footer-disclaimer{margin-top:26px;}
+    .cp-footer-disclaimer-box{
+      display:flex; gap:12px; background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px 18px;
+    }
+    .cp-footer-disclaimer-box i{color:var(--gold); margin-top:2px;}
+    .cp-footer-disclaimer-box p{font-size:12px; line-height:1.7; color:#9AA1B2;}
+    .cp-footer-disclaimer-box strong{color:#C7CDDA;}
+    .cp-footer-bottom{margin-top:22px; font-size:12px; color:#767E90;}
 
-.card{
+    @media (max-width:720px){
+      .cp-footer-top{grid-template-columns:1fr; gap:28px;}
+    }
 
-width:90%;
+    /* ---------- AD RAILS (khusus desktop lebar) ---------- */
+    /* Sengaja pakai position:fixed, bukan restrukturisasi grid,
+       supaya layout artikel yang sudah ada tidak perlu diubah.
+       Default: hidden. Baru muncul kalau layar cukup lebar untuk
+       menampung ads tanpa mepet/overlap konten (>=1440px) —
+       otomatis tidak pernah muncul di tablet/ponsel. */
+    .ad-rail{
+      position:fixed; top:120px; width:160px; z-index:20; display:none;
+    }
+    .ad-rail.ad-left{left:28px;}
+    .ad-rail.ad-right{right:28px;}
+    .ad-slot{
+      height:600px; border-radius:10px;
+      border:1px dashed #C3CAD9; background:rgba(255,255,255,0.6);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+      color:var(--dim); font-size:11px; text-align:center; letter-spacing:0.3px;
+    }
+    .ad-slot span{font-size:10px; color:#B4BCCC;}
 
-max-width:650px;
-
-background:#151515;
-
-padding:40px;
-
-border-radius:20px;
-
-text-align:center;
-
-box-shadow:0 0 40px rgba(255,0,0,.15);
-
-}
-
-.logo{
-
-font-size:34px;
-
-font-weight:bold;
-
-color:#FFD700;
-
-margin-bottom:20px;
-
-}
-
-.icon{
-
-font-size:65px;
-
-margin-bottom:20px;
-
-}
-
-h1{
-
-margin-bottom:20px;
-
-}
-
-p{
-
-color:#cccccc;
-
-line-height:1.8;
-
-margin-bottom:15px;
-
-}
-
-button{
-
-margin-top:30px;
-
-padding:15px 40px;
-
-border:none;
-
-border-radius:8px;
-
-background:#E11D48;
-
-color:white;
-
-font-size:18px;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-button:hover{
-
-background:#B91C1C;
-
-}
-
-.back{
-
-display:block;
-
-margin-top:20px;
-
-color:#aaaaaa;
-
-text-decoration:none;
-
-}
-
-</style>
-
+    @media (min-width:1440px){
+      .ad-rail{display:block;}
+    }
+  </style>
 </head>
 
 <body>
+<div class="cp-page">
 
-<div class="card">
+  <header class="cp-nav">
+    <div class="cp-nav-inner">
+      <a href="index.html" class="cp-brand">
+        <div class="cp-brand-logo">C</div>
+        <span class="cp-brand-name">CFXPros</span>
+      </a>
 
-<div class="logo">
+      <nav class="cp-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="features.html">Features</a>
+        <a href="artikel.html" class="active">Artikel</a>
+        <a href="forum.html">Forum</a>
+        <a href="broker.html">Broker</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-CFX Pros
+      <div class="cp-nav-right">
+        <a href="login.html" class="cp-signin">Sign In</a>
+        <a href="register.html" class="cp-join">Join</a>
+      </div>
+    </div>
+  </header>
 
+  <!-- Banner iklan: hanya tampil di desktop lebar (>=1440px),
+       otomatis hilang di tablet/ponsel karena default display:none -->
+  <aside class="ad-rail ad-left">
+    <div class="ad-slot">Ruang Iklan<span>160 × 600</span></div>
+  </aside>
+  <aside class="ad-rail ad-right">
+    <div class="ad-slot">Ruang Iklan<span>160 × 600</span></div>
+  </aside>
+
+  <main>
+    <!-- Ditampilkan selagi artikel dimuat -->
+    <div id="loadingState" class="detail-state">
+      <div class="detail-spinner"></div>
+      <p>Memuat artikel...</p>
+    </div>
+
+    <!-- Ditampilkan kalau slug tidak ketemu / artikel belum published -->
+    <div id="notFoundState" class="detail-state" hidden>
+      <p>⚠ Artikel tidak ditemukan, sudah dihapus, atau belum dipublish.</p>
+      <a class="cp-btn cp-btn-gold" href="artikel.html">← Kembali ke Artikel</a>
+    </div>
+
+    <!-- Konten artikel sebenarnya, diisi oleh artikel-detail.js -->
+    <article id="articleContent" class="cp-container article-detail" hidden>
+
+      <div class="cp-breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="artikel.html">Artikel</a><span>/</span>
+        <strong id="breadcrumbTitle">...</strong>
+      </div>
+
+      <div class="article-detail-meta">
+        <span class="cp-section-label" id="articleCategory">Kategori</span>
+        <span id="articleDate">Tanggal</span>
+        <span>·</span>
+        <span id="articleReadTime">Waktu baca</span>
+      </div>
+
+      <h1 id="articleTitle">Judul artikel</h1>
+
+      <div class="article-detail-author">
+        <b>CP</b>
+        <span><strong>CP Editorial</strong><small>CFX Pros</small></span>
+      </div>
+
+      <div class="article-detail-cover" id="articleCoverWrap">
+        <img id="articleCover" src="" alt="">
+      </div>
+
+      <div class="article-detail-body" id="articleBody">
+        <!-- isi artikel dirender di sini oleh JS -->
+      </div>
+
+      <div class="article-detail-footer">
+        <a class="cp-btn cp-btn-outline" href="artikel.html">← Kembali ke semua artikel</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="cp-footer">
+    <div class="cp-footer-inner">
+      <div class="cp-footer-top">
+        <div class="cp-footer-brand">
+          <div class="cp-brand">
+            <div class="cp-brand-logo">C</div>
+            <span class="cp-brand-name">CFXPros</span>
+          </div>
+          <p>Komunitas sosial trading global yang menghubungkan trader, investor, dan edukasi dalam satu ekosistem profesional.</p>
+        </div>
+
+        <div class="cp-footer-quicklinks">
+          <h4 class="cp-footer-heading">Pintasan Cepat</h4>
+          <ul class="cp-footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="artikel.html">Artikel</a></li>
+            <li><a href="forum.html">Forum</a></li>
+            <li><a href="journal.html">Trading Journal</a></li>
+            <li><a href="analytics.html">Performance Analytics</a></li>
+            <li><a href="discipline.html">Discipline Tracker</a></li>
+            <li><a href="calculator.html">Gold Risk Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="cp-footer-social">
+          <h4 class="cp-footer-heading">Ikuti kami</h4>
+          <div class="cp-footer-social-icons">
+            <a href="https://www.facebook.com/groups/cyber.prosperity" target="_blank" rel="noopener noreferrer" class="fb" aria-label="Facebook Group"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@cyber.prosperity7" target="_blank" rel="noopener noreferrer" class="tiktok" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/cfx.properity7/" target="_blank" rel="noopener noreferrer" class="ig" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <p>Ikuti analisa terbaru, promo broker, dan diskusi komunitas.</p>
+        </div>
+      </div>
+
+      <div class="cp-footer-disclaimer">
+        <div class="cp-footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p>
+            <strong>Peringatan Risiko:</strong> Trading forex, emas, dan instrumen
+            keuangan lainnya melibatkan risiko tinggi dan mungkin tidak cocok untuk
+            semua investor. Nilai investasi dapat naik maupun turun, dan Anda
+            berpotensi kehilangan sebagian atau seluruh modal yang diinvestasikan.
+            CFX Pros adalah platform edukasi dan komunitas sosial trading,
+            bukan penasihat keuangan berlisensi. Segala keputusan trading sepenuhnya
+            menjadi tanggung jawab pengguna.
+          </p>
+        </div>
+      </div>
+
+      <div class="cp-footer-bottom">
+        <p>© 2026 CFX Pros. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-state.js"></script>
+  <script src="assets/js/artikel-detail.js"></script>
 </div>
-
-<div class="icon">
-
-🌐
-
-</div>
-
-<h1>
-
-You Are Leaving Our Website
-
-</h1>
-
-<p>
-
-You are about to visit the official website of one of our partner brokers.
-
-</p>
-
-<p>
-
-The destination website is operated independently and is not owned or controlled by CFX Pros.
-
-</p>
-
-<p>
-
-Please review the broker's services, terms, conditions, fees, and risk disclosures before opening an account or trading.
-
-</p>
-
-<button onclick="goBroker()">
-
-Continue to Broker
-
-</button>
-
-<a href="broker.html" class="back">
-
-← Back to Broker List
-
-</a>
-
-</div>
-
-<script>
-
-const brokers={
-
-cfforex:"https://clientarea.cfforex.com/auth/register/CFX007MWD",
-
-icmarkets:"https://www.icmarkets.com",
-
-pepperstone:"https://pepperstone.com",
-
-exness:"https://www.exness.com"
-
-};
-
-const params=new URLSearchParams(window.location.search);
-
-const broker=params.get("broker");
-
-function goBroker(){
-
-if(brokers[broker]){
-
-window.location.href=brokers[broker];
-
-}
-
-else{
-
-alert("Broker link not found.");
-
-}
-
-}
-
-</script>
-
 </body>
-
 </html>

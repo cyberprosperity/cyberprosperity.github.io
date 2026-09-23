@@ -4,7 +4,7 @@
    dan class layout dashboard (.app-layout, .sidebar,
    .main-content, .topbar) yang sudah ada di style.css.
    File ini hanya menambahkan bagian yang belum ada:
-   form, daftar artikel, dan toast notifikasi.
+   form, daftar artikel, editor isi artikel, dan toast.
 ========================================== */
 
 /* ---------- Gate pemeriksaan akses ---------- */
@@ -317,6 +317,132 @@
     min-height: 16px;
 }
 
+/* ==========================================
+   EDITOR RICH TEXT — Isi Artikel (fitur baru)
+   Dipakai bareng .admin-form-group, jadi warna &
+   spacing-nya disamakan dengan input/textarea di atas
+   (background #101827, border #2a3448, var(--cp-gold)
+   untuk state aktif/focus).
+========================================== */
+
+.admin-editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 10px;
+    background: #151E2E;
+    border: 1px solid #2a3448;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.admin-editor-toolbar button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--cp-muted);
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.admin-editor-toolbar button:hover {
+    background: rgba(212, 166, 74, 0.1);
+    color: var(--cp-gold-light);
+}
+
+.admin-editor-toolbar select {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #2a3448;
+    background: #101827;
+    color: var(--cp-text);
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+}
+
+.admin-toolbar-sep {
+    width: 1px;
+    height: 20px;
+    background: #2a3448;
+    margin: 0 4px;
+}
+
+.admin-editor-body {
+    min-height: 220px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 14px 16px;
+    background: #101827;
+    border: 1px solid #2a3448;
+    border-radius: 0 0 10px 10px;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-editor-body:focus {
+    outline: none;
+    border-color: var(--cp-gold);
+    box-shadow: 0 0 0 3px rgba(212, 166, 74, 0.15);
+}
+
+.admin-editor-body:empty:before {
+    content: attr(data-placeholder);
+    color: var(--cp-dim, #64748b);
+}
+
+.admin-editor-body h2 {
+    font-family: "Sora", sans-serif;
+    font-size: 18px;
+    margin: 16px 0 8px;
+    color: #fff;
+}
+
+.admin-editor-body p { margin: 0 0 12px; }
+.admin-editor-body ul { padding-left: 20px; margin: 0 0 12px; }
+
+.admin-editor-body blockquote.content-pullquote {
+    border-left: 3px solid var(--cp-gold);
+    padding-left: 14px;
+    margin: 14px 0;
+    font-style: italic;
+    color: var(--cp-gold-light);
+}
+
+.admin-editor-body div.content-disclaimer {
+    border: 1px dashed #2a3448;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 14px 0;
+    font-size: 12.5px;
+    color: var(--cp-muted);
+}
+
+.admin-editor-body figure.content-img {
+    margin: 12px 0;
+    max-width: 100%;
+}
+.admin-editor-body figure.content-img img {
+    max-width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+.admin-editor-body figure.content-img-left {
+    float: left; max-width: 180px; margin-right: 12px;
+}
+.admin-editor-body figure.content-img-right {
+    float: right; max-width: 180px; margin-left: 12px;
+}
+
 /* ---------- Daftar artikel ---------- */
 
 .admin-empty {
@@ -463,5 +589,13 @@
     .admin-article-actions {
         grid-column: 1 / -1;
         justify-content: flex-end;
+    }
+
+    .admin-editor-toolbar {
+        gap: 2px;
+    }
+
+    .admin-editor-toolbar button span {
+        display: none; /* sisakan ikon saja di layar sempit */
     }
 }
