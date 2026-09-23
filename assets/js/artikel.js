@@ -48,7 +48,7 @@
 
         const { data, error } = await supabaseClient
             .from("articles")
-            .select("id, title, slug, excerpt, content, category, cover_image, created_at, is_featured")
+            .select("id, title, slug, excerpt, content, category, cover_image, created_at, is_featured, view_count")
             .eq("status", "published")
             .order("created_at", { ascending: false });
 
@@ -68,14 +68,46 @@
         renderFeatured();
         renderCategories();
         renderArticles();
+        renderMostRead();
+    }
+
+    // ============================================
+    // MOST READ
+    // Diurutkan berdasarkan view_count (paling banyak
+    // dibaca pengunjung). Kalau semua artikel masih
+    // view_count 0 (situs baru), otomatis fallback ke
+    // urutan artikel terbaru.
+    // ============================================
+
+    function renderMostRead() {
+        const wrap = byId("mostReadList");
+        if (!wrap) return;
+
+        const top = [...articles]
+            .sort((a, b) => (b.view_count || 0) - (a.view_count || 0) || new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 3);
+
+        if (top.length === 0) {
+            wrap.innerHTML = `<p style="color:#94A3B8; font-size:13px;">Belum ada artikel.</p>`;
+            return;
+        }
+
+        wrap.innerHTML = top.map((article, index) => `
+            <button type="button" data-slug="${article.slug}">
+                <b>0${index + 1}</b>
+                <span>${article.title}<small>${article.readTime} baca</small></span>
+            </button>
+        `).join("");
+
+        wrap.querySelectorAll("[data-slug]").forEach((button) => {
+            button.addEventListener("click", () => {
+                window.location.href = "artikel-detail.html?slug=" + encodeURIComponent(button.dataset.slug);
+            });
+        });
     }
 
     // ============================================
     // FEATURED STORY (Editor's Pick)
-    // Pakai artikel yang ditandai is_featured=true dari admin.
-    // Kalau tidak ada yang ditandai, otomatis fallback ke
-    // artikel published paling baru. Kalau tidak ada artikel
-    // sama sekali, section ini disembunyikan.
     // ============================================
 
     function renderFeatured() {

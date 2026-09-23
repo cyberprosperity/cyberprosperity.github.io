@@ -83,6 +83,15 @@
 
         loadingState.hidden = true;
         content.hidden = false;
+
+        // Catat kunjungan artikel ini (untuk panel "Most Read".
+        supabaseClient
+            .rpc("increment_article_views", { article_slug: slug })
+            .then(({ error: viewError }) => {
+                if (viewError) {
+                    console.error("Gagal mencatat view artikel:", viewError.message);
+                }
+            });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
