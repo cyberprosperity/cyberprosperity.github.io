@@ -209,6 +209,7 @@ function resetForm() {
     byId("articleId").value = "";
     byId("fCoverUrl").value = "";
     byId("fFeatured").checked = false;
+    byId("fContent").innerHTML = ""; // div contenteditable, tidak ikut form.reset()
     byId("formTitle").textContent = "Artikel Baru";
     renderCoverPreview(null);
 }
@@ -241,7 +242,7 @@ async function openEditForm(id) {
     byId("fCategory").value = article.category || "Edukasi";
     byId("fStatus").value = article.status || "draft";
     byId("fExcerpt").value = article.excerpt || "";
-    byId("fContent").value = article.content || "";
+    byId("fContent").innerHTML = article.content || "";
     byId("fCoverUrl").value = article.cover_image || "";
     byId("fFeatured").checked = !!article.is_featured;
     renderCoverPreview(article.cover_image);
@@ -263,7 +264,7 @@ function renderCoverPreview(url) {
 }
 
 // ============================================
-// 4. UPLOAD GAMBAR
+// 4. UPLOAD GAMBAR SAMPUL
 // ============================================
 
 async function uploadCoverIfNeeded() {
@@ -293,6 +294,129 @@ async function uploadCoverIfNeeded() {
 }
 
 // ============================================
+// 4b. RICH TEXT EDITOR (isi artikel)
+// ============================================
+
+function execCmd(cmd) {
+    const editor = byId("fContent");
+    editor.focus();
+
+    switch (cmd) {
+        case "bold":
+            document.execCommand("bold");
+            break;
+        case "italic":
+            document.execCommand("italic");
+            break;
+        case "heading":
+            document.execCommand("formatBlock", false, "H2");
+            break;
+        case "paragraph":
+            document.execCommand("formatBlock", false, "P");
+            break;
+        case "list":
+            document.execCommand("insertUnorderedList");
+            break;
+        case "pullquote":
+            wrapCurrentBlock("blockquote", "content-pullquote");
+            break;
+        case "disclaimer":
+            wrapCurrentBlock("div", "content-disclaimer");
+            break;
+    }
+}
+
+// Ganti tag blok (paragraf/heading/dsb) tempat kursor berada
+// menjadi tag baru dengan class tertentu — dipakai untuk
+// toggle pull-quote & disclaimer.
+function wrapCurrentBlock(tagName, className) {
+    const editor = byId("fContent");
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    let node = sel.getRangeAt(0).commonAncestorContainer;
+    if (node.nodeType === 3) node = node.parentNode;
+
+    const block = node.closest ? node.closest("p, div, blockquote, h2, li") : null;
+    if (!block || !editor.contains(block)) return;
+
+    const newEl = document.createElement(tagName);
+    newEl.className = className;
+    newEl.innerHTML = block.innerHTML || "<br>";
+    block.replaceWith(newEl);
+
+    const range = document.createRange();
+    range.selectNodeContents(newEl);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+async function handleInsertImage(file) {
+    if (file.size > 5 * 1024 * 1024) {
+        showToast("Ukuran gambar maksimal 5MB.", "error");
+        return;
+    }
+
+    const pos = byId("fContentImagePos").value;
+
+    try {
+        showToast("Mengunggah gambar...");
+
+        const ext = file.name.split(".").pop();
+        const path = `content/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+        const { error: uploadError } = await supabaseClient
+            .storage
+            .from(BUCKET)
+            .upload(path, file, { cacheControl: "3600", upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabaseClient.storage.from(BUCKET).getPublicUrl(path);
+        insertImageIntoEditor(urlData.publicUrl, pos);
+        showToast("Gambar berhasil disisipkan.");
+
+    } catch (err) {
+        showToast("Gagal mengunggah gambar: " + err.message, "error");
+    }
+}
+
+function insertImageIntoEditor(url, pos) {
+    const editor = byId("fContent");
+    editor.focus();
+
+    const figure = document.createElement("figure");
+    figure.className = `content-img content-img-${pos}`;
+    figure.innerHTML = `<img src="${url}" alt="">`;
+
+    const sel = window.getSelection();
+    let inserted = false;
+
+    if (sel.rangeCount && editor.contains(sel.anchorNode)) {
+        const range = sel.getRangeAt(0);
+        range.collapse(false);
+        range.insertNode(figure);
+        inserted = true;
+    }
+
+    if (!inserted) {
+        editor.appendChild(figure);
+    }
+
+    // paragraf kosong setelah gambar biar user bisa lanjut ngetik
+    const p = document.createElement("p");
+    p.innerHTML = "<br>";
+    figure.after(p);
+
+    const range = document.createRange();
+    range.setStart(p, 0);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+// ============================================
 // 5. SIMPAN (insert / update)
 // ============================================
 
@@ -314,7 +438,7 @@ async function handleSubmit(event) {
             category: byId("fCategory").value,
             status: byId("fStatus").value,
             excerpt: byId("fExcerpt").value.trim(),
-            content: byId("fContent").value.trim(),
+            content: byId("fContent").innerHTML.trim(),
             cover_image: coverUrl,
             is_featured: isFeatured
         };
@@ -429,6 +553,18 @@ function setupEvents() {
         e.preventDefault();
         await supabaseClient.auth.signOut();
         window.location.href = "../index.html";
+    });
+
+    // ---- Toolbar editor rich text ----
+    document.querySelectorAll("#editorToolbar [data-cmd]").forEach((btn) => {
+        btn.addEventListener("click", () => execCmd(btn.dataset.cmd));
+    });
+
+    on("insertImageBtn", "click", () => byId("fContentImageFile").click());
+    on("fContentImageFile", "change", (e) => {
+        const file = e.target.files[0];
+        e.target.value = "";
+        if (file) handleInsertImage(file);
     });
 }
 

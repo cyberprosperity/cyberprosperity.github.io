@@ -17,30 +17,44 @@
         return `${minutes} menit baca`;
     }
 
-    // Escape HTML dulu (jaga-jaga), baru pecah jadi paragraf
-    // berdasarkan baris kosong, dan baris tunggal jadi <br>.
-    function renderContent(raw) {
-        const escaped = (raw || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+    // Artikel baru (dari editor rich text) disimpan sebagai HTML
+// langsung -> tampilkan apa adanya. Artikel lama (sebelum fitur
+// ini ada) masih teks polos -> tetap di-parse otomatis jadi
+// paragraf seperti sebelumnya, supaya artikel lama tidak perlu
+// ditulis ulang.
+        function renderContent(raw) {
+    const text = raw || "";
 
-        const paragraphs = escaped.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
-
-        if (paragraphs.length === 0) {
-            return "<p>Artikel ini belum punya isi.</p>";
-        }
-
-        return paragraphs.map((block) => `<p>${block.replace(/\n/g, "<br>")}</p>`).join("");
+    if (!text.trim()) {
+        return "<p>Artikel ini belum punya isi.</p>";
     }
 
-    async function loadArticle() {
-        const params = new URLSearchParams(window.location.search);
-        const slug = params.get("slug");
+    const looksLikeHtml = /<\/?(p|div|h[1-6]|ul|ol|li|blockquote|figure|br|strong|em|b|i)[\s>]/i.test(text);
+    if (looksLikeHtml) {
+        return text;
+    }
 
-        const loadingState = byId("loadingState");
-        const notFoundState = byId("notFoundState");
-        const content = byId("articleContent");
+    const escaped = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    const paragraphs = escaped.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
+
+    if (paragraphs.length === 0) {
+        return "<p>Artikel ini belum punya isi.</p>";
+    }
+
+    return paragraphs.map((block) => `<p>${block.replace(/\n/g, "<br>")}</p>`).join("");
+                }
+
+        async function loadArticle() {
+                const params = new URLSearchParams(window.location.search);
+                const slug = params.get("slug");
+
+                const loadingState = byId("loadingState");
+                const notFoundState = byId("notFoundState");
+                const content = byId("articleContent");
 
         if (!slug) {
             loadingState.hidden = true;
