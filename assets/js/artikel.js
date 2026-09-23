@@ -65,18 +65,77 @@
             dateLabel: formatDate(a.created_at)
         }));
 
-        renderFeatured();
-        renderCategories();
-        renderArticles();
-        renderMostRead();
+                renderFeatured();
+                renderCategories();
+                renderArticles();
+                renderMostRead();
+                renderArticleListPanel();
+    }
+
+    // ============================================
+    // LIST ARTIKEL (sidebar, prev/next)
+    // Diurutkan berdasarkan tanggal rilis.
+    // ============================================
+
+    let articleListPage = 0;
+    const ARTICLE_LIST_PAGE_SIZE = 5;
+
+    function renderArticleListPanel() {
+        const wrap = byId("articleListItems");
+        const prevBtn = byId("articleListPrev");
+        const nextBtn = byId("articleListNext");
+        const pageInfo = byId("articleListPageInfo");
+        if (!wrap || !prevBtn || !nextBtn || !pageInfo) return;
+
+        const sorted = [...articles].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const totalPages = Math.max(1, Math.ceil(sorted.length / ARTICLE_LIST_PAGE_SIZE));
+
+        if (articleListPage >= totalPages) articleListPage = totalPages - 1;
+        if (articleListPage < 0) articleListPage = 0;
+
+        const start = articleListPage * ARTICLE_LIST_PAGE_SIZE;
+        const pageItems = sorted.slice(start, start + ARTICLE_LIST_PAGE_SIZE);
+
+        if (pageItems.length === 0) {
+            wrap.innerHTML = `<p style="color:#94A3B8; font-size:13px; margin:0;">Belum ada artikel.</p>`;
+        } else {
+            wrap.innerHTML = pageItems.map((article) => `
+                <button type="button" data-slug="${article.slug}">
+                    ${article.title}
+                    <small>${article.dateLabel}</small>
+                </button>
+            `).join("");
+
+            wrap.querySelectorAll("[data-slug]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    window.location.href = "artikel-detail.html?slug=" + encodeURIComponent(button.dataset.slug);
+                });
+            });
+        }
+
+        pageInfo.textContent = `${articleListPage + 1} / ${totalPages}`;
+        prevBtn.disabled = articleListPage === 0;
+        nextBtn.disabled = articleListPage >= totalPages - 1;
+    }
+
+    function setupArticleListPagination() {
+        const prevBtn = byId("articleListPrev");
+        const nextBtn = byId("articleListNext");
+        if (!prevBtn || !nextBtn) return;
+
+        prevBtn.addEventListener("click", () => {
+            articleListPage -= 1;
+            renderArticleListPanel();
+        });
+
+        nextBtn.addEventListener("click", () => {
+            articleListPage += 1;
+            renderArticleListPanel();
+        });
     }
 
     // ============================================
     // MOST READ
-    // Diurutkan berdasarkan view_count (paling banyak
-    // dibaca pengunjung). Kalau semua artikel masih
-    // view_count 0 (situs baru), otomatis fallback ke
-    // urutan artikel terbaru.
     // ============================================
 
     function renderMostRead() {
@@ -191,7 +250,9 @@
             return;
         }
 
-        grid.innerHTML = filtered.map((article) => {
+        const visibleArticles = filtered.slice(0, 6);
+
+        grid.innerHTML = visibleArticles.map((article) => {
             const img = article.cover_image
                 ? `<img src="${article.cover_image}" alt="${article.title}" loading="lazy" onerror="this.remove()">`
                 : "";
@@ -239,9 +300,10 @@
         });
     }
 
-    function init() {
+        function init() {
         setupNewsletter();
         setupPlaceholderActions();
+        setupArticleListPagination();
         const search = byId("searchInput");
         if (search) search.addEventListener("input", renderArticles);
         fetchArticles();
