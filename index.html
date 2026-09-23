@@ -272,17 +272,11 @@
             }
         }
 
-                @media (max-width: 700px){
-
-            .tp-grid{
-                grid-template-columns: minmax(0, 320px);
-            }
-        }
         /* =====================================================
            MARKET TICKER (index.html)
         ===================================================== */
 
-            .market-ticker--home{
+        .market-ticker--home{
             margin: 0;
             height: 46px;
             background: #0c1420;
@@ -295,21 +289,21 @@
         }
 
         /* =====================================================
-           KALENDER EKONOMI (index.html)
+           XAU/USD REAL-TIME (index.html)
         ===================================================== */
 
-            .cal-wrap{
+        .cal-wrap{
             width: min(100%, 960px);
             margin: 0 auto;
             border-radius: 18px;
             overflow: hidden;
             overflow: clip;
-            background: #30343b;
-            border: 1px solid rgba(212,166,74,.55);
-            box-shadow: 0 20px 50px rgba(0,0,0,.35);
+            background: #FFFFFF;
+            border: 1px solid rgba(212,166,74,.35);
+            box-shadow: 0 20px 50px rgba(16,26,46,.12);
         }
 
-                .cal-note{
+        .cal-note{
             width: min(100%, 960px);
             margin: 14px auto 0;
             color: #64748B;
@@ -339,50 +333,13 @@
             }
         }
 
-        .cal-cols{
-            display: none;
-        }
-
-        @media (min-width: 900px){
-
-            .cal-cols{
-                display: block;
-                position: sticky;
-                top: 68px;
-                z-index: 5;
-                height: 34px;
-                background: #282c32;
-                border-bottom: 1px solid rgba(212,166,74,.35);
-                color: #e7c15b;
-                font-family: "Inter", sans-serif;
-                font-size: 11px;
-                font-weight: 600;
-            }
-
-            .cal-cols span{
-                position: absolute;
-                top: 0;
-                line-height: 34px;
-                white-space: nowrap;
-            }
-
-            .cal-cols .c-time{     left: 2.3%; }
-            .cal-cols .c-country{  left: 11%;   transform: translateX(-50%); }
-            .cal-cols .c-impact{   left: 16.6%; transform: translateX(-50%); }
-            .cal-cols .c-event{    left: 20.8%; }
-            .cal-cols .c-actual{   right: 33.6%; }
-            .cal-cols .c-forecast{ right: 16.9%; }
-            .cal-cols .c-prev{     right: 0.7%; }
-        }
-
     </style>
 
 </head>
 
-
 <body>
 
-<div class="cp-page">
+    <div class="cp-page">
 
 
     <!-- ==========================================
@@ -390,7 +347,6 @@
     =========================================== -->
 
     <header class="cp-nav">
-
         <div class="cp-nav-inner">
 
 
@@ -424,7 +380,7 @@
 
             <div class="cp-nav-right">
 
-                <a
+                
                     href="login.html"
                     class="cp-signin">
 
@@ -432,7 +388,7 @@
 
                 </a>
 
-                <a
+                
                     href="register.html"
                     class="cp-join">
 
@@ -703,66 +659,83 @@
 
         </section>
 
-        <!-- ======================================
-             KALENDER EKONOMI
-        ======================================= -->
+       <!-- ======================================
+     XAU/USD REAL-TIME
+======================================= -->
 
-        <section
-            class="cp-section"
-            id="economic-calendar">
+<section
+    class="cp-section"
+    id="xauusd-widget">
 
-            <div class="cp-section-heading">
+    <div class="cp-section-heading">
 
-                <span class="cp-section-label">
-                    KALENDER EKONOMI
-                </span>
+        <span class="cp-section-label">
+            PERGERAKAN HARGA EMAS
+        </span>
 
-                <h2>
-                    Pantau Rilis Data
-                    <span>
-                        Yang Menggerakkan Pasar
-                    </span>
-                </h2>
+        <h2>
+            Pantau XAU/USD
+            <span>
+                Secara Real-Time
+            </span>
+        </h2>
 
-                <p>
-                    Jadwal rilis data ekonomi global lengkap dengan
-                    tingkat dampaknya, supaya Anda siap sebelum berita
-                    mengubah harga.
-                </p>
+        <p>
+            Ikuti pergerakan harga emas (XAU/USD) langsung dari TradingView,
+            lengkap dengan grafik dan persentase perubahan hari ini.
+        </p>
 
-            </div>
-            <div class="cal-wrap">
+    </div>
 
-                <div class="cal-cols" aria-hidden="true">
-                    <span class="c-time">Waktu</span>
-                    <span class="c-country">Negara</span>
-                    <span class="c-impact">Dampak</span>
-                    <span class="c-event">Peristiwa</span>
-                    <span class="c-actual">Aktual</span>
-                    <span class="c-forecast">Perkiraan</span>
-                    <span class="c-prev">Sebelumnya</span>
-                </div>
+    <div class="cal-wrap">
 
-                <div class="tradingview-widget-container">
-                    <div class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript"
-                            src="https://s3.tradingview.com/external-embedding/embed-widget-events.js"
-                            async>
-                    {
-                        "colorTheme": "dark",
-                        "isTransparent": true,
-                        "locale": "id",
-                        "countryFilter": "us,eu,gb,jp,cn,id",
-                        "importanceFilter": "0,1",
-                        "width": "100%",
-                        "height": "600"
-                    }
-                    </script>
-                </div>
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript"
+                    src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+                    async>
+            {
+                "symbols": [["OANDA:XAUUSD|1D"]],
+                "chartOnly": false,
+                "width": "100%",
+                "height": "500",
+                "locale": "id",
+                "colorTheme": "light",
+                "autosize": true,
+                "showVolume": false,
+                "showMA": false,
+                "hideDateRanges": false,
+                "hideMarketStatus": false,
+                "hideSymbolLogo": false,
+                "scalePosition": "right",
+                "scaleMode": "Normal",
+                "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                "fontSize": "10",
+                "noTimeScale": false,
+                "valuesTracking": "1",
+                "changeMode": "price-and-percent",
+                "chartType": "area",
+                "maLineColor": "#2962FF",
+                "maLineWidth": 1,
+                "maLength": 9,
+                "headerFontSize": "medium",
+                "lineWidth": 2,
+                "lineType": 0,
+                "dateRanges": [
+                    "1d|1",
+                    "1m|30",
+                    "3m|60",
+                    "12m|1D",
+                    "60m|1W",
+                    "all|1M"
+                ]
+            }
+            </script>
+        </div>
 
-            </div>
+    </div>
 
-        </section>
+</section>
 
         <!-- ======================================
              TRUSTED PARTNER (broker showcase)
@@ -924,7 +897,7 @@
                 </p>
 
 
-                <a
+                
                     href="register.html"
                     class="cp-btn-primary">
 
