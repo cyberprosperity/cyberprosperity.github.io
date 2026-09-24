@@ -381,6 +381,20 @@
     height: 180px;
 }
 
+.market-card-icon{
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(212,166,74,.12);
+    color: var(--cp-gold);
+    font-size: 16px;
+    margin-bottom: 14px;
+}
+
 @media (max-width: 900px){
     .market-grid{
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -750,7 +764,7 @@
     <div class="market-grid">
 
         <!-- EMAS -->
-        <div class="market-card">
+        <div class="market-card market-card--red">
             <div class="market-card-icon"><i class="fa-solid fa-coins"></i></div>
             <h3>Emas Loco London</h3>
             <p>Logam mulia paling likuid di dunia, mengacu pasar spot London.</p>
