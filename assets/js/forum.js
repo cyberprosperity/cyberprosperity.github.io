@@ -1,16 +1,6 @@
 // ============================================
 // FORUM PAGE LOGIC (gaya ikon disamakan dengan Profile)
-// - Semua orang bisa MEMBACA thread & komentar tanpa login
-// - Like, komentar, buat thread, edit, hapus WAJIB login
-// - Status dari Profile ikut tampil di sini (kategori Off Topic)
-// - Nama/avatar penulis bisa diklik menuju profile.html?id=<user_id>
-//
 // MODERASI (butuh forum-moderation.sql sudah dijalankan di Supabase):
-// - Thread/komentar yang berisi link (atau gambar) berstatus "pending"
-//   dan baru tampil ke publik setelah disetujui admin
-// - Admin bisa Setujui / Tolak / Hapus / Pulihkan
-// - Tombol admin hanya tampilan. Kewenangan sebenarnya dijaga oleh
-//   aturan akses (RLS) di database.
 // ============================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -74,6 +64,28 @@ document.addEventListener("DOMContentLoaded", async () => {
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+    }
+
+    // ==========================================
+    // LIGHTBOX GAMBAR
+    // ==========================================
+    let lightboxEl = document.querySelector(".cp-lightbox");
+    if (!lightboxEl) {
+        lightboxEl = document.createElement("div");
+        lightboxEl.className = "cp-lightbox";
+        lightboxEl.innerHTML = `
+            <span class="cp-lightbox-close">&times;</span>
+            <img src="" alt="Gambar diperbesar">
+        `;
+        document.body.appendChild(lightboxEl);
+
+        const closeLightbox = () => lightboxEl.classList.remove("active");
+        lightboxEl.addEventListener("click", closeLightbox);
+    }
+
+    function openLightbox(src) {
+        lightboxEl.querySelector("img").src = src;
+        lightboxEl.classList.add("active");
     }
 
     function linkify(text) {
@@ -436,15 +448,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         article.className = "thread-card";
         article.dataset.category = thread.category || "gold";
 
-        article.innerHTML = `
+                article.innerHTML = `
             <div class="thread-avatar">
                 <a href="${profileHref}"><img src="${escapeHtml(authorAvatar)}" alt="${escapeHtml(authorName)}"></a>
             </div>
-            <div class="thread-content">
+                        <div class="thread-content">
+                <button type="button" class="thread-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
                 <div class="thread-meta" style="display:flex; align-items:center; gap:10px;">
                     <a href="${profileHref}" style="color:inherit; text-decoration:none;">
                         <span class="thread-author"></span>
                     </a>
+                    <span class="thread-tag"></span>
                     <span class="thread-time">${timeAgo(thread.created_at)}</span>
                     ${isOwner ? `
                         <span style="margin-left:auto; display:flex; gap:12px; align-items:center;">
@@ -453,10 +467,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </span>
                     ` : ''}
                 </div>
-                <span class="thread-tag"></span>
                 <div class="thread-status">${statusBadge(thread.status)}</div>
                 <h3 class="thread-title"></h3>
-                <p class="thread-preview"></p>
+
+                <div class="thread-body">
+                    <p class="thread-preview"></p>
+                    <div class="thread-body-image"></div>
+                </div>
 
                 <div class="thread-edit-form" style="display:none;">
                     <input type="text" class="thread-edit-title" placeholder="Judul thread (opsional)">
@@ -524,7 +541,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             img.src = thread.image_url;
             img.alt = "Lampiran postingan";
             img.className = "feed-post-image";
-            previewEl.after(img);
+            img.addEventListener("click", (e) => {
+                e.stopPropagation(); // biar tidak ikut nge-trigger hitung views/klik kartu
+                openLightbox(thread.image_url);
+            });
+            article.querySelector(".thread-body-image").appendChild(img);
         }
 
         // Tombol moderasi untuk admin

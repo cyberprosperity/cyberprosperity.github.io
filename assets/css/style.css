@@ -1760,8 +1760,85 @@ a {
     transition:.2s;
 }
 
+.cp-lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    z-index:3000;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+    cursor:zoom-out;
+}
+
+.cp-lightbox.active{
+    display:flex;
+}
+
+.cp-lightbox img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:10px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.cp-lightbox-close{
+    position:absolute;
+    top:20px;
+    right:30px;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+    background:rgba(255,255,255,.1);
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
 .feed-post-image:hover{
     opacity:0.92;
+}
+
+.thread-body{
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+}
+
+.thread-body-text{
+    flex:1;
+    min-width:0;
+}
+
+.thread-body-image{
+    flex-shrink:0;
+    width:200px;
+}
+
+.thread-body-image .feed-post-image{
+    width:100%;
+    max-width:100%;
+    height:200px;
+    margin:0;
+    border-radius:14px;
+    object-fit:cover;
+}
+
+@media (max-width:768px){
+    .thread-body{
+        flex-direction:column;
+    }
+    .thread-body-image{
+        width:100%;
+    }
+    .thread-body-image .feed-post-image{
+        height:auto;
+        max-height:260px;
+    }
 }
 
 /* =========================
@@ -2028,32 +2105,39 @@ a {
 }
 
 /* ==========================================
-   THREAD CARD
+   THREAD CARD (redesign gaya Threads: tanpa
+   card/border, cuma garis pemisah tipis)
 ========================================== */
 
 .thread-card{
 
+    position:relative;
     display:flex;
-    gap:20px;
-    background:#1B2434;
-    border:1px solid rgba(255,255,255,.08);
+    gap:14px;
+    background:#171f2d;
+    border:1px solid rgba(255,255,255,.07);
     border-radius:18px;
-    padding:22px;
-    transition:.3s;
+    padding:20px;
+    margin-bottom:16px;
+    transition:.2s;
 
 }
 
 .thread-card:hover{
 
-    border-color:#D4A64A;
-    transform:translateY(-3px);
+    border-color:rgba(255,255,255,.14);
+}
+
+.forum-feed .thread-card:last-child{
+
+    margin-bottom:0;
 
 }
 
 .thread-avatar{
 
-    width:70px;
-    height:70px;
+    width:40px;
+    height:40px;
     flex-shrink:0;
     border-radius:50%;
     overflow:hidden;
@@ -2074,11 +2158,27 @@ a {
     flex:1;
 
 }
+
+.thread-author{
+
+    font-size:14px;
+    font-weight:700;
+
+}
+
+.thread-time{
+
+    font-size:13px;
+    color:#8A94A6;
+
+}
+
 .forum-feed{
 
     display:flex;
     flex-direction:column;
-    gap:22px;
+    gap:0;
+    padding-top:8px;
 
 }
 
@@ -2090,16 +2190,24 @@ a {
 
     display:inline-flex;
     align-items:center;
-    padding:5px 12px;
-    margin-bottom:10px;
-    border:1px solid rgba(212,166,74,.35);
-    border-radius:999px;
-    background:rgba(212,166,74,.08);
-    color:#D4A64A;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:1px;
-    text-transform:uppercase;
+    gap:3px;
+    padding:0;
+    margin:0;
+    border:none;
+    border-radius:0;
+    background:none;
+    color:#8A94A6;
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:0;
+    text-transform:none;
+
+}
+
+.thread-tag:not(:empty)::before{
+
+    content:"›";
+    color:#5C677A;
 
 }
 
@@ -2111,6 +2219,26 @@ a {
     display:flex;
     align-items:center;
     gap:10px;
+    padding-right:28px;
+}
+
+.thread-options-btn{
+    position:absolute;
+    top:18px;
+    right:16px;
+    background:none;
+    border:none;
+    color:#8A94A6;
+    font-size:16px;
+    cursor:pointer;
+    padding:4px;
+    border-radius:6px;
+    transition:.2s;
+}
+
+.thread-options-btn:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff;
 }
 
 .thread-delete-btn{
@@ -2263,6 +2391,7 @@ a {
 }
 
 .thread-edit-form{
+    width:100%;
     display:flex;
     flex-direction:column;
     gap:10px;
@@ -2271,6 +2400,8 @@ a {
 
 .thread-edit-title,
 .thread-edit-content{
+    width:100%;
+    box-sizing:border-box;
     background:#10151F;
     border:1px solid rgba(255,255,255,.08);
     border-radius:10px;
@@ -2340,6 +2471,11 @@ a {
     outline:none;
 }
 
+.thread-preview,
+.comment-text{
+    white-space:pre-wrap;
+}
+
 /* ==========================================
    LINK OTOMATIS DI THREAD & KOMENTAR
 ========================================== */
@@ -2377,6 +2513,47 @@ a {
     transform:translateY(-2px);
 }
 
+.thread-footer{
+
+    display:flex;
+    align-items:center;
+    gap:22px;
+    color:#8A94A6;
+    font-size:13px;
+    padding-top:12px;
+
+}
+
+.thread-footer i{
+
+    font-size:16px;
+    color:#8A94A6;
+    transition:.2s ease;
+
+}
+
+.thread-footer .thread-like-btn i,
+.thread-footer .thread-comment-toggle i{
+
+    margin-right:5px;
+
+}
+
+.thread-footer > span{
+
+    display:flex;
+    align-items:center;
+    transition:.2s ease;
+
+}
+
+.thread-footer .thread-like-btn:hover i,
+.thread-footer .thread-comment-toggle:hover i{
+
+    color:#D4A64A;
+    transform:scale(1.08);
+
+}
 
 /* ==========================================
    SETTINGS LAYOUT
@@ -3648,12 +3825,12 @@ a {
 
     .thread-card{
         gap:14px;
-        padding:18px;
+        padding:16px 4px;
     }
 
     .thread-avatar{
-        width:50px;
-        height:50px;
+        width:36px;
+        height:36px;
     }
 
     .thread-title{
