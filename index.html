@@ -47,6 +47,7 @@
 
         /* =====================================================
            TRUSTED PARTNER SECTION (index.html)
+           Disamakan proporsinya dengan .broker-card di broker.css
         ===================================================== */
 
         .tp-grid{
@@ -55,15 +56,16 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 320px));
             justify-content: center;
-            gap: 22px;
+            gap: 24px;
         }
 
         .tp-card{
             position: relative;
             display: flex;
             flex-direction: column;
-            padding: 20px 18px;
-            border-radius: 18px;
+            width: 320px;
+            padding: 24px 20px;
+            border-radius: 22px;
             overflow: hidden;
             transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
             background:
@@ -79,17 +81,17 @@
         }
 
         .tp-card:hover{
-            transform: translateY(-5px);
+            transform: translateY(-6px);
         }
 
         .tp-card--gold:hover{
             border-color: rgba(212,166,74,.5);
-            box-shadow: 0 16px 30px rgba(212,166,74,.12);
+            box-shadow: 0 24px 40px rgba(212,166,74,.12), 0 8px 20px rgba(0,0,0,.35);
         }
 
         .tp-card--blue:hover{
             border-color: rgba(59,130,246,.5);
-            box-shadow: 0 16px 30px rgba(59,130,246,.14);
+            box-shadow: 0 24px 40px rgba(59,130,246,.14), 0 8px 20px rgba(0,0,0,.35);
         }
 
         .tp-ribbon{
@@ -119,12 +121,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 108px;
-            height: 48px;
-            margin: 6px auto 14px;
+            width: 150px;
+            height: 70px;
+            margin: 18px auto 22px;
             background: #FFFFFF;
-            border-radius: 12px;
-            padding: 6px 10px;
+            border-radius: 16px;
+            padding: 8px 16px;
             box-sizing: border-box;
         }
 
@@ -137,9 +139,9 @@
         }
 
         .tp-card h3{
-            margin: 0 0 3px;
+            margin: 8px 0 6px;
             color: #FFFFFF;
-            font-size: 18px;
+            font-size: 25px;
             font-weight: 700;
             text-align: center;
         }
@@ -147,39 +149,41 @@
         .tp-license{
             color: #94A3B8;
             text-align: center;
-            font-size: 11px;
-            margin-bottom: 14px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .tp-info-row{
             display: flex;
             gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .tp-info-item{
             flex: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 10px;
+            gap: 14px;
+            text-align: left;
+            padding: 10px 14px;
+            border-radius: 14px;
             background: rgba(255,255,255,.03);
             border: 1px solid rgba(255,255,255,.05);
         }
 
         .tp-info-icon{
             flex-shrink: 0;
-            width: 26px;
-            height: 26px;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 11px;
             background: rgba(212,166,74,.15);
             border: 1px solid rgba(212,166,74,.3);
             color: #E7C15B;
-            font-size: 10px;
+            font-size: 14px;
         }
 
         .tp-info-icon--blue{
@@ -191,15 +195,16 @@
         .tp-info-item small{
             display: block;
             color: #64748B;
-            font-size: 9px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: .5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
         }
 
         .tp-info-item strong{
             display: block;
             color: #FFFFFF;
-            font-size: 13px;
+            font-size: 17px;
             font-weight: 700;
         }
 
@@ -207,17 +212,17 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .tp-tags span{
             background: #10151F;
             color: var(--cp-gold);
             border: 1px solid rgba(212,166,74,.25);
-            padding: 3px 10px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
         }
 
@@ -225,13 +230,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             width: 100%;
-            padding: 9px 16px;
-            border-radius: 9px;
+            padding: 12px 20px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 14px;
             background: var(--cp-gold);
             color: #111827;
             transition: background .25s ease, transform .25s ease;
@@ -271,6 +276,7 @@
                 grid-template-columns: minmax(0, 320px);
             }
         }
+
 
         /* =====================================================
            MARKET TICKER (index.html)
@@ -920,7 +926,7 @@
                     <a href="https://clientarea.cfforex.com/auth/register/cypros7"
                        class="tp-btn" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        Kunjungi
+                        Daftar
                     </a>
 
                 </article>
@@ -963,7 +969,7 @@
                     <a href="https://cabinet.firsttrademarkets.com/signup?refferal=69ce54a549802"
                        class="tp-btn tp-btn--blue" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        Kunjungi
+                        Daftar
                     </a>
 
                 </article>
