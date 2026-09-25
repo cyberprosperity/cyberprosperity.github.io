@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Channel | Cyber Prosperity</title>
+
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        /* =====================================================
+           CHANNEL (channel style, mirip WhatsApp Channel)
+           Prefix class: cnl- , supaya tidak bentrok dengan forum
+        ===================================================== */
+
+        .cnl-header{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            margin-bottom:25px;
+        }
+
+        .cnl-header-icon{
+            width:52px;
+            height:52px;
+            flex-shrink:0;
+            border-radius:16px;
+            background:linear-gradient(135deg, #D4A64A 0%, #B88A32 100%);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#111827;
+            font-size:22px;
+        }
+
+        .cnl-header h1{
+            margin:0 0 4px;
+            color:#FFFFFF;
+            font-size:26px;
+            font-weight:700;
+        }
+
+        .cnl-header p{
+            margin:0;
+            color:#94A3B8;
+            font-size:14px;
+        }
+
+        .cnl-admin-bar{
+            display:flex;
+            justify-content:flex-end;
+            margin-bottom:20px;
+        }
+
+        .cnl-post-btn{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            background:#D4A64A;
+            color:#111827;
+            border:none;
+            border-radius:15px;
+            padding:12px 22px;
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        .cnl-post-btn:hover{
+            background:#E8BC5D;
+            transform:translateY(-2px);
+            box-shadow:0 12px 25px rgba(212,166,74,.35);
+        }
+
+        .cnl-feed{
+            display:flex;
+            flex-direction:column;
+            gap:0;
+        }
+
+        .cnl-post{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            padding:22px 4px;
+            border-bottom:1px solid rgba(255,255,255,.08);
+        }
+
+        .cnl-feed .cnl-post:last-child{
+            border-bottom:none;
+        }
+
+        .cnl-post-head{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
+        .cnl-post-avatar{
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            overflow:hidden;
+            flex-shrink:0;
+            background:#D4A64A;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .cnl-post-avatar img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+
+        .cnl-post-avatar i{
+            color:#111827;
+            font-size:16px;
+        }
+
+        .cnl-post-author{
+            color:#FFFFFF;
+            font-size:14px;
+            font-weight:700;
+            display:flex;
+            align-items:center;
+            gap:6px;
+        }
+
+        .cnl-post-author .cnl-verified{
+            color:#D4A64A;
+            font-size:13px;
+        }
+
+        .cnl-post-time{
+            color:#8A94A6;
+            font-size:12px;
+        }
+
+        .cnl-post-admin-actions{
+            margin-left:auto;
+            display:flex;
+            gap:14px;
+        }
+
+        .cnl-post-admin-actions i{
+            cursor:pointer;
+            color:#94A3B8;
+            transition:.2s;
+        }
+
+        .cnl-post-admin-actions i:hover{
+            color:#D4A64A;
+        }
+
+        .cnl-post-caption{
+            color:#E8EDF5;
+            font-size:14.5px;
+            line-height:1.7;
+            white-space:pre-wrap;
+        }
+
+        /* --- CAROUSEL FOTO --- */
+
+        .cnl-carousel{
+            position:relative;
+        }
+
+        .cnl-carousel-track{
+            display:flex;
+            gap:0;
+            overflow-x:auto;
+            scroll-snap-type:x mandatory;
+            -webkit-overflow-scrolling:touch;
+            border-radius:16px;
+            scrollbar-width:none;
+        }
+
+        .cnl-carousel-track::-webkit-scrollbar{
+            display:none;
+        }
+
+        .cnl-carousel-track img{
+            flex:0 0 100%;
+            width:100%;
+            max-height:520px;
+            object-fit:contain;
+            background:#0e1420;
+            scroll-snap-align:start;
+            cursor:pointer;
+            display:block;
+        }
+
+        .cnl-carousel-dots{
+            display:flex;
+            justify-content:center;
+            gap:6px;
+            margin-top:10px;
+        }
+
+        .cnl-carousel-dots span{
+            width:6px;
+            height:6px;
+            border-radius:999px;
+            background:rgba(255,255,255,.25);
+            transition:.25s;
+        }
+
+        .cnl-carousel-dots span.active{
+            width:18px;
+            background:#D4A64A;
+        }
+
+        /* --- FOOTER (like only) --- */
+
+        .cnl-post-footer{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            color:#8A94A6;
+            font-size:13px;
+        }
+
+        .cnl-like-btn{
+            display:flex;
+            align-items:center;
+            gap:6px;
+            cursor:pointer;
+            transition:.2s;
+        }
+
+        .cnl-like-btn i{
+            font-size:16px;
+        }
+
+        .cnl-like-btn:hover{
+            color:#FFD700;
+        }
+
+        .cnl-views{
+            display:flex;
+            align-items:center;
+            gap:6px;
+        }
+
+        /* --- MODAL POST BARU (admin) --- */
+
+        .cnl-modal{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.6);
+            z-index:999;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+        }
+
+        .cnl-modal-box{
+            background:#12141c;
+            padding:24px;
+            border-radius:14px;
+            width:100%;
+            max-width:520px;
+            max-height:88vh;
+            overflow-y:auto;
+        }
+
+        .cnl-modal-box h3{
+            color:#fff;
+            margin:0 0 16px;
+        }
+
+        .cnl-modal-box textarea{
+            width:100%;
+            padding:12px 14px;
+            margin-bottom:14px;
+            border-radius:10px;
+            border:1px solid #333;
+            background:#1a1c26;
+            color:#fff;
+            font-family:inherit;
+            font-size:14px;
+            resize:vertical;
+            min-height:90px;
+            box-sizing:border-box;
+        }
+
+        .cnl-upload-box{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            min-height:120px;
+            border:2px dashed #2A3448;
+            border-radius:14px;
+            background:#101827;
+            color:#94A3B8;
+            font-size:13px;
+            text-align:center;
+            padding:20px;
+            cursor:pointer;
+            transition:.25s;
+            margin-bottom:14px;
+        }
+
+        .cnl-upload-box:hover{
+            border-color:#D4A64A;
+            color:#D4A64A;
+        }
+
+        .cnl-upload-box i{
+            font-size:22px;
+        }
+
+        .cnl-preview-grid{
+            display:grid;
+            grid-template-columns:repeat(3, 1fr);
+            gap:8px;
+            margin-bottom:14px;
+        }
+
+        .cnl-preview-item{
+            position:relative;
+            border-radius:10px;
+            overflow:hidden;
+            aspect-ratio:1/1;
+            background:#0e1420;
+        }
+
+        .cnl-preview-item img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+
+        .cnl-preview-remove{
+            position:absolute;
+            top:4px;
+            right:4px;
+            width:22px;
+            height:22px;
+            border-radius:50%;
+            background:rgba(0,0,0,.65);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:11px;
+            cursor:pointer;
+        }
+
+        .cnl-modal-actions{
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+        }
+
+        .cnl-btn-cancel{
+            padding:10px 18px;
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,.15);
+            background:transparent;
+            color:#fff;
+            cursor:pointer;
+            font-size:13px;
+        }
+
+        .cnl-btn-submit{
+            padding:10px 20px;
+            border-radius:8px;
+            border:none;
+            background:#D4A64A;
+            color:#111827;
+            font-weight:700;
+            cursor:pointer;
+            font-size:13px;
+        }
+
+        .cnl-btn-submit:disabled{
+            opacity:.6;
+            cursor:not-allowed;
+        }
+
+        /* --- LIGHTBOX --- */
+
+        .cnl-lightbox{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.9);
+            z-index:3000;
+            align-items:center;
+            justify-content:center;
+            padding:30px;
+            cursor:zoom-out;
+        }
+
+        .cnl-lightbox.active{
+            display:flex;
+        }
+
+        .cnl-lightbox img{
+            max-width:100%;
+            max-height:100%;
+            border-radius:10px;
+            box-shadow:0 20px 60px rgba(0,0,0,.5);
+        }
+
+        .cnl-lightbox-close{
+            position:absolute;
+            top:20px;
+            right:30px;
+            color:#fff;
+            font-size:28px;
+            cursor:pointer;
+            background:rgba(255,255,255,.1);
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        @media (max-width:768px){
+            .cnl-carousel-track img{
+                max-height:340px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="assets/images/logo/CFXPros-sidebar.webp"
+                alt="Cyber Prosperity Logo"
+                class="sidebar-logo-img">
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="features.html">
+                <i class="fa-solid fa-star"></i>
+                <span>Fitur</span>
+            </a>
+
+            <a href="forum.html">
+                <i class="fa-solid fa-comments"></i>
+                <span>Forum</span>
+            </a>
+
+            <a href="channel.html" class="active">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Channel</span>
+            </a>
+
+            <a href="broker.html">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Broker</span>
+            </a>
+
+            <a href="artikel.html">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Artikel</span>
+            </a>
+
+            <a href="contact.html">
+                <i class="fa-solid fa-phone"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-bottom">
+            <a href="profile.html">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="main-content">
+
+        <div class="market-ticker" id="tv-ticker-slot"></div>
+
+        <section class="cnl-header">
+            <div class="cnl-header-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+                <h1>Channel</h1>
+                <p>Update chart & analisa resmi dari tim Cyber Prosperity.</p>
+            </div>
+        </section>
+
+        <div class="cnl-admin-bar" id="cnlAdminBar" style="display:none;">
+            <button class="cnl-post-btn" id="cnlPostBtn">
+                <i class="fa-solid fa-plus"></i>
+                Update Baru
+            </button>
+        </div>
+
+        <!-- MODAL POST BARU -->
+        <div class="cnl-modal" id="cnlModal">
+            <div class="cnl-modal-box">
+                <h3>Update Analisa Baru</h3>
+
+                <textarea id="cnlCaptionInput" placeholder="Tulis caption analisa... (opsional)"></textarea>
+
+                <label class="cnl-upload-box" id="cnlUploadBox">
+                    <i class="fa-solid fa-images"></i>
+                    <span>Klik untuk pilih satu atau beberapa foto chart</span>
+                    <input type="file" id="cnlFileInput" accept="image/*" multiple style="display:none;">
+                </label>
+
+                <div class="cnl-preview-grid" id="cnlPreviewGrid"></div>
+
+                <div class="cnl-modal-actions">
+                    <button type="button" class="cnl-btn-cancel" id="cnlCancelBtn">Batal</button>
+                    <button type="button" class="cnl-btn-submit" id="cnlSubmitBtn">Posting</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="cnl-feed" id="cnlFeed"></section>
+
+    </main>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="cnl-lightbox" id="cnlLightbox">
+    <span class="cnl-lightbox-close">&times;</span>
+    <img src="" alt="Gambar diperbesar">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth-state.js"></script>
+<script src="assets/js/channel.js"></script>
+<script src="assets/js/sidebar-toggle.js"></script>
+<script src="assets/js/market-ticker-loader.js"></script>
+
+</body>
+
+</html>
