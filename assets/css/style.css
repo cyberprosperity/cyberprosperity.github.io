@@ -208,6 +208,100 @@ a {
 }
 
 /* =========================================================
+   NAVBAR DROPDOWN (hover) — dipakai untuk menu "Fitur"
+========================================================= */
+
+.cp-nav-item{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.cp-nav-item-link{
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+}
+
+.cp-caret{
+    font-size: 9px;
+    margin-top: 1px;
+    transition: transform .25s ease;
+}
+
+.cp-nav-item:hover .cp-caret{
+    transform: rotate(180deg);
+}
+
+.cp-dropdown-menu{
+    position: absolute;
+    top: 100%;
+    left: -14px;
+    padding-top: 16px; /* jembatan tak kasat mata, biar hover tidak putus */
+    min-width: 230px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+    z-index: 1001;
+}
+
+.cp-nav-item:hover .cp-dropdown-menu{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.cp-dropdown-menu-inner{
+    background: #12141c;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 20px 45px rgba(0,0,0,.35);
+}
+
+.cp-dropdown-menu-inner a{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    color: #CBD5E1;
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: .2s;
+}
+
+.cp-dropdown-menu-inner a:hover{
+    background: rgba(212,166,74,.08);
+    color: #F2C94C;
+}
+
+.cp-dropdown-menu-inner a i{
+    width: 16px;
+    text-align: center;
+    color: #D4A64A;
+    font-size: 13px;
+}
+
+@media (max-width: 1000px){
+    .cp-dropdown-menu{
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        padding-top: 0;
+        display: none;
+    }
+
+    .cp-nav-item:hover .cp-dropdown-menu,
+    .cp-nav-item.cp-dropdown-open .cp-dropdown-menu{
+        display: block;
+    }
+}
+
+/* =========================================================
    HERO
 ========================================================= */
 
@@ -1822,9 +1916,8 @@ a {
 .thread-body-image .feed-post-image{
     width:100%;
     max-width:100%;
-    height:200px;
+    height:160px;
     margin:0;
-    border-radius:14px;
     object-fit:cover;
 }
 
@@ -2111,26 +2204,26 @@ a {
 
 .thread-card{
 
-    position:relative;
     display:flex;
-    gap:14px;
-    background:#171f2d;
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:16px;
+    gap:20px;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    border-radius:0;
+    padding:22px 4px;
     transition:.2s;
 
 }
 
 .thread-card:hover{
 
-    border-color:rgba(255,255,255,.14);
+    background:rgba(255,255,255,.02);
+
 }
 
 .forum-feed .thread-card:last-child{
 
-    margin-bottom:0;
+    border-bottom:none;
 
 }
 
@@ -2172,13 +2265,11 @@ a {
     color:#8A94A6;
 
 }
-
 .forum-feed{
 
     display:flex;
     flex-direction:column;
     gap:0;
-    padding-top:8px;
 
 }
 
@@ -2190,24 +2281,23 @@ a {
 
     display:inline-flex;
     align-items:center;
-    gap:3px;
     padding:0;
-    margin:0;
+    margin-bottom:6px;
     border:none;
     border-radius:0;
     background:none;
-    color:#8A94A6;
-    font-size:13px;
-    font-weight:400;
-    letter-spacing:0;
+    color:#D4A64A;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.2px;
     text-transform:none;
 
 }
 
-.thread-tag:not(:empty)::before{
+.thread-tag::before{
 
-    content:"›";
-    color:#5C677A;
+    content:"#";
+    margin-right:1px;
 
 }
 
@@ -2219,26 +2309,6 @@ a {
     display:flex;
     align-items:center;
     gap:10px;
-    padding-right:28px;
-}
-
-.thread-options-btn{
-    position:absolute;
-    top:18px;
-    right:16px;
-    background:none;
-    border:none;
-    color:#8A94A6;
-    font-size:16px;
-    cursor:pointer;
-    padding:4px;
-    border-radius:6px;
-    transition:.2s;
-}
-
-.thread-options-btn:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
 }
 
 .thread-delete-btn{
@@ -2391,7 +2461,6 @@ a {
 }
 
 .thread-edit-form{
-    width:100%;
     display:flex;
     flex-direction:column;
     gap:10px;
@@ -2400,8 +2469,6 @@ a {
 
 .thread-edit-title,
 .thread-edit-content{
-    width:100%;
-    box-sizing:border-box;
     background:#10151F;
     border:1px solid rgba(255,255,255,.08);
     border-radius:10px;
@@ -2515,45 +2582,25 @@ a {
 
 .thread-footer{
 
-    display:flex;
-    align-items:center;
-    gap:22px;
     color:#8A94A6;
     font-size:13px;
-    padding-top:12px;
 
 }
 
 .thread-footer i{
 
-    font-size:16px;
+    font-size:15px;
     color:#8A94A6;
-    transition:.2s ease;
 
 }
 
 .thread-footer .thread-like-btn i,
 .thread-footer .thread-comment-toggle i{
 
-    margin-right:5px;
+    margin-right:4px;
 
 }
 
-.thread-footer > span{
-
-    display:flex;
-    align-items:center;
-    transition:.2s ease;
-
-}
-
-.thread-footer .thread-like-btn:hover i,
-.thread-footer .thread-comment-toggle:hover i{
-
-    color:#D4A64A;
-    transform:scale(1.08);
-
-}
 
 /* ==========================================
    SETTINGS LAYOUT
