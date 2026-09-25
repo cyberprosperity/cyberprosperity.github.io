@@ -256,6 +256,34 @@
             background: #60a5fa;
         }
 
+        .tp-btn-group{
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .tp-btn-outline{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            background: transparent;
+            color: #FFFFFF;
+            border: 1px solid rgba(255,255,255,.18);
+            transition: background .25s ease, border-color .25s ease, transform .25s ease;
+        }
+
+        .tp-btn-outline:hover{
+            background: rgba(255,255,255,.06);
+            border-color: rgba(255,255,255,.32);
+            transform: translateY(-2px);
+        }
+
         .tp-more{
             display: block;
             width: fit-content;
@@ -995,7 +1023,7 @@
                         <span>Gold</span>
                     </div>
 
-                    <                    <div class="tp-btn-group">
+                                        <div class="tp-btn-group">
 
                         <a href="https://clientarea.cfforex.com/auth/register/cypros7"
                            class="tp-btn" target="_blank" rel="noopener noreferrer">
