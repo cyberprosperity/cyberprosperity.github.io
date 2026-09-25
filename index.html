@@ -307,12 +307,33 @@
 }
 
 .market-card{
+    position: relative;
+    overflow: hidden;
     background: #FFFFFF;
     border: 2px solid rgba(212,166,74,.35);
     border-radius: 16px;
     padding: 22px;
     box-shadow: 0 10px 30px rgba(16,26,46,.06);
     transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    --market-hl: rgba(212,166,74,.35);
+}
+
+.market-card::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 0%, var(--market-hl) 50%, transparent 100%);
+    transform: skewX(-20deg);
+    transition: left .65s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.market-card:hover::before{
+    left: 130%;
 }
 
 .market-card:hover{
@@ -321,8 +342,14 @@
     border-color: rgba(212,166,74,.6);
 }
 
+.market-card:hover .market-card-icon{
+    transform: scale(1.08);
+    box-shadow: 0 0 0 5px rgba(212,166,74,.14);
+}
+
 .market-card--blue{
     border-color: rgba(59,130,246,.35);
+    --market-hl: rgba(59,130,246,.35);
 }
 
 .market-card--blue:hover{
@@ -337,6 +364,7 @@
 
 .market-card--red{
     border-color: rgba(239,68,68,.35);
+    --market-hl: rgba(239,68,68,.35);
 }
 
 .market-card--red:hover{
@@ -351,6 +379,7 @@
 
 .market-card--black{
     border-color: rgba(15,23,42,.35);
+    --market-hl: rgba(15,23,42,.35);
 }
 
 .market-card--black:hover{
