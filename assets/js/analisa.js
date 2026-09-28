@@ -1,5 +1,5 @@
 // ============================================================
-// ANALISA HARIAN (channel style) - assets/js/channel.js
+// ANALISA HARIAN (channel style) - assets/js/analisa.js
 // Hanya admin yang bisa posting. Pengunjung hanya bisa like.
 // ============================================================
 
@@ -59,6 +59,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `${days} hari lalu`;
     }
 
+    // Baca arah (bearish/bullish) dan level harga ($4235, dst) dari caption
+    function analyzePost(caption) {
+        const text = (caption || "").toLowerCase();
+        let bias = "netral";
+        const iBear = text.indexOf("bearish");
+        const iBull = text.indexOf("bullish");
+        if (iBear !== -1 && (iBull === -1 || iBear < iBull)) bias = "bearish";
+        else if (iBull !== -1) bias = "bullish";
+        const levels = [...new Set(((caption || "").match(/\$\s?\d[\d.,]*/g) || []).map(l => l.replace(/[.,]+$/, "")))].slice(0, 4);
+        return { bias, levels };
+    }
+
     function openLightbox(src) {
         lightboxEl.querySelector("img").src = src;
         lightboxEl.classList.add("active");
@@ -72,6 +84,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             return false;
         }
         return true;
+    }
+
+    // ==========================================
+    // FILTER (Semua / Bearish / Bullish)
+    // ==========================================
+    const filtersEl = document.getElementById("cnlFilters");
+    if (filtersEl) {
+        filtersEl.addEventListener("click", (e) => {
+            const btn = e.target.closest(".cnl-filter");
+            if (!btn) return;
+            document.querySelectorAll(".cnl-filter").forEach((b) => b.classList.toggle("active", b === btn));
+            const f = btn.dataset.filter;
+            document.querySelectorAll(".cnl-post").forEach((p) => {
+                p.hidden = !(f === "all" || p.dataset.bias === f);
+            });
+        });
     }
 
     // ==========================================
@@ -188,45 +216,55 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ==========================================
     function renderPost(post) {
         const authorName = adminProfile?.full_name || adminProfile?.username || "CFX Pros Admin";
-        const authorAvatar = post.author_avatar || "assets/images/avatar/default-avatar.png";
-        const isOwner = user && post.admin_id === user.id;
+        const info = analyzePost(post.caption);
 
         const el = document.createElement("article");
-        el.className = "cnl-post";
+        el.className = "cnl-post" + (post.images.length ? "" : " no-media") + (post.isLatest ? " is-latest" : "");
+        el.dataset.bias = info.bias;
 
         el.innerHTML = `
-            <div class="cnl-post-head">
-                <div class="cnl-post-avatar">
-                    ${post.author_avatar ? `<img src="${escapeHtml(post.author_avatar)}" alt="admin">` : '<i class="fa-solid fa-chart-line"></i>'}
-                </div>
-                <div>
-                    <div class="cnl-post-author">
-                        ${escapeHtml(post.author_name || authorName)}
-                        <i class="fa-solid fa-circle-check cnl-verified" title="Admin resmi"></i>
-                    </div>
-                    <div class="cnl-post-time">${timeAgo(post.created_at)}</div>
-                </div>
-                ${isAdmin ? `
-                    <div class="cnl-post-admin-actions">
-                        <i class="fa-solid fa-trash cnl-delete-btn" title="Hapus"></i>
-                    </div>
-                ` : ''}
-            </div>
-
-            ${post.caption ? `<p class="cnl-post-caption"></p>` : ''}
-
             ${post.images.length > 0 ? `
-                <div class="cnl-carousel">
-                    <div class="cnl-carousel-track"></div>
-                    ${post.images.length > 1 ? `<div class="cnl-carousel-dots"></div>` : ''}
+                <div class="cnl-media">
+                    <div class="cnl-carousel">
+                        <div class="cnl-carousel-track"></div>
+                        ${post.images.length > 1 ? `<div class="cnl-carousel-dots"></div>` : ''}
+                    </div>
+                    <small class="cnl-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Klik chart untuk memperbesar</small>
                 </div>
             ` : ''}
 
-            <div class="cnl-post-footer">
-                <span class="cnl-like-btn">
-                    <i class="fa-${post.isLiked ? 'solid' : 'regular'} fa-heart" style="${post.isLiked ? 'color:#e11d48;' : ''}"></i>
-                    <span class="cnl-like-count">${post.likeCount}</span>
-                </span>
+            <div class="cnl-body">
+                <div class="cnl-post-head">
+                    <div class="cnl-post-avatar">
+                        ${post.author_avatar ? `<img src="${escapeHtml(post.author_avatar)}" alt="admin">` : '<i class="fa-solid fa-chart-line"></i>'}
+                    </div>
+                    <div>
+                        <div class="cnl-post-author">
+                            ${escapeHtml(post.author_name || authorName)}
+                            <i class="fa-solid fa-circle-check cnl-verified" title="Admin resmi"></i>
+                        </div>
+                        <div class="cnl-post-time">${timeAgo(post.created_at)}</div>
+                    </div>
+                    ${isAdmin ? `<div class="cnl-post-admin-actions"><i class="fa-solid fa-trash cnl-delete-btn" title="Hapus"></i></div>` : ''}
+                </div>
+
+                ${(post.isLatest || info.bias !== "netral") ? `
+                    <div class="cnl-tags">
+                        ${post.isLatest ? `<span class="cnl-tag cnl-tag--latest">Terbaru</span>` : ''}
+                        ${info.bias !== "netral" ? `<span class="cnl-tag cnl-tag--${info.bias}">${info.bias === "bearish" ? "Bearish" : "Bullish"}</span>` : ''}
+                    </div>
+                ` : ''}
+
+                ${post.caption ? `<p class="cnl-post-caption"></p>` : ''}
+
+                ${info.levels.length ? `<div class="cnl-levels">${info.levels.map((l) => `<span>${escapeHtml(l)}</span>`).join("")}</div>` : ''}
+
+                <div class="cnl-post-footer">
+                    <span class="cnl-like-btn">
+                        <i class="fa-${post.isLiked ? 'solid' : 'regular'} fa-heart" style="${post.isLiked ? 'color:#e11d48;' : ''}"></i>
+                        <span class="cnl-like-count">${post.likeCount}</span>
+                    </span>
+                </div>
             </div>
         `;
 
@@ -344,10 +382,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const myLikedSet = new Set((myLikesRes.data || []).map((l) => l.post_id));
 
         feedEl.innerHTML = "";
-        posts.forEach((post) => {
+        posts.forEach((post, index) => {
             const profile = profilesMap[post.admin_id];
             const enriched = {
                 ...post,
+                isLatest: index === 0,
                 images: imagesMap[post.id] || [],
                 author_name: profile?.full_name || profile?.username || null,
                 author_avatar: profile?.avatar_url || null,
