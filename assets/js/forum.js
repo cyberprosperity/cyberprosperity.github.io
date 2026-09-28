@@ -444,9 +444,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         let isLiked = !!myLikeRes.data;
         const commentCount = commentCountRes.count ?? 0;
 
-        // Gambar lampiran: tampil untuk admin (agar bisa ditinjau) dan untuk
-        // penulis selama postingannya belum disetujui
-        const hasImage = !!thread.image_url && (isAdmin || !isPublished);
+        // Gambar lampiran: tampil untuk semua orang jika postingan sudah disetujui
+        // (published). Selama belum disetujui hanya admin dan penulisnya yang melihat.
+        const hasImage = !!thread.image_url && (isPublished || isAdmin || isOwner);
 
         const article = document.createElement("article");
         article.className = "thread-card" + (hasImage ? "" : " no-media");
