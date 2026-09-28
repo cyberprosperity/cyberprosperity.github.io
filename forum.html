@@ -1,304 +1,153 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forum | CFX Pros</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <meta charset="UTF-8">
+<style>
+/* FORUM - redesign (override style.css, disamakan dengan Analisa Harian) */
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+.forum-header,.forum-toolbar,.forum-feed{max-width:960px}
 
-    <title>Forum | Cyber Prosperity</title>
+.forum-header{align-items:center;gap:20px;margin-bottom:18px}
+.forum-header h1{font-size:26px;margin:0 0 4px}
+.forum-header p{font-size:14px;line-height:1.5;color:#94A3B8;margin:0}
+.forum-create-btn{padding:11px 18px;border-radius:12px;white-space:nowrap}
 
-    <link rel="stylesheet"
-          href="assets/css/style.css">
+.forum-toolbar{gap:12px;margin-bottom:20px}
+.forum-categories{gap:8px}
+.forum-categories button{padding:8px 16px;font-size:13px;border:1px solid rgba(255,255,255,.12);background:transparent}
+.forum-categories button:hover{background:transparent;border-color:rgba(255,255,255,.3)}
+.forum-categories button.active{background:#D4A64A;border-color:#D4A64A;color:#111827}
+.forum-search{width:250px;border-radius:12px}
+.forum-search input{height:40px;font-size:14px}
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+/* KARTU THREAD */
+.forum-feed{display:flex;flex-direction:column;gap:20px}
+.forum-feed .thread-card{display:grid;grid-template-columns:340px minmax(0,1fr);gap:0;padding:0;background:#0f1726;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden}
+.forum-feed .thread-card:hover{background:#0f1726}
+.forum-feed .thread-card.no-media{grid-template-columns:minmax(0,1fr)}
 
+.thread-media{background:#0a101b;padding:12px;display:flex;align-items:flex-start;justify-content:center;min-width:0}
+.thread-media .feed-post-image{width:100%;max-height:300px;object-fit:contain;border-radius:10px;cursor:zoom-in;display:block}
+
+.forum-feed .thread-content{flex:none;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.thread-head{display:flex;align-items:center;gap:12px}
+.thread-who{display:flex;flex-direction:column;flex:1;min-width:0}
+.thread-author{color:#fff;font-size:14px;font-weight:700}
+.thread-time{color:#8A94A6;font-size:12px}
+.forum-feed .thread-tag{margin:0;padding:4px 11px;border-radius:999px;background:rgba(212,166,74,.15);color:#E8BC5D;font-size:12px;font-weight:700}
+.thread-status:empty,.thread-mod-slot:empty{display:none}
+.thread-title{margin:0;color:#fff;font-size:17px;font-weight:700;line-height:1.4}
+.forum-feed .thread-preview{margin:0;color:#E8EDF5;font-size:14px;line-height:1.65;max-height:200px;overflow-y:auto;padding-right:10px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#D4A64A #151f33}
+.forum-feed .thread-preview::-webkit-scrollbar{width:6px}
+.forum-feed .thread-preview::-webkit-scrollbar-track{background:#151f33;border-radius:999px}
+.forum-feed .thread-preview::-webkit-scrollbar-thumb{background:#D4A64A;border-radius:999px}
+.forum-feed .thread-footer{margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+.forum-feed .thread-comments{margin-top:0}
+
+@media (max-width:900px){
+  .forum-feed .thread-card{grid-template-columns:minmax(0,1fr)}
+  .forum-search{width:100%}
+}
+</style>
 </head>
 
 <body>
 
 <div class="app-layout">
 
-    <!-- ==========================================
-         SIDEBAR
-    =========================================== -->
-
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-
         <div class="sidebar-logo">
-
-            <img
-                src="assets/images/logo/CFXPros-sidebar.webp"
-                alt="Cyber Prosperity Logo"
-                class="sidebar-logo-img">
+            <img src="assets/images/logo/CFXPros-sidebar.webp" alt="CFX Pros Logo" class="sidebar-logo-img">
         </div>
 
         <nav class="sidebar-menu">
-            <a href="index.html">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-
-            <a href="features.html">
-                <i class="fa-solid fa-star"></i>
-                <span>Fitur</span>
-            </a>
-
-            <a href="forum.html" class="active">
-                <i class="fa-solid fa-comments"></i>
-                <span>Forum</span>
-            </a>
-
-            <a href="analisa.html">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Analisa Harian</span>
-            </a>
-
-            <a href="broker.html">
-                <i class="fa-solid fa-building-columns"></i>
-                <span>Broker</span>
-            </a>
-
-            <a href="artikel.html">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Artikel</span>
-            </a>
-
-            <a href="contact.html">
-                <i class="fa-solid fa-phone"></i>
-                <span>Contact</span>
-            </a>
-
+            <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            <a href="features.html"><i class="fa-solid fa-star"></i><span>Fitur</span></a>
+            <a href="forum.html" class="active"><i class="fa-solid fa-comments"></i><span>Forum</span></a>
+            <a href="analisa.html"><i class="fa-solid fa-chart-line"></i><span>Analisa Harian</span></a>
+            <a href="broker.html"><i class="fa-solid fa-building-columns"></i><span>Broker</span></a>
+            <a href="artikel.html"><i class="fa-solid fa-book-open"></i><span>Artikel</span></a>
+            <a href="contact.html"><i class="fa-solid fa-phone"></i><span>Contact</span></a>
         </nav>
 
         <div class="sidebar-divider"></div>
 
         <div class="sidebar-bottom">
-            <a href="profile.html">
-                <i class="fa-regular fa-user"></i>
-                <span>Profile</span>
-            </a>
-
-            <a href="settings.html">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-
-            <a href="login.html">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </a>
-            
-
+            <a href="profile.html"><i class="fa-regular fa-user"></i><span>Profile</span></a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
         </div>
-
     </aside>
 
-    <!-- ==========================================
-         MAIN CONTENT
-    =========================================== -->
-
+    <!-- MAIN -->
     <main class="main-content">
 
-        <!-- ==========================================
-             MARKET TICKER
-        =========================================== -->
-    <div class="market-ticker" id="tv-ticker-slot"></div>
-
-        <!-- ==========================================
-             FORUM HEADER
-        =========================================== -->
+        <div class="market-ticker" id="tv-ticker-slot"></div>
 
         <section class="forum-header">
-
             <div class="forum-header-top">
-
-                <span class="forum-subtitle">
-
-                    Community
-
-                </span>
-
-                <h1>
-
-                    Forum Diskusi
-
-                </h1>
-
-                <p>
-
-                    Diskusi, tanya jawab, dan berbagi analisa bersama trader lain di komunitas Cyber Prosperity.
-
-                </p>
-
+                <h1>Forum Diskusi</h1>
+                <p>Diskusi, tanya jawab, dan berbagi analisa bersama trader lain di komunitas CFX Pros.</p>
             </div>
-
             <button class="forum-create-btn">
-
-                <i class="fa-solid fa-plus"></i>
-
-                Buat Thread Baru
-
+                <i class="fa-solid fa-plus"></i> Buat Thread Baru
             </button>
-
         </section>
-
-        <!-- ==========================================
-             CATEGORY + SEARCH
-        =========================================== -->
 
         <section class="forum-toolbar">
-
             <div class="forum-categories">
-
-                <button class="active" data-filter="all">
-                    Semua 
-                </button>
-
-                <button data-filter="gold">
-                    Gold
-                </button>
-
-                <button data-filter="forex">
-                     Forex
-                </button>
-
-                <button data-filter="strategi">
-                     Strategi
-                </button>
-
-                <button data-filter="pemula">
-                    Pemula
-                </button>
-
-                <button data-filter="offtopic">
-                    Off Topic
-                </button>
-
+                <button class="active" data-filter="all">Semua</button>
+                <button data-filter="gold">Gold</button>
+                <button data-filter="forex">Forex</button>
+                <button data-filter="strategi">Strategi</button>
+                <button data-filter="pemula">Pemula</button>
+                <button data-filter="offtopic">Off Topic</button>
             </div>
-
             <div class="forum-search">
-
                 <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    placeholder="Cari thread...">
-
+                <input type="text" placeholder="Cari thread...">
             </div>
-
         </section>
 
-<!-- ==========================================
-     FORUM THREAD LIST
-========================================== -->
+        <!-- MODAL BUAT THREAD BARU -->
+        <div id="threadModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
+            <div style="background:#12141c; padding:24px; border-radius:12px; width:90%; max-width:500px;">
+                <h3 style="color:#fff; margin-bottom:16px;">Buat Thread Baru</h3>
 
-<!-- MODAL BUAT THREAD BARU -->
-<div id="threadModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
-    <div style="background:#12141c; padding:24px; border-radius:12px; width:90%; max-width:500px;">
-        <h3 style="color:#fff; margin-bottom:16px;">Buat Thread Baru</h3>
+                <input type="text" id="threadTitleInput" placeholder="Judul thread"
+                       style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
 
-        <input type="text" id="threadTitleInput" placeholder="Judul thread"
-               style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+                <select id="threadCategoryInput"
+                        style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
+                    <option value="gold">Gold</option>
+                    <option value="forex">Forex</option>
+                    <option value="strategi">Strategi</option>
+                    <option value="pemula">Pemula</option>
+                    <option value="offtopic">Off Topic</option>
+                </select>
 
-        <select id="threadCategoryInput"
-                style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;">
-            <option value="gold">Gold</option>
-            <option value="forex">Forex</option>
-            <option value="strategi">Strategi</option>
-            <option value="pemula">Pemula</option>
-            <option value="offtopic">Off Topic</option>
-        </select>
+                <textarea id="threadContentInput" placeholder="Tulis isi thread..." rows="4"
+                          style="width:100%; padding:10px; margin-bottom:16px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;"></textarea>
 
-        <textarea id="threadContentInput" placeholder="Tulis isi thread..." rows="4"
-                  style="width:100%; padding:10px; margin-bottom:16px; border-radius:8px; border:1px solid #333; background:#1a1c26; color:#fff;"></textarea>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end;">
-            <button id="threadCancelBtn" style="padding:10px 16px; border-radius:8px; border:none; background:#333; color:#fff; cursor:pointer;">Batal</button>
-            <button id="threadSubmitBtn" class="forum-create-btn" style="cursor:pointer;">Posting</button>
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button id="threadCancelBtn" style="padding:10px 16px; border-radius:8px; border:none; background:#333; color:#fff; cursor:pointer;">Batal</button>
+                    <button id="threadSubmitBtn" class="forum-create-btn" style="cursor:pointer;">Posting</button>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- DAFTAR THREAD (diisi oleh forum.js) -->
+        <section class="forum-feed"></section>
+
+    </main>
+
 </div>
-
-<section class="forum-feed">
-
-    <!-- THREAD 1 -->
-
-    <article class="thread-card" data-category="gold">
-
-        <div class="thread-avatar">
-
-            <img src="assets/images/avatar/michael-tan.jpg" alt="John Trader">
-
-        </div>
-
-        <div class="thread-content">
-
-            <div class="thread-meta">
-
-                <span class="thread-author">
-
-                    Michael Tan
-
-                </span>
-
-                <span class="thread-time">
-
-                    10 menit lalu
-
-                </span>
-
-            </div>
-
-            <span class="thread-tag">
-
-                GOLD
-
-            </span>
-
-            <h3 class="thread-title">
-
-                Analisa Gold Hari Ini, Apakah Masih Bullish?
-
-            </h3>
-
-            <p class="thread-preview">
-
-                Saya melihat harga emas masih berada di atas support harian.
-                Bagaimana pendapat teman-teman?
-
-            </p>
-
-            <div class="thread-footer">
-
-                <span>
-
-                    💬 24 Balasan
-
-                </span>
-
-                <span>
-
-                    👍 81 Like
-
-                </span>
-
-                <span>
-
-                    👁 325 Views
-
-                </span>
-
-            </div>
-
-        </div>
-
-    </article>
-
-</section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
@@ -308,5 +157,4 @@
 <script src="assets/js/market-ticker-loader.js"></script>
 
 </body>
-
 </html>

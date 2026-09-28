@@ -444,36 +444,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         let isLiked = !!myLikeRes.data;
         const commentCount = commentCountRes.count ?? 0;
 
+        // Gambar lampiran: tampil untuk admin (agar bisa ditinjau) dan untuk
+        // penulis selama postingannya belum disetujui
+        const hasImage = !!thread.image_url && (isAdmin || !isPublished);
+
         const article = document.createElement("article");
-        article.className = "thread-card";
+        article.className = "thread-card" + (hasImage ? "" : " no-media");
         article.dataset.category = thread.category || "gold";
 
-                article.innerHTML = `
-            <div class="thread-avatar">
-                <a href="${profileHref}"><img src="${escapeHtml(authorAvatar)}" alt="${escapeHtml(authorName)}"></a>
-            </div>
-                        <div class="thread-content">
-                <button type="button" class="thread-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
-                <div class="thread-meta" style="display:flex; align-items:center; gap:10px;">
-                    <a href="${profileHref}" style="color:inherit; text-decoration:none;">
-                        <span class="thread-author"></span>
-                    </a>
+        article.innerHTML = `
+            ${hasImage ? `<div class="thread-media"></div>` : ''}
+            <div class="thread-content">
+
+                <div class="thread-head">
+                    <div class="thread-avatar">
+                        <a href="${profileHref}"><img src="${escapeHtml(authorAvatar)}" alt="${escapeHtml(authorName)}"></a>
+                    </div>
+                    <div class="thread-who">
+                        <a href="${profileHref}" style="color:inherit; text-decoration:none;">
+                            <span class="thread-author"></span>
+                        </a>
+                        <span class="thread-time">${timeAgo(thread.created_at)}</span>
+                    </div>
                     <span class="thread-tag"></span>
-                    <span class="thread-time">${timeAgo(thread.created_at)}</span>
                     ${isOwner ? `
-                        <span style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+                        <span style="display:flex; gap:12px; align-items:center;">
                             ${canEdit ? '<i class="fa-regular fa-pen-to-square thread-edit-btn" style="cursor:pointer; color:#aaa;"></i>' : ''}
                             <i class="fa-solid fa-trash thread-delete-btn" style="cursor:pointer; color:#aaa;"></i>
                         </span>
                     ` : ''}
                 </div>
+
                 <div class="thread-status">${statusBadge(thread.status)}</div>
                 <h3 class="thread-title"></h3>
-
-                <div class="thread-body">
-                    <p class="thread-preview"></p>
-                    <div class="thread-body-image"></div>
-                </div>
+                <p class="thread-preview"></p>
 
                 <div class="thread-edit-form" style="display:none;">
                     <input type="text" class="thread-edit-title" placeholder="Judul thread (opsional)">
@@ -508,6 +512,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </span>
                     ` : ''}
                 </div>
+
                 <div class="thread-comments" style="display:none;">
                     <div class="comment-list"></div>
                     <div class="comment-form">
@@ -515,6 +520,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <button type="button" class="comment-submit-btn">Kirim</button>
                     </div>
                 </div>
+
             </div>
         `;
 
@@ -534,9 +540,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         previewEl.innerHTML = renderContent(thread.content, thread.status);
 
-        // Gambar lampiran: tampil untuk admin (agar bisa ditinjau) dan untuk
-        // penulis selama postingannya belum disetujui
-        if (thread.image_url && (isAdmin || !isPublished)) {
+        // Gambar lampiran (kolom kiri kartu)
+        if (hasImage) {
             const img = document.createElement("img");
             img.src = thread.image_url;
             img.alt = "Lampiran postingan";
@@ -545,7 +550,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 e.stopPropagation(); // biar tidak ikut nge-trigger hitung views/klik kartu
                 openLightbox(thread.image_url);
             });
-            article.querySelector(".thread-body-image").appendChild(img);
+            article.querySelector(".thread-media").appendChild(img);
         }
 
         // Tombol moderasi untuk admin
