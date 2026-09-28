@@ -19,6 +19,18 @@
 .cnl-post-btn{display:flex;align-items:center;gap:8px;background:#D4A64A;color:#111827;border:none;border-radius:12px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,box-shadow .2s}
 .cnl-post-btn:hover{background:#E8BC5D;box-shadow:0 8px 20px rgba(212,166,74,.3)}
 
+/* TECHNICAL ANALYSIS WIDGET (3 gauge: Oscillators, Summary, Moving Averages) */
+.cnl-ta{max-width:960px;background:#0f1726;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.cnl-ta-head{display:flex;align-items:center;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07)}
+.cnl-ta-title{display:flex;flex-direction:column;gap:4px}
+.cnl-ta-label{color:#D4A64A;font-size:12px;font-weight:700;letter-spacing:.08em}
+.cnl-ta-head h2{margin:0;color:#fff;font-size:20px;font-weight:700}
+.cnl-ta-head h2 span{color:#D4A64A}
+.cnl-ta-note{margin:0;color:#8A94A6;font-size:12px;line-height:1.5;max-width:340px}
+.cnl-ta-widget{background:#0a101b;padding:8px 12px;min-width:0}
+.cnl-ta-fit{width:100%;overflow:hidden;position:relative}
+.cnl-ta-stage{transform-origin:top left}
+
 /* FILTER */
 .cnl-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .cnl-filter{padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#94A3B8;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
@@ -154,6 +166,72 @@
                 </button>
             </div>
         </section>
+
+        <!-- RINGKASAN INDIKATOR TEKNIKAL XAUUSD -->
+        <section class="cnl-ta" id="cnlTechnical">
+
+            <div class="cnl-ta-head">
+                <div class="cnl-ta-title">
+                    <span class="cnl-ta-label">RINGKASAN INDIKATOR</span>
+                    <h2>Sinyal Teknikal <span>XAUUSD</span></h2>
+                </div>
+                <p class="cnl-ta-note">Gabungan oscillator dan moving average yang dihitung otomatis. Bersifat informatif, bukan ajakan membeli atau menjual.</p>
+            </div>
+
+            <div class="cnl-ta-widget">
+                <div class="cnl-ta-fit" id="cnlTaFit">
+                    <div class="cnl-ta-stage" id="cnlTaStage">
+                        <div class="tradingview-widget-container" id="cnlTaContainer">
+                            <div class="tradingview-widget-container__widget"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <script>
+        /* Widget TradingView Sinyal Teknikal
+           Desktop : 3 gauge sejajar, dirender di lebar NATIVE_W lalu DIKECILKAN (scale) agar pas di dalam card tanpa scroll.
+           Mobile  : 1 gauge Summary saja (tanpa scale). */
+        (function () {
+            var NATIVE_W = 1400;   // lebar render widget (makin besar = gauge makin kecil di layar)
+            var NATIVE_H = 350;    // tinggi widget, harus sama dengan "height" di config bawah
+
+            var fit   = document.getElementById('cnlTaFit');
+            var stage = document.getElementById('cnlTaStage');
+            var box   = document.getElementById('cnlTaContainer');
+            if (!fit || !stage || !box) return;
+
+            var wide = fit.clientWidth >= 600;
+
+            function layout() {
+                if (!wide) return;
+                var scale = Math.min(1, fit.clientWidth / NATIVE_W);
+                stage.style.width = NATIVE_W + 'px';
+                stage.style.transform = 'scale(' + scale + ')';
+                fit.style.height = Math.round(NATIVE_H * scale) + 'px';
+            }
+            layout();
+            window.addEventListener('resize', layout);
+
+            var s = document.createElement('script');
+            s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js';
+            s.async = true;
+            s.text = JSON.stringify({
+                interval: '1D',
+                width: '100%',
+                isTransparent: true,
+                height: wide ? NATIVE_H : 420,
+                symbol: 'OANDA:XAUUSD',
+                showIntervalTabs: true,
+                displayMode: wide ? 'multiple' : 'single',
+                locale: 'id',
+                colorTheme: 'dark'
+            });
+            box.appendChild(s);
+        })();
+        </script>
 
         <div class="cnl-filters" id="cnlFilters">
             <button type="button" class="cnl-filter active" data-filter="all">Semua</button>

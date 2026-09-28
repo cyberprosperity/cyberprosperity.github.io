@@ -19,5 +19,5 @@ async function loadMarketTicker() {
         console.error('Gagal memuat market ticker:', err);
     }
 }
-
+ 
 document.addEventListener('DOMContentLoaded', loadMarketTicker);
