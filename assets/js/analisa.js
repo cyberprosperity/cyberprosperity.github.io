@@ -1,6 +1,6 @@
 // ============================================================
 // ANALISA HARIAN (channel style) - assets/js/analisa.js
-// Hanya admin yang bisa posting. Pengunjung hanya bisa like.
+// Hanya admin yang bisa posting dan mengedit. Pengunjung hanya bisa like.
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const adminBar = document.getElementById("cnlAdminBar");
     const postBtn = document.getElementById("cnlPostBtn");
     const modal = document.getElementById("cnlModal");
+    const modalTitleEl = modal.querySelector("h3");
     const cancelBtn = document.getElementById("cnlCancelBtn");
     const submitBtn = document.getElementById("cnlSubmitBtn");
     const captionInput = document.getElementById("cnlCaptionInput");
@@ -32,7 +33,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const previewGrid = document.getElementById("cnlPreviewGrid");
     const lightboxEl = document.getElementById("cnlLightbox");
 
-    let selectedFiles = [];
+    let selectedFiles = [];   // foto baru yang dipilih di modal
+    let editingPost = null;   // null = mode posting baru, terisi = mode edit
+    let keptImages = [];      // mode edit: foto lama yang dipertahankan
+    let removedImages = [];   // mode edit: foto lama yang akan dihapus saat simpan
 
     if (isAdmin) adminBar.style.display = "flex";
 
@@ -71,6 +75,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         return { bias, levels };
     }
 
+    // Ambil path file di storage dari URL publik (untuk menghapus foto lama)
+    function storagePathFromUrl(url) {
+        const marker = "/channel-images/";
+        const str = String(url || "");
+        const i = str.indexOf(marker);
+        if (i === -1) return null;
+        return decodeURIComponent(str.slice(i + marker.length).split("?")[0]);
+    }
+
     function openLightbox(src) {
         lightboxEl.querySelector("img").src = src;
         lightboxEl.classList.add("active");
@@ -103,17 +116,54 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ==========================================
-    // MODAL POST BARU (admin)
+    // MODAL POST BARU / EDIT POST (admin)
     // ==========================================
     function resetModal() {
         captionInput.value = "";
         selectedFiles = [];
+        editingPost = null;
+        keptImages = [];
+        removedImages = [];
         previewGrid.innerHTML = "";
         fileInput.value = "";
     }
 
+    // post = null -> posting baru, post = objek -> edit post tersebut
+    function openModal(post) {
+        resetModal();
+
+        if (post) {
+            editingPost = post;
+            captionInput.value = post.caption || "";
+            keptImages = post.images.slice();
+            modalTitleEl.textContent = "Edit Update Analisa";
+            submitBtn.textContent = "Simpan";
+        } else {
+            modalTitleEl.textContent = "Update Analisa Baru";
+            submitBtn.textContent = "Posting";
+        }
+
+        renderPreviews();
+        modal.style.display = "flex";
+    }
+
     function renderPreviews() {
         previewGrid.innerHTML = "";
+
+        // Foto lama (mode edit)
+        keptImages.forEach((img) => {
+            const item = document.createElement("div");
+            item.className = "cnl-preview-item";
+            item.innerHTML = `<img src="${escapeHtml(img.image_url)}" alt="foto lama"><span class="cnl-preview-remove">&times;</span>`;
+            item.querySelector(".cnl-preview-remove").addEventListener("click", () => {
+                removedImages.push(img);
+                keptImages = keptImages.filter((i) => i !== img);
+                renderPreviews();
+            });
+            previewGrid.appendChild(item);
+        });
+
+        // Foto baru
         selectedFiles.forEach((file, idx) => {
             const url = URL.createObjectURL(file);
             const item = document.createElement("div");
@@ -138,8 +188,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (postBtn) {
         postBtn.addEventListener("click", () => {
             if (!requireLogin("Anda harus login sebagai admin untuk memposting update.")) return;
-            resetModal();
-            modal.style.display = "flex";
+            openModal(null);
         });
     }
 
@@ -150,24 +199,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
             const caption = captionInput.value.trim();
+            const isEdit = !!editingPost;
+            const idleLabel = isEdit ? "Simpan" : "Posting";
 
-            if (!caption && selectedFiles.length === 0) {
+            if (!caption && selectedFiles.length === 0 && keptImages.length === 0) {
                 alert("Isi caption atau lampirkan minimal satu foto.");
                 return;
             }
 
             submitBtn.disabled = true;
-            submitBtn.textContent = "Memposting...";
+            submitBtn.textContent = isEdit ? "Menyimpan..." : "Memposting...";
 
             try {
-                const postId = crypto.randomUUID();
+                let postId;
+                let startOrder = 0;
 
-                const { error: postError } = await supabaseClient
-                    .from("channel_posts")
-                    .insert({ id: postId, admin_id: user.id, caption: caption || null });
+                if (isEdit) {
+                    postId = editingPost.id;
 
-                if (postError) throw postError;
+                    const { data: updated, error: updateError } = await supabaseClient
+                        .from("channel_posts")
+                        .update({ caption: caption || null })
+                        .eq("id", postId)
+                        .select("id");
 
+                    if (updateError) throw updateError;
+                    if (!updated || updated.length === 0) {
+                        throw new Error("Tidak ada izin untuk mengedit post ini.");
+                    }
+
+                    startOrder = keptImages.reduce((max, i) => Math.max(max, i.sort_order ?? 0), -1) + 1;
+                } else {
+                    postId = crypto.randomUUID();
+
+                    const { error: postError } = await supabaseClient
+                        .from("channel_posts")
+                        .insert({ id: postId, admin_id: user.id, caption: caption || null });
+
+                    if (postError) throw postError;
+                }
+
+                // Upload foto baru
                 for (let i = 0; i < selectedFiles.length; i++) {
                     const file = selectedFiles[i];
                     const ext = file.name.split(".").pop();
@@ -183,9 +255,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     const { error: imgError } = await supabaseClient
                         .from("channel_post_images")
-                        .insert({ post_id: postId, image_url: publicUrlData.publicUrl, sort_order: i });
+                        .insert({ post_id: postId, image_url: publicUrlData.publicUrl, sort_order: startOrder + i });
 
                     if (imgError) throw imgError;
+                }
+
+                // Hapus foto lama yang dibuang (mode edit)
+                for (const img of removedImages) {
+                    const { data: deleted, error: delError } = await supabaseClient
+                        .from("channel_post_images")
+                        .delete()
+                        .eq("id", img.id)
+                        .select("id");
+
+                    if (delError) throw delError;
+                    if (!deleted || deleted.length === 0) {
+                        throw new Error("Tidak ada izin untuk menghapus foto lama.");
+                    }
+
+                    const oldPath = storagePathFromUrl(img.image_url);
+                    if (oldPath) {
+                        await supabaseClient.storage.from("channel-images").remove([oldPath]);
+                    }
                 }
 
                 modal.style.display = "none";
@@ -193,10 +284,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await loadPosts();
 
             } catch (err) {
-                alert("Gagal memposting: " + err.message);
+                alert((isEdit ? "Gagal menyimpan: " : "Gagal memposting: ") + err.message);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Posting";
+                submitBtn.textContent = idleLabel;
             }
         });
     }
@@ -245,7 +336,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                         <div class="cnl-post-time">${timeAgo(post.created_at)}</div>
                     </div>
-                    ${isAdmin ? `<div class="cnl-post-admin-actions"><i class="fa-solid fa-trash cnl-delete-btn" title="Hapus"></i></div>` : ''}
+                    ${isAdmin ? `
+                        <div class="cnl-post-admin-actions">
+                            <i class="fa-solid fa-pen-to-square cnl-edit-btn" title="Edit"></i>
+                            <i class="fa-solid fa-trash cnl-delete-btn" title="Hapus"></i>
+                        </div>
+                    ` : ''}
                 </div>
 
                 ${(post.isLatest || info.bias !== "netral") ? `
@@ -298,6 +394,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 });
             }
+        }
+
+        // Edit
+        const editBtn = el.querySelector(".cnl-edit-btn");
+        if (editBtn) {
+            editBtn.addEventListener("click", () => openModal(post));
         }
 
         // Delete
