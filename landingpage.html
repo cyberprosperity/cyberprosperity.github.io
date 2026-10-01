@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promo Khusus Bulan Oktober | CFXPros</title>
+<meta name="description" content="Promo Oktober 2026 CFXPros: spread lebih rendah, tanpa biaya overnight, dan rebate per lot. Trading forex berisiko tinggi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -19,6 +20,7 @@ html{scroll-behavior:smooth}
 body{font-family:Inter,system-ui,sans-serif;font-size:14px;background:var(--navy);color:var(--ink);line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 .wrap{width:min(960px,100% - 40px);margin:0 auto}
+.ul{text-decoration:underline}
 
 /* ---------- HEADER ---------- */
 header{position:relative;z-index:3;padding:14px 0}
@@ -27,6 +29,19 @@ header .wrap{display:flex;align-items:center;justify-content:space-between}
 .logo-img{display:block;width:clamp(130px,18vw,190px);height:auto}
 .nav-cta{padding:8px 18px;border-radius:10px;border:1px solid var(--line);font-weight:600;font-size:13px;transition:.25s}
 .nav-cta:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ---------- TICKER PERINGATAN RISIKO ---------- */
+.risk-ticker{background:#0b1c4d;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:10px 0;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.risk-track{display:inline-flex;width:max-content;animation:riskscroll 45s linear infinite}
+.risk-track:hover{animation-play-state:paused}
+.risk-track span{padding-right:80px}
+@keyframes riskscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .risk-ticker{white-space:normal;text-align:center;padding:10px 20px}
+  .risk-track{display:block;width:auto;animation:none}
+  .risk-track span{padding:0}
+  .risk-track span:nth-child(n+2){display:none}
+}
 
 /* ---------- HERO ---------- */
 .hero{
@@ -112,11 +127,15 @@ section.s{padding:64px 0 0}
 .step h3{font:700 15px Sora,sans-serif;margin-bottom:4px}
 .step p{font-size:13px;color:var(--mut)}
 
+/* syarat */
+.terms{max-width:640px}
+.terms ul{padding-left:18px;color:var(--mut);font-size:13px;line-height:1.8}
+
 /* penutup */
 .closing{margin-top:64px;padding:48px 0;text-align:center;background:radial-gradient(560px 240px at 50% 100%,rgba(26,140,255,.3),transparent 70%)}
 .closing h2{font:800 clamp(22px,3.4vw,30px) Sora,sans-serif;letter-spacing:-.03em;margin-bottom:18px}
 
-footer{padding:20px 0 28px;border-top:1px solid var(--line);font-size:11px;color:var(--mut)}
+footer{padding:20px 0 28px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)}
 footer p + p{margin-top:8px}
 
 /* ---------- ANIMASI MASUK ---------- */
@@ -151,17 +170,27 @@ footer p + p{margin-top:8px}
   </div>
 </header>
 
+<!-- PERINGATAN RISIKO (ticker) -->
+<div class="risk-ticker" role="note" aria-label="Peringatan risiko">
+  <div class="risk-track">
+    <span>Peringatan risiko: trading forex dan CFD berleverage berisiko tinggi dan dapat menyebabkan kerugian modal, termasuk seluruh dana Anda. Pastikan Anda memahami risikonya sebelum memulai.</span>
+    <span>Peringatan risiko: trading forex dan CFD berleverage berisiko tinggi dan dapat menyebabkan kerugian modal, termasuk seluruh dana Anda. Pastikan Anda memahami risikonya sebelum memulai.</span>
+    <span>Peringatan risiko: trading forex dan CFD berleverage berisiko tinggi dan dapat menyebabkan kerugian modal, termasuk seluruh dana Anda. Pastikan Anda memahami risikonya sebelum memulai.</span>
+    <span>Peringatan risiko: trading forex dan CFD berleverage berisiko tinggi dan dapat menyebabkan kerugian modal, termasuk seluruh dana Anda. Pastikan Anda memahami risikonya sebelum memulai.</span>
+  </div>
+</div>
+
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
     <span class="pill rise d1">PROMO KHUSUS</span>
     <h1 class="rise d2">Bulan <em>Oktober</em></h1>
-    <p class="lead rise d3">Spread lebih rendah, tanpa biaya overnight, dan rebate di setiap lot transaksi. Trading lebih mudah, bersama CFXPros.</p>
+    <p class="lead rise d3">Spread lebih rendah, tanpa biaya overnight, dan rebate di setiap lot transaksi. Lebih mudah, bersama CFXPros.</p>
     <div class="cta-row rise d4">
-      <a href="https://clientarea.cfforex.com/auth/register/cypros7" class="btn btn-gold">Daftar Sekarang</a>
+      <a href="https://clientarea.cfforex.com/auth/register/cypros7" class="btn btn-gold">Daftar Akun</a>
       <a href="#kalkulator" class="btn btn-ghost">Hitung Rebate</a>
     </div>
-    <p class="period rise d5">Promo berlaku selama bulan Oktober 2026 &middot; Syarat &amp; ketentuan berlaku</p>
+    <p class="period rise d5">Promo berlaku selama bulan Oktober 2026 &middot; <a href="#syarat" class="ul">Syarat &amp; ketentuan berlaku</a></p>
   </div>
 </section>
 
@@ -177,7 +206,7 @@ footer p + p{margin-top:8px}
           </div>
           <div class="b-txt"><span>FEE</span><strong class="g">0.1</strong></div>
         </div>
-        <p>Spread lebih rendah<br>untuk profit lebih maksimal</p>
+        <p>Spread lebih rendah<br>untuk biaya transaksi lebih efisien</p>
       </div>
 
       <div class="benefit">
@@ -197,7 +226,7 @@ footer p + p{margin-top:8px}
           </div>
           <div class="b-txt"><span>REBATE</span><strong class="g">8$</strong></div>
         </div>
-        <p>Dapatkan rebate 8 USD<br>setiap lot transaksi</p>
+        <p>Rebate 8 USD per lot<br>sebagai pengembalian sebagian biaya transaksi</p>
       </div>
 
     </div>
@@ -222,7 +251,7 @@ footer p + p{margin-top:8px}
         <strong class="g" id="rebate">$80</strong>
       </div>
       <p class="formula" id="rebateFormula">10 lot &times; $8 / lot = $80</p>
-      <p class="note">Estimasi sederhana (jumlah lot &times; 8 USD). Ketentuan lengkap mengikuti syarat dan ketentuan promo.</p>
+      <p class="note">Rebate adalah pengembalian sebagian biaya transaksi, bukan keuntungan trading, dan tidak menjamin hasil trading. Estimasi ini hanya perhitungan sederhana (jumlah lot &times; 8 USD). Lihat <a href="#syarat" class="ul">syarat dan ketentuan promo</a>.</p>
     </div>
   </div>
 </section>
@@ -235,8 +264,24 @@ footer p + p{margin-top:8px}
     </div>
     <div class="steps">
       <div class="step"><h3>Daftar akun</h3><p>Buat akun CFXPros melalui halaman pendaftaran.</p></div>
-      <div class="step"><h3>Konfirmasi promo</h3><p>Hubungi tim kami untuk memastikan promo Oktober aktif di akun Anda.</p></div>
+      <div class="step"><h3>Konfirmasi promo</h3><p>Hubungi <a href="contact.html" class="ul">tim kami</a> untuk memastikan promo Oktober aktif di akun Anda.</p></div>
       <div class="step"><h3>Mulai trading</h3><p>Trading seperti biasa dan nikmati fee 0.1, free swap, dan rebate per lot.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SYARAT & KETENTUAN -->
+<section class="s" id="syarat">
+  <div class="wrap">
+    <div class="s-head"><h2>Syarat &amp; <span>ketentuan</span></h2></div>
+    <div class="calc terms">
+      <ul>
+        <li>Promo berlaku selama bulan Oktober 2026.</li>
+        <li>Rebate dihitung per lot transaksi yang telah selesai, sebesar 8 USD per lot.</li>
+        <li>Syarat peserta, produk yang termasuk, dan jadwal pembayaran rebate mengikuti ketentuan resmi yang dapat dikonfirmasi melalui <a href="contact.html" class="ul">tim kami</a>.</li>
+        <li>Rebate bukan jaminan keuntungan trading. Trading forex dan CFD berisiko tinggi.</li>
+        <li>Penyedia layanan berhak mengubah atau menghentikan promo sesuai ketentuan.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -244,15 +289,17 @@ footer p + p{margin-top:8px}
 <!-- PENUTUP -->
 <section class="closing">
   <div class="wrap">
-    <h2>Trading lebih mudah,<br>bersama <span class="c">CFXPros</span></h2>
-    <a href="register.html" class="btn btn-gold">Daftar Sekarang</a>
+    <h2>Lebih mudah,<br>bersama <span class="c">CFXPros</span></h2>
+    <a href="register.html" class="btn btn-gold">Daftar Akun</a>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <p>Peringatan risiko: trading forex dan produk berleverage lainnya berisiko tinggi dan dapat menyebabkan kerugian modal. Informasi di halaman ini bukan nasihat investasi. Syarat dan ketentuan promo berlaku.</p>
-    <p>&copy; 2026 CFX Pros. All rights reserved.</p>
+    <p><strong>Peringatan risiko:</strong> trading forex dan produk berleverage lainnya berisiko tinggi dan dapat menyebabkan kerugian modal. Informasi di halaman ini bukan nasihat investasi.</p>
+    <p>Cyber Prosperity<br>Menara Sudirman lt.7, Jl. Jenderal Sudirman Kav.60<br>Jakarta Selatan 12190, Indonesia</p>
+    <p><a href="privacy.html" class="ul">Kebijakan Privasi</a> &middot; <a href="#syarat" class="ul">Syarat &amp; Ketentuan</a> &middot; <a href="contact.html" class="ul">Kontak</a></p>
+    <p>&copy; 2026 Cyber Prosperity. All rights reserved.</p>
   </div>
 </footer>
 
