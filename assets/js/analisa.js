@@ -544,13 +544,13 @@ const CFX_ADS = [
     var ads = (Array.isArray(CFX_ADS) ? CFX_ADS : []).filter(function (a) {
         return a && (a.type === "image" || a.type === "video") && safeUrl(a.src);
     });
-    if (!ads.length) return;           // tidak ada iklan: kolom kanan tetap tersembunyi
+    if (!ads.length) return;           
 
     var n = ads.length;
     var idx = 0;
     var timer = null;
-    var failCount = 0;                 // hitung gagal berturut-turut agar tidak looping tanpa henti
-    var muted = true;                  // pilihan suara dipertahankan antar video
+    var failCount = 0;                 
+    var muted = true;                  
     var currentVideo = null;
     var currentIsImage = false;
 
