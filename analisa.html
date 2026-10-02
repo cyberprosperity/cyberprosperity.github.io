@@ -160,6 +160,15 @@
 }
 @media (max-width:600px){.cnl-ta-widget{padding:6px 2px}.cnl-ta-head{padding:14px}}
 @media (prefers-reduced-motion:reduce){.cnl-ad-stage img,.cnl-ad-stage video{animation:none}}
+
+/* BANNER IKUT SCROLL - HANYA TAMPILAN DESKTOP (>1380px). HP/tablet tidak berubah. */
+@media (min-width:1381px){
+  .app-layout,
+  .main-content,
+  .cnl-layout{overflow:visible !important}
+  .main-content{overflow-x:clip !important}
+  .cnl-ad{position:sticky;top:20px;align-self:flex-start}
+}
 </style>
 </head>
 

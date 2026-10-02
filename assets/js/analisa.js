@@ -506,16 +506,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // ============================================================
 // BANNER IKLAN SIDEBAR KANAN (gambar + video)
-// Edit daftar iklan pada array CFX_ADS di bawah ini.
+// Hanya bagian PENGATURAN di bawah ini yang perlu Anda ubah.
 // ============================================================
 
+// ---------- PENGATURAN ----------
+
+// Tulisan kecil di pojok kiri atas banner. Isi "" jika tidak ingin ada tulisan.
+const CFX_AD_LABEL = "Iklan";
+
+// Daftar iklan. Tampil bergantian sesuai urutan di bawah ini.
+//   type     : "image" atau "video"
+//   src      : lokasi file gambar atau video (mp4)
+//   link     : alamat tujuan saat banner / tombol diklik (harus diawali https://)
+//   cta      : tulisan tombol emas di bawah banner ("" = tanpa tombol)
+//   label    : (opsional) tulisan pojok kiri atas khusus iklan ini, menimpa CFX_AD_LABEL
+//   alt      : deskripsi singkat iklan (untuk aksesibilitas)
+//   poster   : (opsional, video) gambar sampul sebelum video diputar
+//   duration : (opsional, gambar) lama tampil dalam milidetik, 6000 = 6 detik
+//   newTab   : (opsional) false = buka link di tab yang sama, default membuka tab baru
+//   start    : (opsional) iklan baru tampil mulai waktu ini, contoh "2026-10-02T00:00:00+07:00"
+//   end      : (opsional) iklan otomatis berhenti tampil setelah waktu ini, contoh "2026-10-03T00:00:00+07:00"
 const CFX_ADS = [
     {
         type: "image",
         src: "assets/images/ads/NFP-9x16-1080x1920.png",
         link: "https://cfxpros.com/analisa.html",
         cta: "Analisa Harian",
-        alt: "Video NFP",
+        label: "Iklan",
+        alt: "Banner NFP",
         duration: 6000
     },
     {
@@ -523,185 +541,247 @@ const CFX_ADS = [
         src: "assets/videos/nfp.mp4",
         link: "https://cfxpros.com/analisa.html",
         cta: "Analisa Harian",
+        label: "Iklan",
         alt: "Video NFP"
     }
 ];
 
+// ---------- PROGRAM (tidak perlu diubah) ----------
 (function () {
     "use strict";
 
-    var root = document.getElementById("cnlAd");
-    if (!root) return;
+    var DEFAULT_IMAGE_MS = 6000;     // lama tampil gambar jika duration tidak diisi
+    var VIDEO_START_MS = 10000;      // video dilewati jika belum mulai diputar dalam waktu ini
 
-    // Hanya terima URL http/https atau path relatif (cegah javascript: dll)
-    function safeUrl(u) {
-        try {
-            var url = new URL(String(u || ""), window.location.href);
-            return (url.protocol === "http:" || url.protocol === "https:") ? url.href : "";
-        } catch (e) { return ""; }
-    }
+    function init() {
+        var root = document.getElementById("cnlAd");
+        if (!root) return;
 
-    var ads = (Array.isArray(CFX_ADS) ? CFX_ADS : []).filter(function (a) {
-        return a && (a.type === "image" || a.type === "video") && safeUrl(a.src);
-    });
-    if (!ads.length) return;           
+        // Hanya terima URL http/https atau path relatif (cegah javascript: dll)
+        function safeUrl(u) {
+            try {
+                var url = new URL(String(u || ""), window.location.href);
+                return (url.protocol === "http:" || url.protocol === "https:") ? url.href : "";
+            } catch (e) { return ""; }
+        }
 
-    var n = ads.length;
-    var idx = 0;
-    var timer = null;
-    var failCount = 0;                 
-    var muted = true;                  
-    var currentVideo = null;
-    var currentIsImage = false;
+        // Cek jadwal tayang (start / end), jika diisi
+        function inSchedule(a) {
+            var now = Date.now(), t;
+            if (a.start) { t = Date.parse(a.start); if (!isNaN(t) && now < t) return false; }
+            if (a.end)   { t = Date.parse(a.end);   if (!isNaN(t) && now > t) return false; }
+            return true;
+        }
 
-    // ---------- Susun elemen ----------
-    root.textContent = "";
-    var card = document.createElement("div");
-    card.className = "cnl-ad-card";
-
-    var stage = document.createElement("div");
-    stage.className = "cnl-ad-stage";
-
-    var badge = document.createElement("span");
-    badge.className = "cnl-ad-badge";
-    badge.textContent = "Iklan";
-
-    var link = document.createElement("a");
-    link.className = "cnl-ad-link";
-    link.target = "_blank";
-    link.rel = "noopener sponsored";
-
-    var muteBtn = document.createElement("button");
-    muteBtn.type = "button";
-    muteBtn.className = "cnl-ad-mute";
-    muteBtn.hidden = true;
-
-    var dots = document.createElement("div");
-    dots.className = "cnl-ad-dots";
-
-    stage.append(badge, link, muteBtn, dots);
-
-    var cta = document.createElement("a");
-    cta.className = "cnl-ad-cta";
-    cta.target = "_blank";
-    cta.rel = "noopener sponsored";
-
-    card.append(stage, cta);
-    root.appendChild(card);
-
-    if (n > 1) {
-        ads.forEach(function (_, i) {
-            var d = document.createElement("button");
-            d.type = "button";
-            d.setAttribute("aria-label", "Iklan " + (i + 1));
-            d.addEventListener("click", function () { show(i); });
-            dots.appendChild(d);
+        var ads = (Array.isArray(CFX_ADS) ? CFX_ADS : []).filter(function (a) {
+            return a && (a.type === "image" || a.type === "video") && safeUrl(a.src) && inSchedule(a);
         });
-    }
+        if (!ads.length) return;        // tidak ada iklan aktif: kolom banner tetap tersembunyi
 
-    function renderMuteIcon() {
-        muteBtn.innerHTML = muted
-            ? '<i class="fa-solid fa-volume-xmark"></i>'
-            : '<i class="fa-solid fa-volume-high"></i>';
-        muteBtn.setAttribute("aria-label", muted ? "Nyalakan suara" : "Matikan suara");
-    }
-    muteBtn.addEventListener("click", function () {
-        muted = !muted;
-        if (currentVideo) currentVideo.muted = muted;
+        var n = ads.length;
+        var idx = 0;
+        var timer = null;
+        var failCount = 0;              // gagal berturut-turut; jika semua gagal banner disembunyikan
+        var muted = true;               // pilihan suara dipertahankan antar video
+        var currentEl = null;           // elemen gambar / video yang sedang tampil
+        var currentVideo = null;
+        var currentIsImage = false;
+        var hovering = false;
+
+        // ---------- Susun elemen ----------
+        root.textContent = "";
+        var card = document.createElement("div");
+        card.className = "cnl-ad-card";
+
+        var stage = document.createElement("div");
+        stage.className = "cnl-ad-stage";
+
+        var badge = document.createElement("span");
+        badge.className = "cnl-ad-badge";
+
+        var link = document.createElement("a");
+        link.className = "cnl-ad-link";
+        link.rel = "noopener sponsored";
+
+        var muteBtn = document.createElement("button");
+        muteBtn.type = "button";
+        muteBtn.className = "cnl-ad-mute";
+        muteBtn.hidden = true;
+
+        var dots = document.createElement("div");
+        dots.className = "cnl-ad-dots";
+
+        stage.append(badge, link, muteBtn, dots);
+
+        var cta = document.createElement("a");
+        cta.className = "cnl-ad-cta";
+        cta.rel = "noopener sponsored";
+
+        card.append(stage, cta);
+        root.appendChild(card);
+
+        if (n > 1) {
+            ads.forEach(function (_, i) {
+                var d = document.createElement("button");
+                d.type = "button";
+                d.setAttribute("aria-label", "Iklan " + (i + 1));
+                d.addEventListener("click", function () { show(i); });
+                dots.appendChild(d);
+            });
+        }
+
+        function renderMuteIcon() {
+            muteBtn.innerHTML = muted
+                ? '<i class="fa-solid fa-volume-xmark"></i>'
+                : '<i class="fa-solid fa-volume-high"></i>';
+            muteBtn.setAttribute("aria-label", muted ? "Nyalakan suara" : "Matikan suara");
+        }
+        muteBtn.addEventListener("click", function () {
+            muted = !muted;
+            if (currentVideo) currentVideo.muted = muted;
+            renderMuteIcon();
+        });
         renderMuteIcon();
-    });
-    renderMuteIcon();
 
-    // ---------- Tampilkan satu iklan ----------
-    function clearMedia() {
-        clearTimeout(timer);
-        timer = null;
-        var old = stage.querySelectorAll("img, video");
-        old.forEach(function (el) {
-            if (el.tagName === "VIDEO") { el.pause(); el.removeAttribute("src"); el.load(); }
-            el.remove();
-        });
-        currentVideo = null;
-    }
-
-    function next() { show((idx + 1) % n); }
-
-    function onFail() {
-        failCount++;
-        if (failCount >= n) { root.hidden = true; clearMedia(); return; }   // semua gagal: sembunyikan
-        if (n > 1) next();
-    }
-
-    function show(i) {
-        idx = i;
-        var ad = ads[idx];
-        clearMedia();
-
-        var href = safeUrl(ad.link);
-        if (href) { link.href = href; link.style.display = ""; link.setAttribute("aria-label", ad.alt || "Iklan"); }
-        else { link.removeAttribute("href"); link.style.display = "none"; }
-
-        if (ad.cta && href) { cta.hidden = false; cta.href = href; cta.textContent = ad.cta; }
-        else { cta.hidden = true; }
-
-        Array.prototype.forEach.call(dots.children, function (d, k) {
-            d.classList.toggle("active", k === idx);
-        });
-
-        if (ad.type === "image") {
-            currentIsImage = true;
-            muteBtn.hidden = true;
-
-            var img = document.createElement("img");
-            img.alt = ad.alt || "Iklan";
-            img.addEventListener("load", function () { failCount = 0; });
-            img.addEventListener("error", onFail);
-            img.src = safeUrl(ad.src);
-            stage.insertBefore(img, badge);
-
-            if (n > 1) timer = setTimeout(next, ad.duration || 6000);
-        } else {
-            currentIsImage = false;
-            muteBtn.hidden = false;
-
-            var v = document.createElement("video");
-            v.muted = muted;
-            v.defaultMuted = true;              // wajib agar autoplay diizinkan browser
-            v.autoplay = true;
-            v.playsInline = true;
-            v.loop = (n === 1);                  // satu iklan saja: ulang terus
-            v.preload = "auto";
-            if (ad.poster && safeUrl(ad.poster)) v.poster = safeUrl(ad.poster);
-            v.setAttribute("aria-label", ad.alt || "Iklan video");
-            v.addEventListener("playing", function () { failCount = 0; });
-            v.addEventListener("ended", function () { if (n > 1) next(); });
-            v.addEventListener("error", onFail);
-            v.src = safeUrl(ad.src);
-            stage.insertBefore(v, badge);
-            currentVideo = v;
-
-            var p = v.play();
-            if (p && p.catch) p.catch(function () { /* autoplay ditolak: tetap tampil poster */ });
+        // ---------- Tampilkan satu iklan ----------
+        function clearMedia() {
+            clearTimeout(timer);
+            timer = null;
+            stage.querySelectorAll("img, video").forEach(function (el) {
+                if (el.tagName === "VIDEO") { el.pause(); el.removeAttribute("src"); el.load(); }
+                el.remove();
+            });
+            currentEl = null;
+            currentVideo = null;
         }
+
+        function next() { show((idx + 1) % n); }
+
+        function startImageTimer(ms) {
+            clearTimeout(timer);
+            timer = null;
+            if (n > 1 && !hovering) timer = setTimeout(next, ms || DEFAULT_IMAGE_MS);
+        }
+
+        function onFail() {
+            failCount++;
+            if (failCount >= n) { root.hidden = true; clearMedia(); return; }   // semua gagal: sembunyikan
+            if (n > 1) next();
+        }
+
+        function show(i) {
+            idx = i;
+            var ad = ads[idx];
+            clearMedia();
+
+            // Tulisan kecil di pojok kiri atas
+            var labelText = (typeof ad.label === "string") ? ad.label : CFX_AD_LABEL;
+            badge.textContent = labelText;
+            badge.hidden = !labelText;
+
+            // Link + tombol
+            var href = safeUrl(ad.link);
+            var target = (ad.newTab === false) ? "_self" : "_blank";
+            if (href) {
+                link.href = href; link.target = target;
+                link.style.display = "";
+                link.setAttribute("aria-label", ad.alt || "Iklan");
+            } else {
+                link.removeAttribute("href");
+                link.style.display = "none";
+            }
+            if (ad.cta && href) { cta.hidden = false; cta.href = href; cta.target = target; cta.textContent = ad.cta; }
+            else { cta.hidden = true; }
+
+            Array.prototype.forEach.call(dots.children, function (d, k) {
+                d.classList.toggle("active", k === idx);
+            });
+
+            if (ad.type === "image") {
+                currentIsImage = true;
+                muteBtn.hidden = true;
+
+                var img = document.createElement("img");
+                img.alt = ad.alt || "Iklan";
+                img.decoding = "async";
+                img.addEventListener("load", function () { if (currentEl === img) failCount = 0; });
+                img.addEventListener("error", function () { if (currentEl === img) onFail(); });
+                img.src = safeUrl(ad.src);
+                stage.insertBefore(img, badge);
+                currentEl = img;
+
+                startImageTimer(ad.duration);
+            } else {
+                currentIsImage = false;
+                muteBtn.hidden = false;
+
+                var v = document.createElement("video");
+                v.muted = muted;
+                v.defaultMuted = true;           // wajib agar autoplay diizinkan browser
+                v.autoplay = true;
+                v.playsInline = true;
+                v.setAttribute("playsinline", "");
+                v.loop = (n === 1);              // satu iklan saja: ulang terus
+                v.preload = "auto";
+                if (ad.poster && safeUrl(ad.poster)) v.poster = safeUrl(ad.poster);
+                v.setAttribute("aria-label", ad.alt || "Iklan video");
+
+                v.addEventListener("playing", function () {
+                    if (currentEl !== v) return;
+                    failCount = 0;
+                    clearTimeout(timer);         // video sudah jalan, batalkan batas waktu mulai
+                    timer = null;
+                });
+                v.addEventListener("ended", function () { if (currentEl === v && n > 1) next(); });
+                v.addEventListener("error", function () { if (currentEl === v) onFail(); });
+
+                v.src = safeUrl(ad.src);
+                stage.insertBefore(v, badge);
+                currentEl = v;
+                currentVideo = v;
+
+                // Jika video tidak kunjung mulai (koneksi lambat), lanjut ke iklan berikutnya
+                if (n > 1) timer = setTimeout(next, VIDEO_START_MS);
+
+                var p = v.play();
+                if (p && p.catch) {
+                    p.catch(function () {
+                        // Autoplay ditolak browser: tampilkan poster lalu lanjut seperti gambar
+                        if (currentEl === v && n > 1) startImageTimer(ad.duration);
+                    });
+                }
+            }
+        }
+
+        // Gambar: jeda pergantian saat kursor mouse di atas banner (tidak berlaku untuk layar sentuh)
+        card.addEventListener("pointerenter", function (e) {
+            if (e.pointerType !== "mouse") return;
+            hovering = true;
+            if (currentIsImage) { clearTimeout(timer); timer = null; }
+        });
+        card.addEventListener("pointerleave", function (e) {
+            if (e.pointerType !== "mouse") return;
+            hovering = false;
+            if (currentIsImage && !timer) startImageTimer(ads[idx].duration);
+        });
+
+        // Hemat data & baterai: jeda saat tab tidak aktif
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                clearTimeout(timer); timer = null;
+                if (currentVideo) currentVideo.pause();
+            } else if (currentVideo) {
+                var p = currentVideo.play();
+                if (p && p.catch) p.catch(function () {});
+            } else if (currentIsImage && !timer) {
+                startImageTimer(ads[idx].duration);
+            }
+        });
+
+        root.hidden = false;
+        show(0);
     }
 
-    // Gambar: jeda rotasi saat kursor di atas banner
-    card.addEventListener("mouseenter", function () { if (currentIsImage) { clearTimeout(timer); timer = null; } });
-    card.addEventListener("mouseleave", function () {
-        if (currentIsImage && n > 1 && !timer) timer = setTimeout(next, ads[idx].duration || 6000);
-    });
-
-    // Hemat data & baterai: jeda saat tab tidak aktif
-    document.addEventListener("visibilitychange", function () {
-        if (document.hidden) {
-            clearTimeout(timer); timer = null;
-            if (currentVideo) currentVideo.pause();
-        } else {
-            if (currentVideo) { var p = currentVideo.play(); if (p && p.catch) p.catch(function () {}); }
-            else if (currentIsImage && n > 1 && !timer) timer = setTimeout(next, ads[idx].duration || 6000);
-        }
-    });
-
-    root.hidden = false;
-    show(0);
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
 })();
