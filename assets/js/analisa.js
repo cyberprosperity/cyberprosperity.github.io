@@ -502,3 +502,206 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadPosts();
 
 });
+
+
+// ============================================================
+// BANNER IKLAN SIDEBAR KANAN (gambar + video)
+// Edit daftar iklan pada array CFX_ADS di bawah ini.
+// ============================================================
+
+const CFX_ADS = [
+    {
+        type: "image",
+        src: "assets/images/ads/NFP-9x16-1080x1920.png",
+        link: "https://www.cfforex.com",
+        cta: "Lihat selengkapnya",
+        alt: "Iklan NFP",
+        duration: 6000
+    },
+    {
+        type: "video",
+        src: "assets/videos/nfp.mp4",
+        link: "https://www.cfforex.com",
+        cta: "Lihat selengkapnya",
+        alt: "Video iklan"
+    }
+];
+
+(function () {
+    "use strict";
+
+    var root = document.getElementById("cnlAd");
+    if (!root) return;
+
+    // Hanya terima URL http/https atau path relatif (cegah javascript: dll)
+    function safeUrl(u) {
+        try {
+            var url = new URL(String(u || ""), window.location.href);
+            return (url.protocol === "http:" || url.protocol === "https:") ? url.href : "";
+        } catch (e) { return ""; }
+    }
+
+    var ads = (Array.isArray(CFX_ADS) ? CFX_ADS : []).filter(function (a) {
+        return a && (a.type === "image" || a.type === "video") && safeUrl(a.src);
+    });
+    if (!ads.length) return;           // tidak ada iklan: kolom kanan tetap tersembunyi
+
+    var n = ads.length;
+    var idx = 0;
+    var timer = null;
+    var failCount = 0;                 // hitung gagal berturut-turut agar tidak looping tanpa henti
+    var muted = true;                  // pilihan suara dipertahankan antar video
+    var currentVideo = null;
+    var currentIsImage = false;
+
+    // ---------- Susun elemen ----------
+    root.textContent = "";
+    var card = document.createElement("div");
+    card.className = "cnl-ad-card";
+
+    var stage = document.createElement("div");
+    stage.className = "cnl-ad-stage";
+
+    var badge = document.createElement("span");
+    badge.className = "cnl-ad-badge";
+    badge.textContent = "Iklan";
+
+    var link = document.createElement("a");
+    link.className = "cnl-ad-link";
+    link.target = "_blank";
+    link.rel = "noopener sponsored";
+
+    var muteBtn = document.createElement("button");
+    muteBtn.type = "button";
+    muteBtn.className = "cnl-ad-mute";
+    muteBtn.hidden = true;
+
+    var dots = document.createElement("div");
+    dots.className = "cnl-ad-dots";
+
+    stage.append(badge, link, muteBtn, dots);
+
+    var cta = document.createElement("a");
+    cta.className = "cnl-ad-cta";
+    cta.target = "_blank";
+    cta.rel = "noopener sponsored";
+
+    card.append(stage, cta);
+    root.appendChild(card);
+
+    if (n > 1) {
+        ads.forEach(function (_, i) {
+            var d = document.createElement("button");
+            d.type = "button";
+            d.setAttribute("aria-label", "Iklan " + (i + 1));
+            d.addEventListener("click", function () { show(i); });
+            dots.appendChild(d);
+        });
+    }
+
+    function renderMuteIcon() {
+        muteBtn.innerHTML = muted
+            ? '<i class="fa-solid fa-volume-xmark"></i>'
+            : '<i class="fa-solid fa-volume-high"></i>';
+        muteBtn.setAttribute("aria-label", muted ? "Nyalakan suara" : "Matikan suara");
+    }
+    muteBtn.addEventListener("click", function () {
+        muted = !muted;
+        if (currentVideo) currentVideo.muted = muted;
+        renderMuteIcon();
+    });
+    renderMuteIcon();
+
+    // ---------- Tampilkan satu iklan ----------
+    function clearMedia() {
+        clearTimeout(timer);
+        timer = null;
+        var old = stage.querySelectorAll("img, video");
+        old.forEach(function (el) {
+            if (el.tagName === "VIDEO") { el.pause(); el.removeAttribute("src"); el.load(); }
+            el.remove();
+        });
+        currentVideo = null;
+    }
+
+    function next() { show((idx + 1) % n); }
+
+    function onFail() {
+        failCount++;
+        if (failCount >= n) { root.hidden = true; clearMedia(); return; }   // semua gagal: sembunyikan
+        if (n > 1) next();
+    }
+
+    function show(i) {
+        idx = i;
+        var ad = ads[idx];
+        clearMedia();
+
+        var href = safeUrl(ad.link);
+        if (href) { link.href = href; link.style.display = ""; link.setAttribute("aria-label", ad.alt || "Iklan"); }
+        else { link.removeAttribute("href"); link.style.display = "none"; }
+
+        if (ad.cta && href) { cta.hidden = false; cta.href = href; cta.textContent = ad.cta; }
+        else { cta.hidden = true; }
+
+        Array.prototype.forEach.call(dots.children, function (d, k) {
+            d.classList.toggle("active", k === idx);
+        });
+
+        if (ad.type === "image") {
+            currentIsImage = true;
+            muteBtn.hidden = true;
+
+            var img = document.createElement("img");
+            img.alt = ad.alt || "Iklan";
+            img.addEventListener("load", function () { failCount = 0; });
+            img.addEventListener("error", onFail);
+            img.src = safeUrl(ad.src);
+            stage.insertBefore(img, badge);
+
+            if (n > 1) timer = setTimeout(next, ad.duration || 6000);
+        } else {
+            currentIsImage = false;
+            muteBtn.hidden = false;
+
+            var v = document.createElement("video");
+            v.muted = muted;
+            v.defaultMuted = true;              // wajib agar autoplay diizinkan browser
+            v.autoplay = true;
+            v.playsInline = true;
+            v.loop = (n === 1);                  // satu iklan saja: ulang terus
+            v.preload = "auto";
+            if (ad.poster && safeUrl(ad.poster)) v.poster = safeUrl(ad.poster);
+            v.setAttribute("aria-label", ad.alt || "Iklan video");
+            v.addEventListener("playing", function () { failCount = 0; });
+            v.addEventListener("ended", function () { if (n > 1) next(); });
+            v.addEventListener("error", onFail);
+            v.src = safeUrl(ad.src);
+            stage.insertBefore(v, badge);
+            currentVideo = v;
+
+            var p = v.play();
+            if (p && p.catch) p.catch(function () { /* autoplay ditolak: tetap tampil poster */ });
+        }
+    }
+
+    // Gambar: jeda rotasi saat kursor di atas banner
+    card.addEventListener("mouseenter", function () { if (currentIsImage) { clearTimeout(timer); timer = null; } });
+    card.addEventListener("mouseleave", function () {
+        if (currentIsImage && n > 1 && !timer) timer = setTimeout(next, ads[idx].duration || 6000);
+    });
+
+    // Hemat data & baterai: jeda saat tab tidak aktif
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            clearTimeout(timer); timer = null;
+            if (currentVideo) currentVideo.pause();
+        } else {
+            if (currentVideo) { var p = currentVideo.play(); if (p && p.catch) p.catch(function () {}); }
+            else if (currentIsImage && n > 1 && !timer) timer = setTimeout(next, ads[idx].duration || 6000);
+        }
+    });
+
+    root.hidden = false;
+    show(0);
+})();
