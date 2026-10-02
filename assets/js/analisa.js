@@ -521,9 +521,9 @@ const CFX_ADS = [
     {
         type: "video",
         src: "assets/videos/nfp.mp4",
-        link: "https://www.cfforex.com",
-        cta: "Lihat selengkapnya",
-        alt: "Video iklan"
+        link: "https:www.cfxpros.com/analisa.html",
+        cta: "Analisa Harian",
+        alt: "Video NFP"
     }
 ];
 
