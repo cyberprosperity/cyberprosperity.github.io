@@ -151,8 +151,14 @@
 .cnl-ad-cta:focus-visible{outline:2px solid #fff;outline-offset:-4px}
 .cnl-ad-cta[hidden]{display:none}
 
-/* layar sempit: banner disembunyikan agar konten tidak terdorong */
-@media (max-width:1380px){.cnl-ad{display:none}}
+/* layar sempit (tablet / HP): banner tampil di bawah Sinyal Teknikal, di atas filter */
+@media (max-width:1380px){
+  .cnl-layout{flex-direction:column;align-items:stretch;gap:0}
+  .cnl-col{display:contents}
+  .cnl-ad{order:1;position:static;flex:0 0 auto;width:min(100%,280px);margin:0 auto 20px}
+  .cnl-filters,.cnl-feed{order:2}
+}
+@media (max-width:600px){.cnl-ta-widget{padding:6px 2px}.cnl-ta-head{padding:14px}}
 @media (prefers-reduced-motion:reduce){.cnl-ad-stage img,.cnl-ad-stage video{animation:none}}
 </style>
 </head>
@@ -234,17 +240,18 @@
         <script>
         /* Widget TradingView Sinyal Teknikal
            Desktop : 3 gauge sejajar, dirender di lebar NATIVE_W lalu DIKECILKAN (scale) agar pas di dalam card tanpa scroll.
-           Mobile  : 1 gauge Summary saja (tanpa scale). */
+           HP      : tetap 3 gauge, dirender di lebar lebih kecil lalu diskalakan agar muat. */
         (function () {
-            var NATIVE_W = 1400;   // lebar render widget (makin besar = gauge makin kecil di layar)
-            var NATIVE_H = 350;    // tinggi widget, harus sama dengan "height" di config bawah
+            var isPhone = document.getElementById('cnlTaFit').clientWidth < 600;
+            var NATIVE_W = isPhone ? 450 : 1400;   // lebar render widget (makin besar = gauge makin kecil di layar)
+            var NATIVE_H = isPhone ? 330 : 350;    // tinggi widget, harus sama dengan "height" di config bawah
 
             var fit   = document.getElementById('cnlTaFit');
             var stage = document.getElementById('cnlTaStage');
             var box   = document.getElementById('cnlTaContainer');
             if (!fit || !stage || !box) return;
 
-            var wide = fit.clientWidth >= 600;
+            var wide = true;   // selalu tampilkan 3 gauge (Oscillators, Summary, Moving Averages)
 
             function layout() {
                 if (!wide) return;
