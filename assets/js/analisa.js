@@ -513,7 +513,7 @@ const CFX_ADS = [
     {
         type: "image",
         src: "assets/images/ads/NFP-9x16-1080x1920.png",
-        link: "https:www.cfxpros.com/analisa.html",
+        link: "https://www.cfxpros.com/analisa.html",
         cta: "Analisa Harian",
         alt: "Video NFP",
         duration: 6000
@@ -521,7 +521,7 @@ const CFX_ADS = [
     {
         type: "video",
         src: "assets/videos/nfp.mp4",
-        link: "https:www.cfxpros.com/analisa.html",
+        link: "https://www.cfxpros.com/analisa.html",
         cta: "Analisa Harian",
         alt: "Video NFP"
     }
