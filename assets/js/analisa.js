@@ -529,9 +529,9 @@ const CFX_AD_LABEL = "Iklan";
 const CFX_ADS = [
     {
         type: "image",
-        src: "assets/images/ads/NFP-9x16-1080x1920.png",
-        link: "https://cfxpros.com/analisa.html",
-        cta: "Analisa Harian",
+        src: "assets/images/ads/ads.oktober.png",
+        link: "https://cfxpros.com/landingpage.html",
+        cta: "Ambil Promo",
         label: "Iklan",
         alt: "Banner NFP",
         duration: 6000
