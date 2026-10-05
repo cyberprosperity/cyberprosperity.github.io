@@ -236,16 +236,20 @@ footer p + p{margin-top:8px}
 <!-- KALKULATOR REBATE -->
 <section class="s" id="kalkulator">
   <div class="wrap">
+
     <div class="s-head">
       <h2>Hitung <span>rebate</span> Anda</h2>
       <p>Setiap lot transaksi mendapat rebate 8 USD. Geser atau ketik jumlah lot untuk melihat estimasinya.</p>
     </div>
+
     <div class="calc" data-rate="8">
       <label for="lot">Total lot transaksi</label>
-      <div class="calc-row">
-        <input type="number" id="lot" min="0" step="0.1" value="10" inputmode="decimal">
-        <input type="range" id="lotRange" min="0" max="100" step="1" value="10" aria-label="Geser jumlah lot">
+
+    <div class="calc-row">
+       <input type="number" id="lot" min="0" max="10000" step="0.1" value="10" inputmode="decimal">
+       <input type="range" id="lotRange" min="0" max="10000" step="10" value="10" aria-label="Geser jumlah lot">
       </div>
+
       <div class="result">
         <span>Estimasi rebate</span>
         <strong class="g" id="rebate">$80</strong>
@@ -297,7 +301,7 @@ footer p + p{margin-top:8px}
 <footer>
   <div class="wrap">
     <p><strong>Peringatan risiko:</strong> trading forex dan produk berleverage lainnya berisiko tinggi dan dapat menyebabkan kerugian modal. Informasi di halaman ini bukan nasihat investasi.</p>
-    <p>Cyber Prosperity<br>Menara Sudirman lt.7, Jl. Jenderal Sudirman Kav.60<br>Jakarta Selatan 12190, Indonesia</p>
+    <p>Cyber Prosperity<br></p>
     <p><a href="privacy.html" class="ul">Kebijakan Privasi</a> &middot; <a href="#syarat" class="ul">Syarat &amp; Ketentuan</a> &middot; <a href="contact.html" class="ul">Kontak</a></p>
     <p>&copy; 2026 Cyber Prosperity. All rights reserved.</p>
   </div>
