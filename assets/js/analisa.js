@@ -538,11 +538,11 @@ const CFX_ADS = [
     },
     {
         type: "video",
-        src: "assets/videos/nfp.mp4",
+        src: "assets/videos/promo.oktober.mp4",
         link: "https://cfxpros.com/analisa.html",
         cta: "Analisa Harian",
         label: "Iklan",
-        alt: "Video NFP"
+        alt: "Promo Oktober"
     }
 ];
 
