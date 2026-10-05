@@ -1056,6 +1056,42 @@ a {
     top: 0;
     bottom: 0;
     border-right: 1px solid #2d281e;
+
+    /* scroll sidebar */
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+
+    /* scrollbar transparan (Firefox) */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+/* Scrollbar sidebar: transparan, tampil tipis saat kursor di sidebar */
+.sidebar:hover {
+    scrollbar-color: rgba(255, 255, 255, .25) transparent;
+}
+
+.sidebar > * {
+    flex-shrink: 0;
+}
+
+/* Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 6px;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .25);
 }
 
 .sidebar-logo {
