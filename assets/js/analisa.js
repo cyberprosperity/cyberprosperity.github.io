@@ -539,8 +539,8 @@ const CFX_ADS = [
     {
         type: "video",
         src: "assets/videos/promo.oktober.mp4",
-        link: "https://cfxpros.com/analisa.html",
-        cta: "Analisa Harian",
+        link: "https://cfxpros.com/landingpage.html",
+        cta: "Ambil Promo",
         label: "Iklan",
         alt: "Promo Oktober"
     }
