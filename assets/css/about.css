@@ -195,7 +195,7 @@
 
 .ab2 .grid4 {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 20px;
 }
 
@@ -397,20 +397,12 @@
 
 @media (max-width:980px) {
 
-    /* ==========================================
-       KARTU FITUR
-    ========================================== */
-
     .ab2 .grid4 {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width:860px) {
-
-    /* ==========================================
-       HERO
-    ========================================== */
 
     .ab2 .hero {
         padding: 48px 0 60px;
@@ -420,19 +412,11 @@
         gap: 32px;
     }
 
-    /* ==========================================
-       TEKS LANJUTAN
-    ========================================== */
-
     .ab2 .detail {
         grid-template-columns: 1fr;
         gap: 20px;
         margin-top: 40px;
     }
-
-    /* ==========================================
-       SECTION: MENGAPA CFX PROS
-    ========================================== */
 
     .ab2 .sec {
         padding: 56px 0;
@@ -443,10 +427,6 @@
 }
 
 @media (max-width:560px) {
-
-    /* ==========================================
-       KARTU FITUR
-    ========================================== */
 
     .ab2 .grid4 {
         grid-template-columns: 1fr;
