@@ -1,317 +1,465 @@
 /* ==========================================
    ABOUT PAGE
+   Ukuran dasar halaman: ubah font-size pada .ab2
 ========================================== */
 
-.about-page {
-    min-height: calc(100vh - 80px);
-
-    background:
-    radial-gradient(
-        circle at 80% 20%,
-        rgba(212, 166, 65, 0.08),
-        transparent 35%
-    ),
-    #08111F;
-
-    padding: 70px 24px 100px;
+.ab2 {
+    --g: #f2c14e;
+    --g2: #ffdf8a;
+    --gd: #b8861f;
+    --mut: #a9b5d0;
+    --ln: rgba(242,193,78,.24);
+    font-family: 'Inter',system-ui,sans-serif;
+    color: #e8ecf5;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow: hidden;
 }
 
-.about-container {
-    max-width: 760px;
+.ab2 *,
+.ab2 *::before,
+.ab2 *::after {
+    box-sizing: border-box;
+}
+
+.ab2 .w {
+    max-width: 1120px;
     margin: 0 auto;
+    padding: 0 24px;
 }
 
-
-/* ==========================================
-   EYEBROW + TITLE
-========================================== */
-
-.about-eyebrow {
-    display: inline-block;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: #F2C94C;
-    margin-bottom: 8px;
+.ab2 :focus-visible {
+    outline: 2px solid var(--g);
+    outline-offset: 3px;
 }
 
-.about-title {
-    font-family: "Sora", sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: #F8FAFC;
-    margin: 0 0 36px;
-}
-
-.about-title span {
-    color: #F2C94C;
-}
-
-
-/* ==========================================
-   LEAD PARAGRAPH
-========================================== */
-
-.about-lead {
-    color: #94A3B8;
-
-    font-size: 16.5px;
-
-    line-height: 1.95;
-
+.ab2 h1,
+.ab2 h2,
+.ab2 h3 {
+    font-family: 'Sora','Inter',sans-serif;
+    color: #fff;
+    font-weight: 700;
     margin: 0;
-
-    text-align: justify;
 }
 
-.about-lead::first-letter {
-    font-family: "Sora", sans-serif;
-
-    font-size: 56px;
-    font-weight: 800;
-
-    color: #F2C94C;
-
-    float: left;
-
-    line-height: 1;
-
-    margin: 4px 8px 0 0;
+.ab2 .gold {
+    background: linear-gradient(100deg,var(--g2),var(--g) 45%,var(--gd));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
-
-.about-lead + .about-lead {
-    margin-top: 22px;
-}
-
 
 /* ==========================================
-   WHY CYBER PROSPERITY
+   HERO
 ========================================== */
 
-.about-section {
-    margin-top: 72px;
-    padding: 0;
+.ab2 .hero {
+    padding: 48px 0 56px;
+    background:
+        radial-gradient(700px 420px at 82% 30%,
+        rgba(242,193,78,.16),transparent 70%),
+        radial-gradient(600px 400px at 0% 0%,
+        rgba(40,90,200,.22),transparent 70%);
 }
 
-.about-section-eyebrow {
-    display: block;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: #F2C94C;
-    margin-bottom: 8px;
-}
-
-.about-section-title {
-    font-family: "Sora", sans-serif;
-
-    font-size: 32px;
-    font-weight: 800;
-
-    color: #F8FAFC;
-
-    margin: 0 0 8px;
-
-    display: inline-block;
-}
-
-
-/* ==========================================
-   GOLD SQUIGGLE
-========================================== */
-
-.about-squiggle {
-    display: block;
-
-    width: 180px;
-    height: 12px;
-
-    margin-bottom: 32px;
-}
-
-
-/* ==========================================
-   WHY TEXT
-========================================== */
-
-.about-why-text {
-    color: #94A3B8;
-
-    font-size: 16.5px;
-
-    line-height: 1.95;
-
-    margin: 0;
-
-    text-align: justify;
-}
-
-.about-why-text::first-letter {
-    font-family: "Sora", sans-serif;
-
-    font-size: 56px;
-    font-weight: 800;
-
-    color: #F2C94C;
-
-    float: left;
-
-    line-height: 1;
-
-    margin: 4px 8px 0 0;
-}
-
-.about-why-text + .about-why-text {
-    margin-top: 22px;
-}
-
-
-/* ==========================================
-   HIGHLIGHT
-========================================== */
-
-.about-highlight {
-    color: #F2C94C;
-    font-weight: 600;
-}
-
-
-/* ==========================================
-   TAG PILLS
-========================================== */
-
-.about-tag-row {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 14px;
-
-    margin: 38px 0;
-}
-
-.about-tag {
-    display: inline-flex;
-
+.ab2 .hero .w {
+    display: grid;
+    grid-template-columns: minmax(0,6fr) minmax(0,5fr);
+    gap: 48px;
     align-items: center;
+}
 
-    gap: 8px;
-
-    padding: 9px 18px;
-
+.ab2 .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--ln);
     border-radius: 999px;
-
-    font-size: 13px;
+    background: rgba(242,193,78,.08);
+    color: var(--g2);
+    font-size: .92em;
     font-weight: 600;
-
-    font-family: "JetBrains Mono", monospace;
-
-    transition: 0.2s;
+    margin-bottom: 22px;
 }
 
-.about-tag:hover {
-    transform: scale(1.06) rotate(0deg) !important;
+.ab2 .tag i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--g);
+    box-shadow: 0 0 12px var(--g);
 }
 
-.about-tag-1 {
-    background: rgba(212, 175, 55, 0.14);
-    color: #F2C94C;
-
-    transform: rotate(-2deg);
+.ab2 h1 {
+    font-size: clamp(1.75em,3.6vw,2.5em);
+    line-height: 1.08;
+    margin-bottom: 22px;
 }
 
-.about-tag-2 {
-    background: rgba(29, 158, 117, 0.14);
-    color: #4ade80;
-
-    transform: rotate(1.5deg);
+.ab2 .lead {
+    color: var(--mut);
+    font-size: 1em;
+    max-width: 56ch;
+    margin: 0 0 18px;
+    text-align: left;
 }
 
-.about-tag-3 {
-    background: rgba(56, 132, 255, 0.14);
-    color: #7ab3ff;
-
-    transform: rotate(-1deg);
+.ab2 .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
 }
 
-.about-tag-4 {
-    background: rgba(212, 83, 126, 0.14);
-    color: #f18ba8;
-
-    transform: rotate(2deg);
+.ab2 .chips span {
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    font-size: .93em;
 }
 
+.ab2 .chart {
+    border-radius: 24px;
+    padding: 22px;
+    background: linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    border: 1px solid var(--ln);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45),0 0 90px rgba(242,193,78,.14);
+}
+
+.ab2 .chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ab2 .chart .lbl {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-family: 'Sora',sans-serif;
+}
+
+.ab2 .chart small {
+    color: var(--mut);
+    font-weight: 400;
+    font-family: 'Inter',sans-serif;
+}
+
+.ab2 .trend {
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    animation: ab2-draw 2.2s .3s ease forwards;
+}
+
+@keyframes ab2-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ==========================================
+   SECTION: MENGAPA CFX PROS
+========================================== */
+
+.ab2 .sec {
+    padding: 48px 0;
+}
+
+.ab2 .head {
+    max-width: 660px;
+    margin-bottom: 44px;
+}
+
+.ab2 .head h2 {
+    font-size: clamp(1.35em,2.6vw,1.75em);
+    line-height: 1.15;
+    margin-bottom: 14px;
+}
+
+.ab2 .head p {
+    color: var(--mut);
+    margin: 0;
+    text-align: left;
+}
+
+.ab2 .band {
+    background: linear-gradient(180deg,transparent,rgba(20,40,90,.45),transparent);
+}
+
+/* ==========================================
+   KARTU FITUR
+========================================== */
+
+.ab2 .grid4 {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.ab2 .card {
+    position: relative;
+    padding: 26px 20px 22px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    transition: transform .25s,border-color .25s;
+}
+
+.ab2 .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--g);
+}
+
+.ab2 .card::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    top: 0;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg,var(--g2),var(--gd));
+}
+
+.ab2 .ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 20px;
+    background: rgba(242,193,78,.12);
+    border: 1px solid var(--ln);
+}
+
+.ab2 .ico svg {
+    width: 21px;
+    height: 21px;
+    stroke: var(--g);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ab2 .card h3 {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+}
+
+.ab2 .card p {
+    margin: 0;
+    color: var(--mut);
+    font-size: .98em;
+    line-height: 1.7;
+    text-align: left;
+}
+
+/* ==========================================
+   TEKS LANJUTAN
+========================================== */
+
+.ab2 .detail {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 48px;
+    margin-top: 56px;
+}
+
+.ab2 .detail p {
+    margin: 0;
+    max-width: 60ch;
+    color: #cfd7ea;
+    text-align: left;
+}
+
+.ab2 .detail b {
+    color: var(--g2);
+    font-weight: 600;
+}
 
 /* ==========================================
    PULL QUOTE
 ========================================== */
 
-.about-pull-quote {
-    font-family: "Sora", sans-serif;
+.ab2 .quote {
+    margin: 0 24px;
+}
 
-    font-size: 24px;
-    font-weight: 700;
-
-    line-height: 1.5;
-
-    color: #F8FAFC;
-
-    margin: 44px 0 8px 28px;
-
+.ab2 .quote-in {
+    max-width: 1072px;
+    margin: 0 auto;
+    padding: 32px 36px;
+    border-radius: 22px;
     position: relative;
-
-    max-width: 560px;
+    background: linear-gradient(120deg,#f6cf6a,#e0a73a 55%,#b8861f);
+    color: #1a1405;
 }
 
-.about-qmark {
-    font-size: 64px;
-
-    color: #D4AF37;
-
-    font-family: "Sora", sans-serif;
-
+.ab2 .quote-in::before {
+    content: "\201C";
     position: absolute;
-
-    left: -46px;
-    top: -24px;
-
-    opacity: 0.5;
+    left: 34px;
+    top: -6px;
+    font: 800 5em/1 'Sora',sans-serif;
+    color: rgba(26,20,5,.18);
 }
 
-.about-pull-quote span {
-    color: #F2C94C;
+.ab2 .quote-in p {
+    position: relative;
+    margin: 0;
+    max-width: 30ch;
+    font: 700 clamp(1.15em,2.2vw,1.55em)/1.3 'Sora',sans-serif;
+    text-align: left;
 }
 
+.ab2 .quote-in em {
+    font-style: normal;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+}
 
 /* ==========================================
-   MOBILE
+   CTA
 ========================================== */
 
-@media (max-width: 768px) {
+.ab2 .cta {
+    padding: 44px 0 12px;
+    text-align: center;
+}
 
-    .about-page {
-        padding: 60px 20px 80px;
+.ab2 .cta h2 {
+    font-size: clamp(1.25em,2.2vw,1.55em);
+    margin-bottom: 12px;
+}
+
+.ab2 .cta p {
+    margin: 0 auto 28px;
+    max-width: 46ch;
+    color: var(--mut);
+}
+
+.ab2 .btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ab2 .btn {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .2s;
+}
+
+.ab2 .btn:hover {
+    transform: translateY(-2px);
+}
+
+.ab2 .btn-g {
+    background: var(--g);
+    color: #1a1405;
+}
+
+.ab2 .btn-o {
+    border: 1px solid var(--ln);
+    color: #fff;
+}
+
+/* ==========================================
+   PERINGATAN RISIKO
+========================================== */
+
+.ab2 .risk {
+    max-width: 1072px;
+    margin: 0 auto;
+    padding: 36px 24px 28px;
+    font-size: .9em;
+    color: var(--mut);
+    line-height: 1.7;
+    text-align: left;
+}
+
+.ab2 .risk strong {
+    color: #e8ecf5;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:980px) {
+
+    /* ==========================================
+       KARTU FITUR
+    ========================================== */
+
+    .ab2 .grid4 {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media (max-width:860px) {
+
+    /* ==========================================
+       HERO
+    ========================================== */
+
+    .ab2 .hero {
+        padding: 48px 0 60px;
+    }
+    .ab2 .hero .w {
+        grid-template-columns: 1fr;
+        gap: 32px;
     }
 
-    .about-title {
-        font-size: 32px;
+    /* ==========================================
+       TEKS LANJUTAN
+    ========================================== */
+
+    .ab2 .detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 40px;
     }
 
-    .about-section-title {
-        font-size: 26px;
-    }
+    /* ==========================================
+       SECTION: MENGAPA CFX PROS
+    ========================================== */
 
-    .about-lead,
-    .about-why-text {
-        font-size: 15.5px;
+    .ab2 .sec {
+        padding: 56px 0;
     }
-
-    .about-pull-quote {
-        font-size: 20px;
-        margin-left: 20px;
+    .ab2 .quote-in {
+        padding: 48px 26px 36px;
     }
+}
 
+@media (max-width:560px) {
+
+    /* ==========================================
+       KARTU FITUR
+    ========================================== */
+
+    .ab2 .grid4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .ab2 .trend {
+        animation: none;
+        stroke-dashoffset: 0;
+    }
+    .ab2 .card,
+    .ab2 .btn {
+        transition: none;
+    }
 }
