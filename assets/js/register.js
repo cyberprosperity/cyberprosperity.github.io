@@ -43,6 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return /^\+62[0-9]{8,13}$/.test(phone);
     }
 
+    // Catat konversi Google Ads (hanya jika tag Google termuat)
+    function trackRegisterConversion() {
+        if (typeof gtag_report_conversion === "function") {
+            gtag_report_conversion();
+        }
+    }
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         clearMessage();
@@ -110,6 +117,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 username: username,
                 phone: phone
             });
+        }
+
+        // ---- PELACAKAN KONVERSI GOOGLE ADS ----
+        // Hanya dicatat untuk pendaftaran yang benar-benar baru.
+        // Jika email sudah terdaftar, Supabase (dengan email confirmation ON)
+        // tetap membalas "sukses" tetapi daftar identities-nya kosong.
+        const isExistingEmail =
+            data.user &&
+            Array.isArray(data.user.identities) &&
+            data.user.identities.length === 0;
+
+        if (!isExistingEmail) {
+            trackRegisterConversion();
         }
 
         // ---- HASIL / PEMBERITAHUAN ----
