@@ -258,10 +258,10 @@ footer p + p{margin-top:8px}
 
     <div class="s-head">
       <h2>Hitung <span>rebate</span> Anda</h2>
-      <p>Setiap lot transaksi mendapat rebate 8 USD. Geser atau ketik jumlah lot untuk melihat estimasinya.</p>
+      <p>Setiap lot transaksi mendapat rebate 10 USD. Geser atau ketik jumlah lot untuk melihat estimasinya.</p>
     </div>
 
-    <div class="calc" data-rate="8">
+    <div class="calc" data-rate="10">
       <label for="lot">Total lot transaksi</label>
 
     <div class="calc-row">
@@ -340,7 +340,7 @@ Kalkulator rebate: total lot x 8 USD
   var eq   = document.getElementById('rebateFormula');
 
   // Rebate promo: USD per lot (ubah lewat atribut data-rate pada .calc di HTML)
-  var RATE = parseFloat(calc.dataset.rate) || 8;
+  var RATE = parseFloat(calc.dataset.rate) || 10;
   var MAX_LOT = 100000;
 
   function fmt(n) {
