@@ -1167,7 +1167,7 @@ const CFX_ADS = [
 
     {
         type: "image",
-        src: "assets/images/ads/ads.oktober.png",
+        src: "assets/images/ads/freeswap10$.png",
         link: "https://cfxpros.com/landingpage.html",
         cta: "Ambil Promo",
         label: "Iklan",
@@ -1177,7 +1177,7 @@ const CFX_ADS = [
 
     {
         type: "video",
-        src: "assets/videos/promo.oktober.mp4",
+        src: "assets/videos/video10$.mp4",
         link: "https://cfxpros.com/landingpage.html",
         cta: "Ambil Promo",
         label: "Iklan",
