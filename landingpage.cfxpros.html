@@ -414,10 +414,12 @@
             0 0 60px rgba(246, 196, 82, .18);
       }
 
-      .car img {
+     .car img,
+     .car video {
         width: 100%;
         height: auto;
-      }
+        display: block;
+        }
 
       .car::after {
         content: "";
@@ -1327,10 +1329,19 @@
               </svg>
             </span>
             <span class="tag">Hadiah utama</span>
-            <figure class="car" style="margin:0">
-              <!-- Gambar: assets/images/ads/car.webp -->
-              <img src="assets/images/ads/nataru.webp" width="970" height="715"
-                alt="Mobil listrik BYD Sealion 6 warna perak di atas panggung emas dengan kotak hadiah">
+            
+        <video
+            src="assets/videos/nataru.mp4"
+            width="970"
+            height="715"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="auto"
+            aria-label="Video mobil listrik BYD Sealion 6 hadiah utama promo Nataru">
+            </video>
+
             </figure>
           </div>
         </div>
@@ -1595,7 +1606,7 @@
               </div>
               <div>
                 <dt>Jumlah unit</dt>
-                <dd>[isi jumlah]</dd>
+                <dd>2 Unit</dd>
               </div>
               <div>
                 <dt>Periode</dt>
@@ -1603,7 +1614,7 @@
               </div>
               <div>
                 <dt>Penentuan pemenang</dt>
-                <dd>[isi mekanisme]</dd>
+                <dd>Lot Terbanyak</dd>
               </div>
             </dl>
           </div>
@@ -1655,23 +1666,20 @@
           <div class="faq">
             <details>
               <summary>Siapa yang boleh ikut promo ini?</summary>
-              <p>[Isi syarat peserta, misalnya usia minimal, domisili, dan akun yang
-                terverifikasi.]</p>
+              <p>New Account.</p>
             </details>
             <details>
               <summary>Apakah akun lama bisa ikut?</summary>
-              <p>[Isi: akun lama dan akun baru boleh/tidak boleh ikut, dan syarat
-                tambahannya.]</p>
+              <p>Bisa *dengan syarat deposit minimal 1000$ diawal mulai promo berjalan</p>
             </details>
             <details>
               <summary>Bagaimana pemenang ditentukan?</summary>
-              <p>[Isi mekanisme: undian, poin, atau peringkat volume, lengkap dengan cara
-                verifikasinya.]</p>
+              <p>Lot terbanyak terhitung dari awal periode promo di mulai.</p>
             </details>
             <details>
               <summary>Apakah ada pajak atau biaya atas hadiah?</summary>
-              <p>[Isi pembagian tanggung jawab pajak, biaya balik nama, dan pengurusan
-                administrasi.]</p>
+              <p>Ada pembagian tanggung jawab pajak, biaya balik nama, dan pengurusan
+                administrasi.</p>
             </details>
             <details>
               <summary>Di mana pemenang diumumkan?</summary>
@@ -1964,5 +1972,42 @@
         })();
       })();
     </script>
+
+<script>
+  (function () {
+    var video = document.querySelector('.car video');
+    if (!video) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = '🔇 Nyalakan suara';
+    btn.style.cssText =
+      'position:absolute;right:16px;bottom:16px;z-index:5;' +
+      'padding:10px 18px;border:0;border-radius:999px;cursor:pointer;' +
+      'font:800 14px Archivo,Arial,sans-serif;color:#1b1203;' +
+      'background:linear-gradient(180deg,#fff3c4,#f6c452 50%,#d9a02b);' +
+      'box-shadow:0 6px 18px rgba(0,0,0,.45);';
+    video.parentNode.appendChild(btn);
+
+    function setSound(on) {
+      video.muted = !on;
+      if (on) {
+        video.volume = 1;
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      btn.textContent = on ? '🔊 Matikan suara' : '🔇 Nyalakan suara';
+    }
+
+    btn.addEventListener('click', function () {
+      setSound(video.muted);
+    });
+
+    video.addEventListener('click', function () {
+      setSound(video.muted);
+    });
+  })();
+</script>
+
   </body>
 </html>

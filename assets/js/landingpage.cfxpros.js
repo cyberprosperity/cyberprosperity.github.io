@@ -84,6 +84,7 @@
   tick();
 
   /* ---------- 4. Salju, serpihan emas & kembang api ---------- */
+ 
   (function festive() {
     var canvas = $('snow');
     if (!canvas || reduceMotion) return;
