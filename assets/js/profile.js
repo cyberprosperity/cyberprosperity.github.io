@@ -1,6 +1,34 @@
 // ============================================
 // PROFILE PAGE LOGIC (final + Follow + Lihat Profil Orang Lain)
+// Foto profil dan foto status otomatis diperkecil di browser
+// sebelum diunggah, jadi user tidak perlu mengecilkan foto sendiri.
 // ============================================
+
+function resizeImage(file, maxDimension, quality) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const scale = Math.min(1, maxDimension / Math.max(img.width, img.height));
+            const width = Math.round(img.width * scale);
+            const height = Math.round(img.height * scale);
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => {
+                if (!blob) { reject(new Error("Gagal memproses gambar.")); return; }
+                resolve(new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" }));
+            }, "image/jpeg", quality);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Gagal membaca gambar.")); };
+        img.src = url;
+    });
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -162,29 +190,55 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ---- UPLOAD AVATAR (hanya profil sendiri) ----
+    // Foto otomatis diperkecil ke maks 512 px (JPG) sebelum diunggah.
     const avatarInput = document.querySelector("#avatarInput");
     const avatarImg = document.querySelector(".profile-avatar");
 
     if (isOwnProfile && avatarInput) {
         avatarInput.addEventListener("change", async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (!file.type.startsWith("image/")) { alert("File harus gambar."); return; }
-            if (file.size > 2 * 1024 * 1024) { alert("Maksimal 2MB."); return; }
+            const originalFile = e.target.files[0];
+            if (!originalFile) return;
+            if (!originalFile.type.startsWith("image/")) {
+                alert("File harus gambar.");
+                avatarInput.value = "";
+                return;
+            }
 
-            const fileExt = file.name.split(".").pop();
-            const filePath = `${currentUser.id}/avatar.${fileExt}`;
+            let file;
+            try {
+                file = await resizeImage(originalFile, 512, 0.85);
+            } catch (err) {
+                alert(err.message);
+                avatarInput.value = "";
+                return;
+            }
+
+            const filePath = `${currentUser.id}/avatar.jpg`;
 
             const { error: uploadError } = await supabaseClient.storage
-                .from("avatars").upload(filePath, file, { upsert: true });
-            if (uploadError) { alert("Gagal upload: " + uploadError.message); return; }
+                .from("avatars").upload(filePath, file, { upsert: true, contentType: "image/jpeg" });
+            if (uploadError) {
+                alert("Gagal upload: " + uploadError.message);
+                avatarInput.value = "";
+                return;
+            }
 
             const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
-            avatarUrl = publicUrlData.publicUrl;
-            const cacheBustedUrl = avatarUrl + "?t=" + Date.now();
 
-            await supabaseClient.from("profiles").update({ avatar_url: avatarUrl }).eq("id", currentUser.id);
-            document.querySelectorAll(".profile-avatar, .feed-avatar").forEach((img) => { img.src = cacheBustedUrl; });
+            // Alamat file selalu sama (avatar.jpg), jadi diberi penanda waktu agar
+            // semua halaman langsung menampilkan foto yang baru, bukan foto lama dari cache.
+            avatarUrl = publicUrlData.publicUrl + "?t=" + Date.now();
+
+            const { error: updateError } = await supabaseClient
+                .from("profiles").update({ avatar_url: avatarUrl }).eq("id", currentUser.id);
+            if (updateError) {
+                alert("Foto terupload, tapi gagal menyimpan ke profil: " + updateError.message);
+                avatarInput.value = "";
+                return;
+            }
+
+            document.querySelectorAll(".profile-avatar, .feed-avatar").forEach((img) => { img.src = avatarUrl; });
+            avatarInput.value = "";
             alert("Foto profil berhasil diperbarui!");
         });
     }
@@ -307,17 +361,24 @@ document.addEventListener("DOMContentLoaded", async () => {
             fotoBtn.addEventListener("click", () => statusImageInput.click());
         }
 
+        // Foto status otomatis diperkecil ke maks 1600 px (JPG) sebelum diunggah.
         statusImageInput.addEventListener("change", async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (!file.type.startsWith("image/")) { alert("File harus gambar."); return; }
-            if (file.size > 3 * 1024 * 1024) { alert("Maksimal 3MB."); return; }
+            const originalFile = e.target.files[0];
+            if (!originalFile) return;
+            if (!originalFile.type.startsWith("image/")) { alert("File harus gambar."); return; }
 
-            const fileExt = file.name.split(".").pop();
-            const filePath = `${currentUser.id}/post-${Date.now()}.${fileExt}`;
+            let file;
+            try {
+                file = await resizeImage(originalFile, 1600, 0.85);
+            } catch (err) {
+                alert(err.message);
+                return;
+            }
+
+            const filePath = `${currentUser.id}/post-${Date.now()}.jpg`;
 
             const { error: uploadError } = await supabaseClient.storage
-                .from("avatars").upload(filePath, file);
+                .from("avatars").upload(filePath, file, { contentType: "image/jpeg" });
             if (uploadError) { alert("Gagal upload foto: " + uploadError.message); return; }
 
             const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
