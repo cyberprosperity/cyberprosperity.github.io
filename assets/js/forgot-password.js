@@ -1,80 +1,85 @@
-// ============================================
-// FORGOT PASSWORD PAGE LOGIC
-// Alur: Validasi email -> Kirim link reset via Supabase ->
-//       Notifikasi ke user
-// ============================================
+/* ==========================================
+   CFXPROS - FORGOT PASSWORD
+   assets/js/forgot-password.js
+   ========================================== */
+(function () {
+  'use strict';
 
-document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- CONFIG ---------- */
+  // Alamat TETAP halaman reset password.
+  // Jangan pakai window.location.origin, karena kalau dites dari
+  // Live Server hasilnya jadi http://127.0.0.1:5500 (link email rusak).
+  var REDIRECT_URL = 'https://cfxpros.com/reset-password.html';
 
-    const form = document.querySelector(".login-box form");
-    const submitButton = form.querySelector(".btn-primary");
+  /* ---------- Ambil client Supabase ---------- */
+  // Sesuaikan jika di supabase-client.js nama variabelnya berbeda.
+  var client = (typeof supabaseClient !== 'undefined') ? supabaseClient : null;
 
-    // Buat elemen pesan (error/sukses) secara dinamis,
-    // ditaruh tepat di atas tombol Send Reset Link
-    const messageBox = document.createElement("p");
-    messageBox.className = "form-message";
-    messageBox.style.display = "none";
-    submitButton.parentNode.insertBefore(messageBox, submitButton);
+  var form = document.getElementById('forgotForm');
+  var emailInput = document.getElementById('email');
+  var button = document.getElementById('submitBtn');
+  var message = document.getElementById('formMessage');
 
-    function showMessage(text, type) {
-        messageBox.textContent = text;
-        messageBox.style.display = "block";
-        messageBox.style.color = type === "error" ? "#ff6b6b" : "#4caf50";
-        messageBox.style.marginBottom = "10px";
-        messageBox.style.fontSize = "14px";
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = 'form-message show ' + type;
+  }
+
+  function clearMessage() {
+    message.textContent = '';
+    message.className = 'form-message';
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    clearMessage();
+
+    if (!client || !client.auth) {
+      showMessage('Konfigurasi Supabase belum benar. Hubungi admin.', 'error');
+      console.error('Client Supabase tidak ditemukan. Cek assets/js/supabase-client.js');
+      return;
     }
 
-    function clearMessage() {
-        messageBox.style.display = "none";
-        messageBox.textContent = "";
+    var email = emailInput.value.trim();
+
+    if (!email) {
+      showMessage('Email wajib diisi.', 'error');
+      emailInput.focus();
+      return;
     }
 
-    function setLoading(isLoading) {
-        submitButton.disabled = isLoading;
-        submitButton.textContent = isLoading ? "Mengirim..." : "Send Reset Link";
+    if (!emailInput.checkValidity()) {
+      showMessage('Format email tidak valid.', 'error');
+      emailInput.focus();
+      return;
     }
 
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+    button.disabled = true;
+    var labelAwal = button.textContent;
+    button.textContent = 'Mengirim...';
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        clearMessage();
+    try {
+      var result = await client.auth.resetPasswordForEmail(email, {
+        redirectTo: REDIRECT_URL
+      });
 
-        const email = form.querySelector('input[type="email"]').value.trim();
-
-        // ---- VALIDASI FORM ----
-        if (!email) {
-            showMessage("Email wajib diisi.", "error");
-            return;
-        }
-
-        if (!isValidEmail(email)) {
-            showMessage("Format email tidak valid.", "error");
-            return;
-        }
-
-        // ---- KIRIM PERMINTAAN RESET KE SUPABASE ----
-        setLoading(true);
-
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: "http://127.0.0.1:5500/reset-password.html"
-        });
-
-        setLoading(false);
-
-        if (error) {
-            showMessage(error.message, "error");
-            return;
-        }
-
-        // ---- HASIL / PEMBERITAHUAN ----
+      if (result.error) {
+        console.error(result.error);
+        showMessage('Gagal mengirim email: ' + result.error.message, 'error');
+      } else {
         showMessage(
-            "Link reset password sudah dikirim! Silakan cek email kamu.",
-            "success"
+          'Jika email terdaftar, link reset password sudah dikirim. ' +
+          'Cek kotak masuk dan folder spam.',
+          'success'
         );
         form.reset();
-    });
-
-});
+      }
+    } catch (err) {
+      console.error(err);
+      showMessage('Terjadi kesalahan jaringan. Coba lagi.', 'error');
+    } finally {
+      button.disabled = false;
+      button.textContent = labelAwal;
+    }
+  });
+})();
